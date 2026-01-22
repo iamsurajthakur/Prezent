@@ -1,12 +1,14 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+// Typescript type used for type safety on User
 export type User = {
     id: string,
     name: string,
     email: string,
 }
 
+// Define what data live in the auth store
 type AuthState = {
     user: User | null
     token: string | null
@@ -15,6 +17,7 @@ type AuthState = {
     error: string | null
 }
 
+// Define how the state can be changed also known as actions
 type AuthActions = {
     setAuth: (user: User, token: string) => void
     logout: () => void
