@@ -48,6 +48,17 @@ export default defineConfig([
         'warn',
         { argsIgnorePattern: '^_' },
       ],
+
+      // Allow React Three Fiber properties
+      'react/no-unknown-property': ['error', { 
+        ignore: ['args', 'uniforms', 'vertexShader', 'fragmentShader', 'attach'] 
+      }],
+
+      // Allow comments in JSX
+      'react/jsx-no-comment-textnodes': 'off',
+
+      // Allow unused expressions (for GSAP animations, etc.)
+      '@typescript-eslint/no-unused-expressions': 'off',
     },
   },
 ]);

@@ -63,8 +63,6 @@ const CardNav: React.FC<CardNavProps> = ({
         contentEl.style.position = 'static';
         contentEl.style.height = 'auto';
 
-        contentEl.offsetHeight;
-
         const topBar = 60;
         const padding = 16;
         const contentHeight = contentEl.scrollHeight;
@@ -112,6 +110,7 @@ const CardNav: React.FC<CardNavProps> = ({
       tl?.kill();
       tlRef.current = null;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ease, items]);
 
   useLayoutEffect(() => {
@@ -139,6 +138,7 @@ const CardNav: React.FC<CardNavProps> = ({
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isExpanded]);
 
   const toggleMenu = () => {
@@ -178,13 +178,18 @@ const CardNav: React.FC<CardNavProps> = ({
             style={{ color: menuColor || '#000' }}
           >
             <div
-              className={`hamburger-line w-7.5 h-0.5 bg-current transition-[transform,opacity,margin] duration-300 ease-linear origin-[50%_50%] ${
-                isHamburgerOpen ? 'translate-y-1 rotate-45' : ''
+              className={`hamburger-line w-7.5 h-0.5 bg-current transition-all duration-300 ease-in-out origin-center ${
+                isHamburgerOpen ? 'rotate-45 translate-y-2' : ''
               } group-hover:opacity-75`}
             />
             <div
-              className={`hamburger-line w-7.5 h-0.5 bg-current transition-[transform,opacity,margin] duration-300 ease-linear origin-[50%_50%] ${
-                isHamburgerOpen ? '-translate-y-1 -rotate-45' : ''
+              className={`hamburger-line w-7.5 h-0.5 bg-current transition-all duration-300 ease-in-out origin-center ${
+                isHamburgerOpen ? 'opacity-0' : 'opacity-100'
+              }`}
+            />
+            <div
+              className={`hamburger-line w-7.5 h-0.5 bg-current transition-all duration-300 ease-in-out origin-center ${
+                isHamburgerOpen ? '-rotate-45 -translate-y-2' : ''
               } group-hover:opacity-75`}
             />
           </div>

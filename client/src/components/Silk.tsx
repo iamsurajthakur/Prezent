@@ -111,17 +111,17 @@ const SilkPlane = forwardRef<Mesh, SilkPlaneProps>(function SilkPlane(
       material.uniforms.uTime.value += 0.1 * delta;
     }
   });
-
-  return (
-    <mesh ref={ref}>
-      <planeGeometry args={[1, 1, 1, 1]} />
-      <shaderMaterial
-        uniforms={uniforms}
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
-      />
-    </mesh>
-  );
+ return (
+   
+  <mesh ref={ref}>
+    <planeGeometry args={[1, 1, 1, 1]} />
+    <shaderMaterial 
+      uniforms={uniforms} 
+      vertexShader={vertexShader} 
+      fragmentShader={fragmentShader} 
+    />
+  </mesh>
+);
 });
 SilkPlane.displayName = 'SilkPlane';
 
