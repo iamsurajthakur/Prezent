@@ -1,58 +1,72 @@
 import Silk from '@/components/Silk';
 import CardNav from '@/components/CardNav';
-import logo from '../../public/logo.png';
+import logo from '@/Assets/logo.png';
 
 const Home = () => {
-  const items = [
+const items = [
+  {
+    label: 'Product',
+    bgColor: 'rgba(1, 0, 56, 0.8)',
+    textColor: '#fff',
+links: [
     {
-      label: 'About',
-      bgColor: '#0D0716',
-      textColor: '#fff',
-      links: [
-        {
-          label: 'Company',
-          ariaLabel: 'About Company',
-          href: '/about/company',
-        },
-        { label: 'Careers', ariaLabel: 'About Careers', href: '/about/career' },
-      ],
+      label: 'How It Works',
+      ariaLabel: 'How the AI presentation generator works',
+      href: '/product/how-it-works',
     },
     {
-      label: 'Projects',
-      bgColor: '#170D27',
-      textColor: '#fff',
-      links: [
-        {
-          label: 'Featured',
-          ariaLabel: 'Featured Projects',
-          href: '/projects/featured',
-        },
-        {
-          label: 'Case Studies',
-          ariaLabel: 'Project Case Studies',
-          href: '/projects/case_studies',
-        },
-      ],
+      label: 'Features',
+      ariaLabel: 'AI presentation features',
+      href: '/product/features',
     },
     {
-      label: 'Contact',
-      bgColor: '#271E37',
-      textColor: '#fff',
-      links: [
-        {
-          label: 'Email',
-          ariaLabel: 'Email us',
-          href: 'mailto:contact@example.com',
-        },
-        { label: 'Twitter', ariaLabel: 'Twitter', href: 'https://twitter.com' },
-        {
-          label: 'LinkedIn',
-          ariaLabel: 'LinkedIn',
-          href: 'https://linkedin.com',
-        },
-      ],
+      label: 'Supported Files',
+      ariaLabel: 'Supported document formats',
+      href: '/product/supported-files',
     },
-  ];
+  ],
+  },
+  {
+    label: 'Use Cases',
+    bgColor: 'rgba(41, 58, 128, 0.8)',
+    textColor: '#fff',
+links: [
+    {
+      label: 'Students',
+      ariaLabel: 'AI presentations for students',
+      href: '/use-cases/students',
+    },
+    {
+      label: 'Professionals',
+      ariaLabel: 'AI presentations for professionals',
+      href: '/use-cases/professionals',
+    },
+    {
+      label: 'Startups',
+      ariaLabel: 'AI presentations for startups',
+      href: '/use-cases/startups',
+    },
+  ],
+  },
+  {
+    label: 'Contact',
+    bgColor: 'rgba(83, 126, 197, 0.5)',
+    textColor: '#fff',
+    links: [
+      {
+        label: 'Email',
+        ariaLabel: 'Email us',
+        href: 'mailto:suraj.here@outlook.com',
+      },
+      { label: 'Github', ariaLabel: 'Github', href: 'https://github.com/iamsurajthakur' },
+      {
+        label: 'LinkedIn',
+        ariaLabel: 'LinkedIn',
+        href: 'https://www.linkedin.com/in/suraj-thakur7/',
+      },
+    ],
+  },
+];
 
   return (
     <div className="w-screen h-screen overflow-hidden">
@@ -73,9 +87,8 @@ const Home = () => {
           logo={logo}
           logoAlt="AI Presentation Maker"
           items={items}
-          baseColor="#fff"
-          menuColor="#000"
-          buttonBgColor="#111"
+          menuColor="#FFFFFC"
+          buttonBgColor="#1F1300"
           buttonTextColor="#fff"
           ease="back.out(1.7)"
         />
@@ -84,82 +97,8 @@ const Home = () => {
       {/* Content wrapper */}
       <div className="fixed inset-0 w-full h-full pointer-events-none">
         <div className="relative w-full h-full flex flex-col items-center justify-center text-white px-4 pointer-events-auto">
-          {/* Main heading with text shadow */}
-          <h1
-            className="text-6xl font-bold mb-4 text-center"
-            style={{
-              textShadow:
-                '0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.6), 2px 2px 4px rgba(0,0,0,0.9)',
-            }}
-          >
-            Welcome to AI Presentation Maker
-          </h1>
 
-          {/* Subheading */}
-          <p
-            className="text-2xl mb-8 text-center max-w-2xl"
-            style={{
-              textShadow:
-                '0 0 15px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.6), 1px 1px 3px rgba(0,0,0,0.9)',
-            }}
-          >
-            Create stunning presentations in minutes with the power of AI
-          </p>
-
-          {/* Buttons */}
-          <div className="flex gap-4 mb-12">
-            <button
-              className="px-8 py-4 bg-white text-[#5227ff] rounded-lg font-bold text-lg hover:opacity-90 transition-opacity"
-              style={{
-                boxShadow:
-                  '0 0 30px rgba(0,0,0,0.8), 0 4px 20px rgba(0,0,0,0.6)',
-              }}
-            >
-              Get Started
-            </button>
-            <button
-              className="px-8 py-4 border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white hover:text-[#5227ff] transition-all"
-              style={{
-                boxShadow:
-                  '0 0 30px rgba(0,0,0,0.8), 0 4px 20px rgba(0,0,0,0.6)',
-              }}
-            >
-              Learn More
-            </button>
-          </div>
-
-          {/* Feature cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
-            <div
-              className="bg-black/40 backdrop-blur-md p-8 rounded-xl border-2 border-white/40"
-              style={{
-                boxShadow: '0 0 40px rgba(0,0,0,0.8)',
-              }}
-            >
-              <h3 className="text-3xl font-bold mb-3">🎨 Beautiful Designs</h3>
-              <p className="text-lg">
-                Professional templates and stunning visuals
-              </p>
-            </div>
-            <div
-              className="bg-black/40 backdrop-blur-md p-8 rounded-xl border-2 border-white/40"
-              style={{
-                boxShadow: '0 0 40px rgba(0,0,0,0.8)',
-              }}
-            >
-              <h3 className="text-3xl font-bold mb-3">⚡ Lightning Fast</h3>
-              <p className="text-lg">Generate presentations in seconds</p>
-            </div>
-            <div
-              className="bg-black/40 backdrop-blur-md p-8 rounded-xl border-2 border-white/40"
-              style={{
-                boxShadow: '0 0 40px rgba(0,0,0,0.8)',
-              }}
-            >
-              <h3 className="text-3xl font-bold mb-3">🤖 AI Powered</h3>
-              <p className="text-lg">Smart suggestions and auto-formatting</p>
-            </div>
-          </div>
+          
         </div>
       </div>
     </div>

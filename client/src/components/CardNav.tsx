@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-// use your own icon import if react-icons is not available
 import { GoArrowUpRight } from 'react-icons/go';
+import { Link } from 'react-router-dom';
 
 type CardNavLink = {
   label: string;
@@ -34,7 +34,6 @@ const CardNav: React.FC<CardNavProps> = ({
   items,
   className = '',
   ease = 'power3.out',
-  baseColor = '#fff',
   menuColor,
   buttonBgColor,
   buttonTextColor,
@@ -165,17 +164,16 @@ const CardNav: React.FC<CardNavProps> = ({
     >
       <nav
         ref={navRef}
-        className={`card-nav ${isExpanded ? 'open' : ''} block h-15 p-0 rounded-xl shadow-md relative overflow-hidden will-change-[height]`}
-        style={{ backgroundColor: baseColor }}
+        className={`card-nav ${isExpanded ? 'open' : ''} block h-15 p-0 rounded-xl backdrop-blur-2xl bg-[rgba(41, 15, 148, 0.6)] shadow-md relative overflow-hidden will-change-[height]`}
       >
-        <div className="card-nav-top absolute inset-x-0 top-0 h-15 flex items-center justify-between p-2 pl-[1.1rem] z-2">
+        <div className="card-nav-top absolute inset-x-0  top-0 h-15 flex items-center justify-between p-2 pl-[1.1rem] z-2">
           <div
             className={`hamburger-menu ${isHamburgerOpen ? 'open' : ''} group h-full flex flex-col items-center justify-center cursor-pointer gap-1.5 order-2 md:order-0`}
             onClick={toggleMenu}
             role="button"
             aria-label={isExpanded ? 'Close menu' : 'Open menu'}
             tabIndex={0}
-            style={{ color: menuColor || '#000' }}
+            style={{ color: menuColor }}
           >
             <div
               className={`hamburger-line w-7.5 h-0.5 bg-current transition-all duration-300 ease-in-out origin-center ${
@@ -198,13 +196,13 @@ const CardNav: React.FC<CardNavProps> = ({
             <img src={logo} alt={logoAlt} className="logo h-7" />
           </div>
 
-          <button
+          <Link to='/login'
             type="button"
             className="card-nav-cta-button hidden md:inline-flex border-0 rounded-[calc(0.75rem-0.2rem)] px-4 items-center h-full font-medium cursor-pointer transition-colors duration-300"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
           >
             Login
-          </button>
+          </Link>
         </div>
 
         <div
