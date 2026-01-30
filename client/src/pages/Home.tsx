@@ -141,10 +141,10 @@ const Home = () => {
               </p>
 
               <div className="flex gap-3 mt-10">
-                <button className="bg-violet-600 hover:bg-violet-700 text-white text-xs md:text-sm px-6 py-3 rounded-lg transition cursor-pointer">
+                <button className="bg-violet-600 cursor-target hover:bg-violet-700 text-white text-xs md:text-sm px-6 py-3 rounded-lg transition cursor-pointer">
                   Get Started Now
                 </button>
-                <button className="bg-white hover:bg-white/5 border border-violet-400 text-gray-600 text-xs md:text-sm px-5 py-3 rounded-lg transition cursor-pointer">
+                <button className="bg-white cursor-target hover:bg-white/5 border border-violet-400 text-gray-600 text-xs md:text-sm px-5 py-3 rounded-lg transition cursor-pointer">
                   Book a demo
                 </button>
               </div>
@@ -205,7 +205,7 @@ const Home = () => {
       </div>
 
       {/* use Cases section  */}
-      <div className="w-full min-h-screen flex items-center justify-center px-6 sm:px-6 md:px-8 py-12 md:py-20 overflow-hidden">
+      <div className="w-full min-h-screen flex items-center justify-center -mt-120 px-6 sm:px-6 md:px-8 py-12 md:py-20 overflow-hidden">
         <div className="max-w-7xl w-full flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16 items-center">
           {/* Left Side Content */}
           <div className="text-white mt-50 space-y-4 md:space-y-6 w-full lg:w-1/2 text-center lg:text-left">
