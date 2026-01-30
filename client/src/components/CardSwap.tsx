@@ -3,13 +3,11 @@ import React, {
   cloneElement,
   forwardRef,
   isValidElement,
-  ReactElement,
-  ReactNode,
-  RefObject,
   useEffect,
   useMemo,
   useRef,
 } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import gsap from 'gsap';
 
 export interface CardSwapProps {
@@ -40,7 +38,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
 );
 Card.displayName = 'Card';
 
-type CardRef = RefObject<HTMLDivElement | null>;
 interface Slot {
   x: number;
   y: number;
@@ -108,9 +105,9 @@ const CardSwap: React.FC<CardSwapProps> = ({
     () => Children.toArray(children) as ReactElement<CardProps>[],
     [children]
   );
-  const refs = useMemo<CardRef[]>(
+  const refs = useMemo<React.RefObject<HTMLDivElement | null>[]>(
     () => childArr.map(() => React.createRef<HTMLDivElement>()),
-    [childArr.length]
+    [childArr]
   );
 
   const order = useRef<number[]>(
@@ -134,7 +131,11 @@ const CardSwap: React.FC<CardSwapProps> = ({
     const swap = () => {
       if (order.current.length < 2) return;
 
-      const [front, ...rest] = order.current;
+      const front = order.current[0];
+      if (front === undefined) return;
+      const rest = order.current.slice(1);
+
+      if (refs[front] === undefined) return;
       const elFront = refs[front].current!;
       const tl = gsap.timeline();
       tlRef.current = tl;
@@ -147,6 +148,7 @@ const CardSwap: React.FC<CardSwapProps> = ({
 
       tl.addLabel('promote', `-=${config.durDrop * config.promoteOverlap}`);
       rest.forEach((idx, i) => {
+        if (refs[idx] === undefined) return;
         const el = refs[idx].current!;
         const slot = makeSlot(i, cardDistance, verticalDistance, refs.length);
         tl.set(el, { zIndex: slot.zIndex }, 'promote');
