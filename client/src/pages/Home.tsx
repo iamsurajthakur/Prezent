@@ -285,30 +285,29 @@ const Home = () => {
                 height={400}
                 cardDistance={40}
                 verticalDistance={30}
-                delay={5000}
+                delay={3000}
                 pauseOnHover={true}
               >
-                {/* Upload Card - Glassmorphism Style */}
+                {/* How It Works Card - Glassmorphism Style */}
                 <Card>
                   <div className="relative p-10 flex flex-col h-full bg-white/5 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-linear-to-br from-purple-500/10 via-transparent to-violet-500/10"></div>
                     
-                    {/* Animated gradient border effect */}
-                    <div className="absolute inset-0 rounded-3xl bg-linear-to-r from-purple-500/50 via-violet-500/50 to-indigo-500/50 opacity-0 group-hover:opacity-100 transition-opacity blur-xl"></div>
-                    
                     {/* Number Badge */}
                     <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-linear-to-br from-purple-400/30 to-violet-500/30 backdrop-blur-sm border border-purple-300/30 flex items-center justify-center">
-                      <span className="text-white font-bold text-sm">1</span>
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
                     </div>
                     
                     {/* Icon Container */}
                     <div className="relative z-10 mb-8">
                       <div className="relative inline-block">
                         <div className="absolute inset-0 bg-purple-500 rounded-2xl blur-xl opacity-60"></div>
-                        <div className="relative w-20 cursor-target h-20 rounded-2xl bg-linear-to-br from-purple-500 to-violet-600 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+                        <div className="relative cursor-target w-20 h-20 rounded-2xl bg-linear-to-br from-purple-500 to-violet-600 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
                           <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                           </svg>
                         </div>
                       </div>
@@ -318,26 +317,45 @@ const Home = () => {
                     <div className="relative z-10 space-y-4 grow">
                       <div className="space-y-2">
                         <h3 className="text-4xl font-bold bg-linear-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                          Upload
+                          How It Works
                         </h3>
                         <div className="w-16 h-1 bg-linear-to-r from-purple-500 to-violet-500 rounded-full"></div>
                       </div>
-                      <p className="text-white/80 text-lg leading-relaxed">
-                        Simply drag and drop your documents. Our advanced AI processes them instantly with precision.
-                      </p>
-                    </div>
-                    
-                    {/* Footer Tag */}
-                    <div className="relative z-10 mt-6 pt-4 border-t border-white/10">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></div>
-                        <span className="text-xs text-purple-300/80 font-medium tracking-wider uppercase">Document Input</span>
+                      <div className="space-y-4 pt-2">
+                        <div className="flex items-start gap-4">
+                          <div className="w-8 h-8 rounded-lg bg-linear-to-br from-purple-500/30 to-violet-500/30 flex items-center justify-center shrink-0 border border-purple-400/30">
+                            <span className="text-sm font-bold text-white">1</span>
+                          </div>
+                          <div>
+                            <p className="text-white/90 font-medium text-sm">Upload Document</p>
+                            <p className="text-white/60 text-xs mt-1">Drop your file in any format</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-4">
+                          <div className="w-8 h-8 rounded-lg bg-linear-to-br from-purple-500/30 to-violet-500/30 flex items-center justify-center shrink-0 border border-purple-400/30">
+                            <span className="text-sm font-bold text-white">2</span>
+                          </div>
+                          <div>
+                            <p className="text-white/90 font-medium text-sm">AI Processing</p>
+                            <p className="text-white/60 text-xs mt-1">Smart content analysis</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-4">
+                          <div className="w-8 h-8 rounded-lg bg-linear-to-br from-purple-500/30 to-violet-500/30 flex items-center justify-center shrink-0 border border-purple-400/30">
+                            <span className="text-sm font-bold text-white">3</span>
+                          </div>
+                          <div>
+                            <p className="text-white/90 font-medium text-sm">Get Presentation</p>
+                            <p className="text-white/60 text-xs mt-1">Download in seconds</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
+                    
                   </div>
                 </Card>
 
-                {/* Transform Card - Glassmorphism Style */}
+                {/* Features Card - Glassmorphism Style */}
                 <Card>
                   <div className="relative p-10 flex flex-col h-full bg-white/5 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
                     {/* Gradient Overlay */}
@@ -345,7 +363,9 @@ const Home = () => {
                     
                     {/* Number Badge */}
                     <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-linear-to-br from-blue-400/30 to-cyan-500/30 backdrop-blur-sm border border-blue-300/30 flex items-center justify-center">
-                      <span className="text-white font-bold text-sm">2</span>
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                      </svg>
                     </div>
                     
                     {/* Icon Container */}
@@ -354,7 +374,7 @@ const Home = () => {
                         <div className="absolute inset-0 bg-blue-500 rounded-2xl blur-xl opacity-60"></div>
                         <div className="relative cursor-target w-20 h-20 rounded-2xl bg-linear-to-br from-blue-500 to-cyan-600 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
                           <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                           </svg>
                         </div>
                       </div>
@@ -364,26 +384,36 @@ const Home = () => {
                     <div className="relative z-10 space-y-4 grow">
                       <div className="space-y-2">
                         <h3 className="text-4xl font-bold bg-linear-to-r from-white to-blue-200 bg-clip-text text-transparent">
-                          Transform
+                          Features
                         </h3>
                         <div className="w-16 h-1 bg-linear-to-r from-blue-500 to-cyan-500 rounded-full"></div>
                       </div>
-                      <p className="text-white/80 text-lg leading-relaxed">
-                        AI intelligently analyzes content structure and creates stunning slide layouts automatically.
-                      </p>
-                    </div>
-                    
-                    {/* Footer Tag */}
-                    <div className="relative z-10 mt-6 pt-4 border-t border-white/10">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></div>
-                        <span className="text-xs text-blue-300/80 font-medium tracking-wider uppercase">AI Processing</span>
+                      <div className="space-y-3 pt-2">
+                        <div className="flex items-center gap-3 p-2 rounded-lg bg-blue-500/10 border border-blue-400/20">
+                          <svg className="w-5 h-5 text-blue-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                          <p className="text-white/90 text-sm font-medium">AI Content Analysis</p>
+                        </div>
+                        <div className="flex items-center gap-3 p-2 rounded-lg bg-blue-500/10 border border-blue-400/20">
+                          <svg className="w-5 h-5 text-blue-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                          <p className="text-white/90 text-sm font-medium">Professional Templates</p>
+                        </div>
+                        <div className="flex items-center gap-3 p-2 rounded-lg bg-blue-500/10 border border-blue-400/20">
+                          <svg className="w-5 h-5 text-blue-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                          <p className="text-white/90 text-sm font-medium">Instant Export Options</p>
+                        </div>
                       </div>
                     </div>
+                    
                   </div>
                 </Card>
 
-                {/* Present Card - Glassmorphism Style */}
+                {/* Supported Files Card - Glassmorphism Style */}
                 <Card>
                   <div className="relative p-10 flex flex-col h-full bg-white/5 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
                     {/* Gradient Overlay */}
@@ -391,7 +421,9 @@ const Home = () => {
                     
                     {/* Number Badge */}
                     <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-linear-to-br from-indigo-400/30 to-violet-500/30 backdrop-blur-sm border border-indigo-300/30 flex items-center justify-center">
-                      <span className="text-white font-bold text-sm">3</span>
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                      </svg>
                     </div>
                     
                     {/* Icon Container */}
@@ -400,7 +432,7 @@ const Home = () => {
                         <div className="absolute inset-0 bg-indigo-500 rounded-2xl blur-xl opacity-60"></div>
                         <div className="relative cursor-target w-20 h-20 rounded-2xl bg-linear-to-br from-indigo-500 to-violet-600 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
                           <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                           </svg>
                         </div>
                       </div>
@@ -410,22 +442,35 @@ const Home = () => {
                     <div className="relative z-10 space-y-4 grow">
                       <div className="space-y-2">
                         <h3 className="text-4xl font-bold bg-linear-to-r from-white to-indigo-200 bg-clip-text text-transparent">
-                          Present
+                          Supported Files
                         </h3>
                         <div className="w-16 h-1 bg-linear-to-r from-indigo-500 to-violet-500 rounded-full"></div>
                       </div>
-                      <p className="text-white/80 text-lg leading-relaxed">
-                        Export in multiple formats and share your professional presentation with confidence.
-                      </p>
-                    </div>
-                    
-                    {/* Footer Tag */}
-                    <div className="relative z-10 mt-6 pt-4 border-t border-white/10">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></div>
-                        <span className="text-xs text-indigo-300/80 font-medium tracking-wider uppercase">Ready to Share</span>
+                      <div className="space-y-2.5 pt-2">
+                        <div className="grid grid-cols-3 gap-2">
+                          <div className="px-3 py-2 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-center">
+                            <span className="text-sm font-bold text-indigo-200">PDF</span>
+                          </div>
+                          <div className="px-3 py-2 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-center">
+                            <span className="text-sm font-bold text-indigo-200">DOCX</span>
+                          </div>
+                          <div className="px-3 py-2 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-center">
+                            <span className="text-sm font-bold text-indigo-200">DOC</span>
+                          </div>
+                          <div className="px-3 py-2 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-center">
+                            <span className="text-sm font-bold text-indigo-200">TXT</span>
+                          </div>
+                          <div className="px-3 py-2 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-center">
+                            <span className="text-sm font-bold text-indigo-200">RTF</span>
+                          </div>
+                          <div className="px-3 py-2 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-center">
+                            <span className="text-sm font-bold text-indigo-200">ODT</span>
+                          </div>
+                        </div>
+                        <p className="text-center text-xs text-indigo-300/70 pt-1">+ MD, PPTX, HTML & more</p>
                       </div>
                     </div>
+                    
                   </div>
                 </Card>
               </CardSwap>
