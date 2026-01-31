@@ -6,6 +6,9 @@ import CardSwap, { Card } from '@/components/CardSwap';
 import ScrollReveal from '@/components/ScrollReveal';
 import ScrambledText from '@/components/ScrambledText';
 import CurvedLoop from '@/components/CurvedLoop';
+import StarBorder from '@/components/StarBorder';
+import CountUp from '@/components/CountUp';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const items = [
@@ -76,6 +79,7 @@ const Home = () => {
       ],
     },
   ];
+  const github = 'https://github.com/iamsurajthakur';
 
   return (
     <>
@@ -134,18 +138,23 @@ const Home = () => {
                 </span>{' '}
                 Prezent.
               </h1>
-              <p className="text-sm text-white-600 text-center max-w-157.5 mt-4">
+              <p className="text-md text-white-600 text-center max-w-157.5 mt-4" style={{ fontFamily: "'Poppins', sans-serif" }}>
                 We design high-impact websites that convert and scale. From
                 sleek interfaces to full stack experiences, we bring your brand
                 to life online.
               </p>
 
               <div className="flex gap-3 mt-10">
-                <button className="bg-violet-600 cursor-target hover:bg-violet-700 text-white text-xs md:text-sm px-6 py-3 rounded-lg transition cursor-pointer">
-                  Get Started Now
-                </button>
-                <button className="bg-white cursor-target hover:bg-white/5 border border-violet-400 text-gray-600 text-xs md:text-sm px-5 py-3 rounded-lg transition cursor-pointer">
-                  Book a demo
+                <StarBorder
+                  as="button"
+                  className="custom-class cursor-target bg-[#070036]"
+                  color="magenta"
+                  speed="5s"
+                >
+                  Get Started
+                </StarBorder>
+                <button className="bg-[#e6e6e6] items-center cursor-target text-black hover:bg-amber-50 px-6 rounded-lg transition cursor-pointer">
+                  <Link to={github}>About Me</Link>
                 </button>
               </div>
 
@@ -154,7 +163,15 @@ const Home = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-18 max-w-232.5 w-full">
                 <div className="text-center">
                   <h2 className="font-medium text-2xl md:text-3xl text-white-800">
-                    20+
+                    <CountUp
+                      from={0}
+                      to={20}
+                      separator=","
+                      direction="up"
+                      duration={2}
+                      className="count-up-text"
+                    />
+                    +
                   </h2>
                   <p className="text-xs md:text-sm text-white-500">
                     Years Experience
@@ -162,7 +179,15 @@ const Home = () => {
                 </div>
                 <div className="text-center">
                   <h2 className="font-medium text-2xl md:text-3xl text-white-800">
-                    12k+
+                    <CountUp
+                      from={0}
+                      to={12}
+                      separator=","
+                      direction="up"
+                      duration={2}
+                      className="count-up-text"
+                    />
+                    k+
                   </h2>
                   <p className="text-xs md:text-sm text-white-500">
                     Projects Completed
@@ -170,7 +195,15 @@ const Home = () => {
                 </div>
                 <div className="text-center">
                   <h2 className="font-medium text-2xl md:text-3xl text-white-800">
-                    5k+
+                    <CountUp
+                      from={0}
+                      to={5}
+                      separator=","
+                      direction="up"
+                      duration={2}
+                      className="count-up-text"
+                    />
+                    k+
                   </h2>
                   <p className="text-xs md:text-sm text-white-500">
                     Happy Customers
@@ -178,7 +211,15 @@ const Home = () => {
                 </div>
                 <div className="text-center">
                   <h2 className="font-medium text-2xl md:text-3xl text-white-800">
-                    5+
+                    <CountUp
+                      from={0}
+                      to={5}
+                      separator=","
+                      direction="up"
+                      duration={2}
+                      className="count-up-text"
+                    />
+                    +
                   </h2>
                   <p className="text-xs md:text-sm text-white-500">Countries</p>
                 </div>
@@ -188,7 +229,7 @@ const Home = () => {
         </div>
 
         <CurvedLoop
-          marqueeText="Be ✦ Creative ✦ With ✦ React ✦ Bits ✦"
+          marqueeText="Prompt ✦ Generate ✦ Design ✦ Present ✦ Faster ✦"
           speed={2}
           curveAmount={300}
           direction="right"
@@ -205,7 +246,7 @@ const Home = () => {
       </div>
 
       {/* use Cases section  */}
-      <div className="w-full min-h-screen flex items-center justify-center -mt-120 px-6 sm:px-6 md:px-8 py-12 md:py-20 overflow-hidden">
+<div className="w-full min-h-screen flex items-center justify-center -mt-120 px-6 sm:px-6 md:px-8 py-12 md:py-20 overflow-hidden">
         <div className="max-w-7xl w-full flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16 items-center">
           {/* Left Side Content */}
           <div className="text-white mt-50 space-y-4 md:space-y-6 w-full lg:w-1/2 text-center lg:text-left">
@@ -247,34 +288,144 @@ const Home = () => {
                 delay={5000}
                 pauseOnHover={true}
               >
+                {/* Upload Card - Glassmorphism Style */}
                 <Card>
-                  <div className="p-8 flex flex-col justify-center h-full">
-                    <h3 className="text-3xl font-bold text-white mb-4">
-                      Upload
-                    </h3>
-                    <p className="text-white/80 text-lg">
-                      Drop your documents and let AI do the work
-                    </p>
+                  <div className="relative p-10 flex flex-col h-full bg-white/5 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-linear-to-br from-purple-500/10 via-transparent to-violet-500/10"></div>
+                    
+                    {/* Animated gradient border effect */}
+                    <div className="absolute inset-0 rounded-3xl bg-linear-to-r from-purple-500/50 via-violet-500/50 to-indigo-500/50 opacity-0 group-hover:opacity-100 transition-opacity blur-xl"></div>
+                    
+                    {/* Number Badge */}
+                    <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-linear-to-br from-purple-400/30 to-violet-500/30 backdrop-blur-sm border border-purple-300/30 flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">1</span>
+                    </div>
+                    
+                    {/* Icon Container */}
+                    <div className="relative z-10 mb-8">
+                      <div className="relative inline-block">
+                        <div className="absolute inset-0 bg-purple-500 rounded-2xl blur-xl opacity-60"></div>
+                        <div className="relative w-20 cursor-target h-20 rounded-2xl bg-linear-to-br from-purple-500 to-violet-600 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+                          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="relative z-10 space-y-4 grow">
+                      <div className="space-y-2">
+                        <h3 className="text-4xl font-bold bg-linear-to-r from-white to-purple-200 bg-clip-text text-transparent">
+                          Upload
+                        </h3>
+                        <div className="w-16 h-1 bg-linear-to-r from-purple-500 to-violet-500 rounded-full"></div>
+                      </div>
+                      <p className="text-white/80 text-lg leading-relaxed">
+                        Simply drag and drop your documents. Our advanced AI processes them instantly with precision.
+                      </p>
+                    </div>
+                    
+                    {/* Footer Tag */}
+                    <div className="relative z-10 mt-6 pt-4 border-t border-white/10">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></div>
+                        <span className="text-xs text-purple-300/80 font-medium tracking-wider uppercase">Document Input</span>
+                      </div>
+                    </div>
                   </div>
                 </Card>
+
+                {/* Transform Card - Glassmorphism Style */}
                 <Card>
-                  <div className="p-8 flex flex-col justify-center h-full">
-                    <h3 className="text-3xl font-bold text-white mb-4">
-                      Transform
-                    </h3>
-                    <p className="text-white/80 text-lg">
-                      AI creates beautiful, structured slides
-                    </p>
+                  <div className="relative p-10 flex flex-col h-full bg-white/5 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-linear-to-br from-blue-500/10 via-transparent to-cyan-500/10"></div>
+                    
+                    {/* Number Badge */}
+                    <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-linear-to-br from-blue-400/30 to-cyan-500/30 backdrop-blur-sm border border-blue-300/30 flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">2</span>
+                    </div>
+                    
+                    {/* Icon Container */}
+                    <div className="relative z-10 mb-8">
+                      <div className="relative inline-block">
+                        <div className="absolute inset-0 bg-blue-500 rounded-2xl blur-xl opacity-60"></div>
+                        <div className="relative cursor-target w-20 h-20 rounded-2xl bg-linear-to-br from-blue-500 to-cyan-600 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+                          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="relative z-10 space-y-4 grow">
+                      <div className="space-y-2">
+                        <h3 className="text-4xl font-bold bg-linear-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                          Transform
+                        </h3>
+                        <div className="w-16 h-1 bg-linear-to-r from-blue-500 to-cyan-500 rounded-full"></div>
+                      </div>
+                      <p className="text-white/80 text-lg leading-relaxed">
+                        AI intelligently analyzes content structure and creates stunning slide layouts automatically.
+                      </p>
+                    </div>
+                    
+                    {/* Footer Tag */}
+                    <div className="relative z-10 mt-6 pt-4 border-t border-white/10">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></div>
+                        <span className="text-xs text-blue-300/80 font-medium tracking-wider uppercase">AI Processing</span>
+                      </div>
+                    </div>
                   </div>
                 </Card>
+
+                {/* Present Card - Glassmorphism Style */}
                 <Card>
-                  <div className="p-8 flex flex-col justify-center h-full">
-                    <h3 className="text-3xl font-bold text-white mb-4">
-                      Present
-                    </h3>
-                    <p className="text-white/80 text-lg">
-                      Download and share your presentation
-                    </p>
+                  <div className="relative p-10 flex flex-col h-full bg-white/5 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-linear-to-br from-indigo-500/10 via-transparent to-violet-500/10"></div>
+                    
+                    {/* Number Badge */}
+                    <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-linear-to-br from-indigo-400/30 to-violet-500/30 backdrop-blur-sm border border-indigo-300/30 flex items-center justify-center">
+                      <span className="text-white font-bold text-sm">3</span>
+                    </div>
+                    
+                    {/* Icon Container */}
+                    <div className="relative z-10 mb-8">
+                      <div className="relative inline-block">
+                        <div className="absolute inset-0 bg-indigo-500 rounded-2xl blur-xl opacity-60"></div>
+                        <div className="relative cursor-target w-20 h-20 rounded-2xl bg-linear-to-br from-indigo-500 to-violet-600 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+                          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="relative z-10 space-y-4 grow">
+                      <div className="space-y-2">
+                        <h3 className="text-4xl font-bold bg-linear-to-r from-white to-indigo-200 bg-clip-text text-transparent">
+                          Present
+                        </h3>
+                        <div className="w-16 h-1 bg-linear-to-r from-indigo-500 to-violet-500 rounded-full"></div>
+                      </div>
+                      <p className="text-white/80 text-lg leading-relaxed">
+                        Export in multiple formats and share your professional presentation with confidence.
+                      </p>
+                    </div>
+                    
+                    {/* Footer Tag */}
+                    <div className="relative z-10 mt-6 pt-4 border-t border-white/10">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></div>
+                        <span className="text-xs text-indigo-300/80 font-medium tracking-wider uppercase">Ready to Share</span>
+                      </div>
+                    </div>
                   </div>
                 </Card>
               </CardSwap>
