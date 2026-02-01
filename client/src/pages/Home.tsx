@@ -138,7 +138,10 @@ const Home = () => {
                 </span>{' '}
                 Prezent.
               </h1>
-              <p className="text-md text-white-600 text-center max-w-157.5 mt-4" style={{ fontFamily: "'Poppins', sans-serif" }}>
+              <p
+                className="text-md text-white-600 text-center max-w-157.5 mt-4"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
                 We design high-impact websites that convert and scale. From
                 sleek interfaces to full stack experiences, we bring your brand
                 to life online.
@@ -246,7 +249,7 @@ const Home = () => {
       </div>
 
       {/* use Cases section  */}
-<div className="w-full min-h-screen flex items-center justify-center -mt-120 px-6 sm:px-6 md:px-8 py-12 md:py-20 overflow-hidden">
+      <div className="w-full min-h-screen flex items-center justify-center -mt-120 px-6 sm:px-6 md:px-8 py-12 md:py-20 overflow-hidden">
         <div className="max-w-7xl w-full flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16 items-center">
           {/* Left Side Content */}
           <div className="text-white mt-50 space-y-4 md:space-y-6 w-full lg:w-1/2 text-center lg:text-left">
@@ -293,26 +296,46 @@ const Home = () => {
                   <div className="relative p-10 flex flex-col h-full bg-white/5 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-linear-to-br from-purple-500/10 via-transparent to-violet-500/10"></div>
-                    
+
                     {/* Number Badge */}
                     <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-linear-to-br from-purple-400/30 to-violet-500/30 backdrop-blur-sm border border-purple-300/30 flex items-center justify-center">
-                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      <svg
+                        className="w-5 h-5 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
                       </svg>
                     </div>
-                    
+
                     {/* Icon Container */}
                     <div className="relative z-10 mb-8">
                       <div className="relative inline-block">
                         <div className="absolute inset-0 bg-purple-500 rounded-2xl blur-xl opacity-60"></div>
                         <div className="relative cursor-target w-20 h-20 rounded-2xl bg-linear-to-br from-purple-500 to-violet-600 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
-                          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                          <svg
+                            className="w-10 h-10 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                            />
                           </svg>
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Content */}
                     <div className="relative z-10 space-y-4 grow">
                       <div className="space-y-2">
@@ -324,34 +347,51 @@ const Home = () => {
                       <div className="space-y-4 pt-2">
                         <div className="flex items-start gap-4">
                           <div className="w-8 h-8 rounded-lg bg-linear-to-br from-purple-500/30 to-violet-500/30 flex items-center justify-center shrink-0 border border-purple-400/30">
-                            <span className="text-sm font-bold text-white">1</span>
+                            <span className="text-sm font-bold text-white">
+                              1
+                            </span>
                           </div>
                           <div>
-                            <p className="text-white/90 font-medium text-sm">Upload Document</p>
-                            <p className="text-white/60 text-xs mt-1">Drop your file in any format</p>
+                            <p className="text-white/90 font-medium text-sm">
+                              Upload Document
+                            </p>
+                            <p className="text-white/60 text-xs mt-1">
+                              Drop your file in any format
+                            </p>
                           </div>
                         </div>
                         <div className="flex items-start gap-4">
                           <div className="w-8 h-8 rounded-lg bg-linear-to-br from-purple-500/30 to-violet-500/30 flex items-center justify-center shrink-0 border border-purple-400/30">
-                            <span className="text-sm font-bold text-white">2</span>
+                            <span className="text-sm font-bold text-white">
+                              2
+                            </span>
                           </div>
                           <div>
-                            <p className="text-white/90 font-medium text-sm">AI Processing</p>
-                            <p className="text-white/60 text-xs mt-1">Smart content analysis</p>
+                            <p className="text-white/90 font-medium text-sm">
+                              AI Processing
+                            </p>
+                            <p className="text-white/60 text-xs mt-1">
+                              Smart content analysis
+                            </p>
                           </div>
                         </div>
                         <div className="flex items-start gap-4">
                           <div className="w-8 h-8 rounded-lg bg-linear-to-br from-purple-500/30 to-violet-500/30 flex items-center justify-center shrink-0 border border-purple-400/30">
-                            <span className="text-sm font-bold text-white">3</span>
+                            <span className="text-sm font-bold text-white">
+                              3
+                            </span>
                           </div>
                           <div>
-                            <p className="text-white/90 font-medium text-sm">Get Presentation</p>
-                            <p className="text-white/60 text-xs mt-1">Download in seconds</p>
+                            <p className="text-white/90 font-medium text-sm">
+                              Get Presentation
+                            </p>
+                            <p className="text-white/60 text-xs mt-1">
+                              Download in seconds
+                            </p>
                           </div>
                         </div>
                       </div>
                     </div>
-                    
                   </div>
                 </Card>
 
@@ -360,26 +400,46 @@ const Home = () => {
                   <div className="relative p-10 flex flex-col h-full bg-white/5 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-linear-to-br from-blue-500/10 via-transparent to-cyan-500/10"></div>
-                    
+
                     {/* Number Badge */}
                     <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-linear-to-br from-blue-400/30 to-cyan-500/30 backdrop-blur-sm border border-blue-300/30 flex items-center justify-center">
-                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                      <svg
+                        className="w-5 h-5 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                        />
                       </svg>
                     </div>
-                    
+
                     {/* Icon Container */}
                     <div className="relative z-10 mb-8">
                       <div className="relative inline-block">
                         <div className="absolute inset-0 bg-blue-500 rounded-2xl blur-xl opacity-60"></div>
                         <div className="relative cursor-target w-20 h-20 rounded-2xl bg-linear-to-br from-blue-500 to-cyan-600 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
-                          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                          <svg
+                            className="w-10 h-10 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                            />
                           </svg>
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Content */}
                     <div className="relative z-10 space-y-4 grow">
                       <div className="space-y-2">
@@ -390,26 +450,55 @@ const Home = () => {
                       </div>
                       <div className="space-y-3 pt-2">
                         <div className="flex items-center gap-3 p-2 rounded-lg bg-blue-500/10 border border-blue-400/20">
-                          <svg className="w-5 h-5 text-blue-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          <svg
+                            className="w-5 h-5 text-blue-400 shrink-0"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                              clipRule="evenodd"
+                            />
                           </svg>
-                          <p className="text-white/90 text-sm font-medium">AI Content Analysis</p>
+                          <p className="text-white/90 text-sm font-medium">
+                            AI Content Analysis
+                          </p>
                         </div>
                         <div className="flex items-center gap-3 p-2 rounded-lg bg-blue-500/10 border border-blue-400/20">
-                          <svg className="w-5 h-5 text-blue-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          <svg
+                            className="w-5 h-5 text-blue-400 shrink-0"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                              clipRule="evenodd"
+                            />
                           </svg>
-                          <p className="text-white/90 text-sm font-medium">Professional Templates</p>
+                          <p className="text-white/90 text-sm font-medium">
+                            Professional Templates
+                          </p>
                         </div>
                         <div className="flex items-center gap-3 p-2 rounded-lg bg-blue-500/10 border border-blue-400/20">
-                          <svg className="w-5 h-5 text-blue-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          <svg
+                            className="w-5 h-5 text-blue-400 shrink-0"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                              clipRule="evenodd"
+                            />
                           </svg>
-                          <p className="text-white/90 text-sm font-medium">Instant Export Options</p>
+                          <p className="text-white/90 text-sm font-medium">
+                            Instant Export Options
+                          </p>
                         </div>
                       </div>
                     </div>
-                    
                   </div>
                 </Card>
 
@@ -418,26 +507,46 @@ const Home = () => {
                   <div className="relative p-10 flex flex-col h-full bg-white/5 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-linear-to-br from-indigo-500/10 via-transparent to-violet-500/10"></div>
-                    
+
                     {/* Number Badge */}
                     <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-linear-to-br from-indigo-400/30 to-violet-500/30 backdrop-blur-sm border border-indigo-300/30 flex items-center justify-center">
-                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                      <svg
+                        className="w-5 h-5 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                        />
                       </svg>
                     </div>
-                    
+
                     {/* Icon Container */}
                     <div className="relative z-10 mb-8">
                       <div className="relative inline-block">
                         <div className="absolute inset-0 bg-indigo-500 rounded-2xl blur-xl opacity-60"></div>
                         <div className="relative cursor-target w-20 h-20 rounded-2xl bg-linear-to-br from-indigo-500 to-violet-600 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
-                          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                          <svg
+                            className="w-10 h-10 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                            />
                           </svg>
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Content */}
                     <div className="relative z-10 space-y-4 grow">
                       <div className="space-y-2">
@@ -449,34 +558,86 @@ const Home = () => {
                       <div className="space-y-2.5 pt-2">
                         <div className="grid grid-cols-3 gap-2">
                           <div className="px-3 py-2 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-center">
-                            <span className="text-sm font-bold text-indigo-200">PDF</span>
+                            <span className="text-sm font-bold text-indigo-200">
+                              PDF
+                            </span>
                           </div>
                           <div className="px-3 py-2 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-center">
-                            <span className="text-sm font-bold text-indigo-200">DOCX</span>
+                            <span className="text-sm font-bold text-indigo-200">
+                              DOCX
+                            </span>
                           </div>
                           <div className="px-3 py-2 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-center">
-                            <span className="text-sm font-bold text-indigo-200">DOC</span>
+                            <span className="text-sm font-bold text-indigo-200">
+                              DOC
+                            </span>
                           </div>
                           <div className="px-3 py-2 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-center">
-                            <span className="text-sm font-bold text-indigo-200">TXT</span>
+                            <span className="text-sm font-bold text-indigo-200">
+                              TXT
+                            </span>
                           </div>
                           <div className="px-3 py-2 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-center">
-                            <span className="text-sm font-bold text-indigo-200">RTF</span>
+                            <span className="text-sm font-bold text-indigo-200">
+                              RTF
+                            </span>
                           </div>
                           <div className="px-3 py-2 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-center">
-                            <span className="text-sm font-bold text-indigo-200">ODT</span>
+                            <span className="text-sm font-bold text-indigo-200">
+                              ODT
+                            </span>
                           </div>
                         </div>
-                        <p className="text-center text-xs text-indigo-300/70 pt-1">+ MD, PPTX, HTML & more</p>
+                        <p className="text-center text-xs text-indigo-300/70 pt-1">
+                          + MD, PPTX, HTML & more
+                        </p>
                       </div>
                     </div>
-                    
                   </div>
                 </Card>
               </CardSwap>
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="relative w-full">
+        <footer className="w-full py-20 text-sm bg-[#0d0a2e] border-t border-white/5">
+          <div className="flex flex-col items-center justify-center max-w-6xl mx-auto px-6">
+            {/* Logo */}
+
+            {/* Copyright Text */}
+            <p className="mt-5 text-white/70 text-center text-base tracking-wide">
+              Copyright © 2026{' '}
+              <a
+                href="/"
+                className="text-indigo-400 hover:text-indigo-300 transition-colors duration-200 font-semibold"
+              >
+                Prezent
+              </a>
+              . All rights reserved.
+            </p>
+
+            {/* Links */}
+            <div className="flex items-center gap-5 mt-5">
+              <a
+                href="#"
+                className="text-white/80 hover:text-white transition-all duration-200 font-medium relative group text-base"
+              >
+                Brand Guidelines
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-400 group-hover:w-full transition-all duration-300" />
+              </a>
+              <div className="h-5 w-px bg-white/30" />
+              <a
+                href="#"
+                className="text-white/80 hover:text-white transition-all duration-200 font-medium relative group text-base"
+              >
+                Trademark Policy
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-400 group-hover:w-full transition-all duration-300" />
+              </a>
+            </div>
+          </div>
+        </footer>
       </div>
     </>
   );

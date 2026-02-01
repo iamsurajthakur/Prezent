@@ -1,4 +1,10 @@
-import { useInView, useMotionValue, useSpring, motion, AnimatePresence } from 'motion/react';
+import {
+  useInView,
+  useMotionValue,
+  useSpring,
+  motion,
+  AnimatePresence,
+} from 'motion/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface CountUpProps {
@@ -106,7 +112,7 @@ export default function CountUp({
 
       const timeoutId = setTimeout(() => {
         motionValue.set(direction === 'down' ? from : to);
-        
+
         // Mark as played in localStorage
         if (playOnce && uniqueId) {
           localStorage.setItem(`countup-played-${uniqueId}`, 'true');
@@ -185,7 +191,11 @@ export default function CountUp({
   const variants = getAnimationVariants();
 
   if (animationStyle === 'none') {
-    return <span className={className} ref={ref}>{displayValue}</span>;
+    return (
+      <span className={className} ref={ref}>
+        {displayValue}
+      </span>
+    );
   }
 
   // Split the display value into individual characters for animation
@@ -207,7 +217,12 @@ export default function CountUp({
             }}
             className="inline-block"
             style={{
-              minWidth: char === separator || char === ',' ? '0.3em' : char === '.' ? '0.25em' : '0.6em',
+              minWidth:
+                char === separator || char === ','
+                  ? '0.3em'
+                  : char === '.'
+                    ? '0.25em'
+                    : '0.6em',
               textAlign: 'center',
             }}
           >
