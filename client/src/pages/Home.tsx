@@ -1,13 +1,13 @@
-import Silk from '@/components/Silk';
-import CardNav from '@/components/CardNav';
+import Silk from '@/components/Home/Silk';
+import CardNav from '@/components/Home/CardNav';
 import logo from '@/Assets/logo.png';
-import TargetCursor from '@/components/TargetCursor';
-import CardSwap, { Card } from '@/components/CardSwap';
-import ScrollReveal from '@/components/ScrollReveal';
-import ScrambledText from '@/components/ScrambledText';
-import CurvedLoop from '@/components/CurvedLoop';
-import StarBorder from '@/components/StarBorder';
-import CountUp from '@/components/CountUp';
+import TargetCursor from '@/components/Home/TargetCursor';
+import CardSwap, { Card } from '@/components/Home/CardSwap';
+import ScrollReveal from '@/components/Home/ScrollReveal';
+import ScrambledText from '@/components/Home/ScrambledText';
+import CurvedLoop from '@/components/Home/CurvedLoop';
+import StarBorder from '@/components/Home/StarBorder';
+import CountUp from '@/components/Home/CountUp';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
