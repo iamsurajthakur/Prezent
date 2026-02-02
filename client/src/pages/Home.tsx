@@ -20,17 +20,17 @@ const Home = () => {
         {
           label: 'How It Works',
           ariaLabel: 'How the AI presentation generator works',
-          href: '/product/how-it-works',
+          href: '/#product',
         },
         {
           label: 'Features',
           ariaLabel: 'AI presentation features',
-          href: '/product/features',
+          href: '/#product',
         },
         {
           label: 'Supported Files',
           ariaLabel: 'Supported document formats',
-          href: '/product/supported-files',
+          href: '/#product',
         },
       ],
     },
@@ -249,7 +249,7 @@ const Home = () => {
       </div>
 
       {/* use Cases section  */}
-      <div className="w-full min-h-screen flex items-center justify-center -mt-120 px-6 sm:px-6 md:px-8 py-12 md:py-20 overflow-hidden">
+      <div id='product' className="w-full scroll-mt-25 min-h-screen flex items-center justify-center -mt-120 px-6 sm:px-6 md:px-8 py-12 md:py-20 overflow-hidden">
         <div className="max-w-7xl w-full flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16 items-center">
           {/* Left Side Content */}
           <div className="text-white mt-50 space-y-4 md:space-y-6 w-full lg:w-1/2 text-center lg:text-left">
