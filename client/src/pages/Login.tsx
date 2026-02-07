@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Login = () => {
   return (
-    <main className="relative overflow-hidden flex h-screen items-center justify-center w-full px-4">
+    <main style={{ fontFamily: "Poppins, sans-serif" }} className="relative overflow-hidden flex h-screen items-center justify-center w-full px-4">
       <div className="absolute inset-0 -z-10">
         <Grainient
           color1="#2f203c"
@@ -54,7 +54,7 @@ const Login = () => {
           </svg>
         </a>
 
-        <h2 className="text-4xl font-medium text-white">Sign in</h2>
+        <h2 className="text-4xl font-medium text-white">Login</h2>
 
         <p className="mt-4 text-base text-gray-500/90">
           Please enter email and password to access.
@@ -64,7 +64,7 @@ const Login = () => {
           <label className="font-medium text-white">Email</label>
           <input
             placeholder="Please enter your email"
-            className="mt-2 rounded-md ring text-white ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
+            className="mt-2 rounded-md ring placeholder:text-sm text-white ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
             required
             type="email"
             name="email"
@@ -75,7 +75,7 @@ const Login = () => {
           <label className="font-medium text-white">Password</label>
           <input
             placeholder="Please enter your password"
-            className="mt-2 rounded-md ring text-white ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
+            className="mt-2 rounded-md ring placeholder:text-sm text-white ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
             required
             type="password"
             name="password"
@@ -92,7 +92,7 @@ const Login = () => {
           Don't have an account?{' '}
           <Link to="/register">
           <a href="/signup" className="text-indigo-600 hover:underline">
-            Sign up
+            Register
           </a>
           </Link>
         </p>

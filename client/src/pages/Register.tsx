@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Register = () => {
   return (
-    <main className="relative overflow-hidden flex h-screen items-center justify-center w-full px-4">
+    <main style={{ fontFamily: "Poppins, sans-serif" }} className="relative overflow-hidden flex h-screen items-center justify-center w-full px-4">
             <div className="absolute inset-0 -z-10">
         <Grainient
           color1="#2f203c"
@@ -55,7 +55,7 @@ const Register = () => {
           </svg>
         </a>
 
-  <h2 className="text-4xl font-medium text-white">Create Account</h2>
+  <h2 className="text-4xl font-medium text-[#F5F3F5]">Create Account</h2>
 
   <p className="mt-4 text-base text-gray-500/90">
     Please fill the details below to register.
@@ -65,10 +65,10 @@ const Register = () => {
   <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
 
     <div>
-      <label className="font-medium text-white">Full Name</label>
+      <label className="font-medium text-[#F5F3F5]">Full Name</label>
       <input
         placeholder="Enter your full name"
-        className="mt-2 rounded-md ring text-white bg-transparent ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
+        className="mt-2 placeholder:text-sm rounded-md ring text-[#F5F3F5] bg-transparent ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
         required
         type="text"
         name="name"
@@ -76,10 +76,10 @@ const Register = () => {
     </div>
 
     <div>
-      <label className="font-medium text-white">Email</label>
+      <label className="font-medium text-[#F5F3F5]">Email</label>
       <input
         placeholder="Enter your email"
-        className="mt-2 rounded-md ring text-white bg-transparent ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
+        className="mt-2 rounded-md ring placeholder:text-sm text-[#F5F3F5] bg-transparent ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
         required
         type="email"
         name="email"
@@ -92,10 +92,10 @@ const Register = () => {
   <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
 
     <div>
-      <label className="font-medium text-white">Password</label>
+      <label className="font-medium text-[#F5F3F5]">Password</label>
       <input
         placeholder="Create password"
-        className="mt-2 rounded-md ring text-white bg-transparent ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
+        className="mt-2 rounded-md ring text-[#F5F3F5] placeholder:text-sm bg-transparent ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
         required
         type="password"
         name="password"
@@ -103,10 +103,10 @@ const Register = () => {
     </div>
 
     <div>
-      <label className="font-medium text-white">Confirm Password</label>
+      <label className="font-medium text-[#F5F3F5]">Confirm Password</label>
       <input
         placeholder="Confirm your password"
-        className="mt-2 rounded-md ring text-white bg-transparent ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
+        className="mt-2 rounded-md placeholder:text-sm ring text-[#F5F3F5] bg-transparent ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full"
         required
         type="password"
         name="confirmPassword"
@@ -117,12 +117,12 @@ const Register = () => {
 
   <button
     type="submit"
-    className="mt-8 py-3 w-full cursor-pointer rounded-md bg-indigo-600 text-white transition hover:bg-indigo-700"
+    className="mt-8 py-3 w-full cursor-pointer rounded-md bg-indigo-600 text-[#F5F3F5] transition hover:bg-indigo-700"
   >
     Register
   </button>
 
-  <p className="text-center text-white py-8">
+  <p className="text-center text-[#F5F3F5] py-8">
     Already have an account?{" "}
     <Link to="/login" className="text-indigo-600 hover:underline">
       Login
