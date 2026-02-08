@@ -24,3 +24,4 @@ test.js
 *.njsproj
 *.sln
 *.sw?
+.env
