@@ -106,7 +106,7 @@ const Register = () => {
       {/* Transition Overlay */}
       <div
         ref={overlayRef}
-        className="fixed inset-0 z-50 bg-indigo-600 pointer-events-none"
+        className="fixed inset-0 z-50 bg-[#1b0760] pointer-events-none"
       />
 
       <div className="absolute inset-0 -z-10">

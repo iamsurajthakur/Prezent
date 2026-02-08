@@ -7,7 +7,7 @@ import { useAuthStore } from '@/States/auth.states';
 
 const App = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-
+  
   return (
     <BrowserRouter>
       <Routes>
