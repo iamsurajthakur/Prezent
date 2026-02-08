@@ -1,4 +1,4 @@
-import Silk from '@/components/Home/Silk';
+import SilkLazy from '@/components/Home/SilkLazy';
 import CardNav from '@/components/Home/CardNav';
 import logo from '@/Assets/logo.png';
 import TargetCursor from '@/components/Home/TargetCursor';
@@ -93,13 +93,7 @@ const Home = () => {
 
       {/* Background Silk - Fixed positioning */}
       <div className="fixed inset-0 w-full h-full -z-10">
-        <Silk
-          speed={5}
-          scale={1}
-          color="#5227ff"
-          noiseIntensity={1.5}
-          rotation={0}
-        />
+        <SilkLazy />
       </div>
 
       {/* Navbar */}

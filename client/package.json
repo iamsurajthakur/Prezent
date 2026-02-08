@@ -33,6 +33,7 @@
     "react-router-dom": "^7.12.0",
     "tailwind-merge": "^3.4.0",
     "three": "^0.167.1",
+    "vite-bundle-visualizer": "^1.2.1",
     "zod": "^4.3.5",
     "zustand": "^5.0.10"
   },

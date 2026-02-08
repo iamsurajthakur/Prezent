@@ -70,6 +70,7 @@ export default function CountUp({
     const str = num.toString();
     if (str.includes('.')) {
       const decimals = str.split('.')[1];
+      if (!decimals) return 0;
       if (parseInt(decimals) !== 0) {
         return decimals.length;
       }
