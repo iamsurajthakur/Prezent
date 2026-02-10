@@ -2,5 +2,6 @@
     "watch": ["src"],
     "ext": "ts,js.json",
     "ignore": ["node_modules","dist"],
-    "exec": "bun run src/index.ts"
+    "_comment": "below line usuage: Open VSCode → Run & Debug → Add a configuration → Node.js attach → port 9229.",
+    "exec": "bun --inspect run src/index.ts"
 }
