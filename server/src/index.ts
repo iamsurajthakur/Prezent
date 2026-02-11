@@ -1,7 +1,13 @@
 import app from './app'
+import connectDB from '@db/database'
+import env from '@/config/env'
 
-const PORT = 3000
-
-app.listen(PORT, () => {
-    console.log(`Server is listening at port number ${PORT}`)
-})
+connectDB()
+    .then(() => {
+        app.listen(env.PORT, () => {
+            console.log(`Server running at port ${env.PORT}`)
+        })
+    })
+    .catch((error) => {
+        console.log('MongoDB connection failed !! ',error)
+    })
