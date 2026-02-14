@@ -184,7 +184,7 @@ const Register = () => {
               className="mt-2 placeholder:text-sm rounded-md ring text-[#F5F3F5] bg-transparent ring-gray-200 focus:ring-2 focus:ring-indigo-600 outline-none px-3 py-3 w-full transition-all duration-300"
               required
               type="text"
-              name="name"
+              name="fullName"
             />
           </div>
 
