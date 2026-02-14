@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
     passwordHash: {
         type: String,
         default: null,
+        select: false,
     }
 
 }, {timestamps: true})
