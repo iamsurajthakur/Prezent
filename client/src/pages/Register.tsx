@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import Grainient from '@/components/Home/Grainient';
 import { Link, useNavigate } from 'react-router-dom';
+import { registerUser } from '@/Api/auth';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -13,6 +14,15 @@ const Register = () => {
   const buttonRef = useRef(null);
   const footerRef = useRef(null);
   const overlayRef = useRef(null);
+
+  // States for registration
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -98,6 +108,27 @@ const Register = () => {
     }, '-=0.4');
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setError(null)
+
+    if(password != confirmPassword){
+      setError('Password does not match.')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      const response = await registerUser({ fullName, email, password, confirmPassword})
+      console.log(response)
+    } catch (error: any) {
+      setError(error.response?.data?.message || "Something went wrong")
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <main
       style={{ fontFamily: 'Poppins, sans-serif' }}
@@ -139,6 +170,7 @@ const Register = () => {
       <form 
         ref={formRef}
         className="flex w-full p-5 bg-[#0d0f0e] rounded-sm flex-col max-w-120"
+        onSubmit={handleSubmit}
       >
         <a 
           ref={logoRef}
@@ -185,6 +217,8 @@ const Register = () => {
               required
               type="text"
               name="fullName"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
             />
           </div>
 
@@ -196,6 +230,8 @@ const Register = () => {
               required
               type="email"
               name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
         </div>
@@ -213,6 +249,8 @@ const Register = () => {
               required
               type="password"
               name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
@@ -226,13 +264,16 @@ const Register = () => {
               required
               type="password"
               name="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
         </div>
-
+        {error && <p className='text-red-400 mt-2'>{error}</p>}
         <button
           ref={buttonRef}
           type="submit"
+          disabled={loading}
           className="mt-8 py-3 w-full cursor-pointer rounded-md bg-indigo-600 text-[#F5F3F5] transition hover:bg-indigo-700 hover:scale-[1.02] active:scale-[0.98]"
         >
           Register
