@@ -4,6 +4,27 @@ import ApiResponse from "@/utils/apiResponse";
 import asyncHandler from "@/utils/asyncHandler";
 import bcrypt from "bcrypt"
 import {type Request, type Response } from "express";
+import jwt from 'jsonwebtoken'
+import env from "@/config/env";
+
+const generateAccessAndRefreshToken = async (userId: any): Promise<{ accessToken: string, refreshToken: string}> => {
+    try {
+        const user = await User.findById(userId)
+        if(!user){
+            throw new ApiError(400,'User not found')
+        }
+
+        const accessToken = user.generateAccessToken()
+        const refreshToken = user.generateRefreshToken()
+
+        user.refreshToken = refreshToken
+        await user?.save({ validateBeforeSave: false })
+
+        return { accessToken, refreshToken }
+    } catch (error: any) {
+        throw new ApiError(500,'Something went wrong',error)
+    }
+}
 
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
     const {fullName, email, password, confirmPassword} = req.body
@@ -40,18 +61,51 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
         throw new ApiError(400,'Failed to login due to invalid email or password')
     }
 
-    const user = await User.findOne({ email }).select("+passwordHash")
+    const user = await User.findOne({ email })
 
-    const isMatch = await bcrypt.compare(password, user?.passwordHash!)
-
-    if(!isMatch){
-        throw new ApiError(400,'Incorrect email or password')
+    if(!user){
+        throw new ApiError(404,'User not found.')
     }
 
-    const userData = await User.findById(user?._id).select("-passwordHash -__v -createdAt -updatedAt")
+    const isPasswordValid = await user.isPasswordCorrect(password)
 
-    console.log('login successfull')
-    res.status(200).json(new ApiResponse(200, userData, 'Login successfull.'))
+    if(!isPasswordValid){
+        throw new ApiError(401,'Invalid password')
+    }
+
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id)
+
+    if(!accessToken){
+        throw new ApiError(500,'Access Token generation failed')
+    }
+
+    const loggedInUser = {
+        _id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+    }
+
+    const options = {
+        httpOnly: true,
+        secure: env.NODE_ENV === 'production',
+        sameSite: (process.env.NODE_ENV === "production" ? "none" : "lax") as "none" | "lax",
+        path: '/',
+    }
+
+    return res
+        .status(200)
+        .cookie('accessToken', accessToken, options)
+        .cookie('refreshToken', refreshToken, options)
+        .json(
+            new ApiResponse(
+                200,
+                {
+                    user: loggedInUser,
+                    accessToken,
+                },
+                'User logged in successfully.'
+            )
+        )
 })
 
 export {
