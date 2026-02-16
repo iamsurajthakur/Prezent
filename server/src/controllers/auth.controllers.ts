@@ -33,6 +33,28 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
     res.status(201).json(new ApiResponse(200,createdUser, "User registered successfully."))
 })
 
+const loginUser = asyncHandler(async (req: Request, res: Response) => {
+    const {email, password} = req.body
+
+    if(!email || !password){
+        throw new ApiError(400,'Failed to login due to invalid email or password')
+    }
+
+    const user = await User.findOne({ email }).select("+passwordHash")
+
+    const isMatch = await bcrypt.compare(password, user?.passwordHash!)
+
+    if(!isMatch){
+        throw new ApiError(400,'Incorrect email or password')
+    }
+
+    const userData = await User.findById(user?._id).select("-passwordHash -__v -createdAt -updatedAt")
+
+    console.log('login successfull')
+    res.status(200).json(new ApiResponse(200, userData, 'Login successfull.'))
+})
+
 export {
     registerUser,
+    loginUser
 }
