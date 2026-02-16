@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import Grainient from '@/components/Home/Grainient';
 import { Link, useNavigate } from 'react-router-dom';
+import { loginUser } from '@/Api/auth';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,6 +14,12 @@ const Login = () => {
   const buttonRef = useRef(null);
   const footerRef = useRef(null);
   const overlayRef = useRef(null);
+
+  //state for login
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -98,6 +105,24 @@ const Login = () => {
     }, '-=0.4');
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setError(null)
+
+    setLoading(true)
+
+    try {
+      const response = await loginUser({ email, password})
+      console.log(response)
+    } catch (error: any) {
+      setError(error.response?.data?.message || 'Something went wrong')
+    } finally{
+      setLoading(false)
+    }
+
+
+  }
+
   return (
     <main
       style={{ fontFamily: 'Poppins, sans-serif' }}
@@ -139,6 +164,7 @@ const Login = () => {
       <form 
         ref={formRef}
         className="flex w-full p-5 bg-[#0d0f0e] rounded-sm flex-col max-w-100"
+        onSubmit={handleSubmit}
       >
         <a 
           ref={logoRef}
@@ -180,6 +206,8 @@ const Login = () => {
             required
             type="email"
             name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
@@ -191,12 +219,16 @@ const Login = () => {
             required
             type="password"
             name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
+        {error && <p className='text-red-400'>{error}</p>}
         <button
           ref={buttonRef}
           type="submit"
+          disabled={loading}
           className="mt-8 py-3 w-full cursor-pointer rounded-md bg-indigo-600 text-white transition hover:bg-indigo-700 hover:scale-[1.02] active:scale-[0.98]"
         >
           Login
