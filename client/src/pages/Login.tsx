@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import Grainient from '@/components/Home/Grainient';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '@/Api/auth';
+import { useAuthStore } from '@/States/auth.states';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,6 +21,9 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  //state for authentication using zustand
+  const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -112,8 +116,10 @@ const Login = () => {
     setLoading(true)
 
     try {
-      const response = await loginUser({ email, password})
-      console.log(response)
+      await loginUser({ email, password})
+      
+      setIsAuthenticated(true)
+      navigate('/dashboard')
     } catch (error: any) {
       setError(error.response?.data?.message || 'Something went wrong')
     } finally{

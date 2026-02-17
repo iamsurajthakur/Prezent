@@ -16,5 +16,7 @@ export const registerUser = async (data: registerRequest) => {
 }
 
 export const loginUser = async (data: loginRequest) => {
-    return await api.post('/api/v1/auth/login', data)
+    return await api.post('/api/v1/auth/login', data, {
+        withCredentials: true,
+    })
 }

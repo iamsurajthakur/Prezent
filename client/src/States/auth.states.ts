@@ -23,6 +23,7 @@ type AuthActions = {
   logout: () => void;
   setLoading: (value: boolean) => void;
   setError: (message: string | null) => void;
+  setIsAuthenticated: (value: boolean) => void;
 };
 
 export const useAuthStore = create<AuthState & AuthActions>()(
@@ -52,6 +53,8 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       setLoading: (value) => set({ isLoading: value }),
 
       setError: (message) => set({ error: message }),
+
+      setIsAuthenticated: (value) => set({ isAuthenticated: value}),
     }),
     {
       name: 'auth-state',
