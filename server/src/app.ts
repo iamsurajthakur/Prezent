@@ -1,6 +1,7 @@
 import express, {type Request,type Response} from 'express'
 import env from './config/env'
 import cors from 'cors'
+import cookiePaser from 'cookie-parser'
 
 
 const app = express()
@@ -24,7 +25,7 @@ app.use(
     })
 )
 
-
+app.use(cookiePaser())
 app.use(express.json({ limit: '20kb' }))
 app.use(express.urlencoded({ extended: true, limit: '16kb' }))
 

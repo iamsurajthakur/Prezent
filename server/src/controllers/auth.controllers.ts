@@ -7,6 +7,10 @@ import {type Request, type Response } from "express";
 import jwt from 'jsonwebtoken'
 import env from "@/config/env";
 
+type JWTUserPayload = {
+    _id: string,
+}
+
 const generateAccessAndRefreshToken = async (userId: any): Promise<{ accessToken: string, refreshToken: string}> => {
     try {
         const user = await User.findById(userId)
@@ -107,7 +111,18 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
         )
 })
 
+const getMe = asyncHandler(async (req: Request, res: Response) => {
+    const token = req.cookies.accessToken
+    if(!token) return res.status(401).json({message: "Not logged in"})
+
+    const decoded = jwt.verify(token, env.ACCESS_TOKEN_SECRET!) as JWTUserPayload
+    const user = await User.findById(decoded._id).select("-passwordHash")
+
+    res.json(new ApiResponse(200,user,'success'))
+})
+
 export {
     registerUser,
-    loginUser
+    loginUser,
+    getMe
 }
