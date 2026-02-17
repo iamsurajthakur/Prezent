@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import jwt, {type SignOptions } from 'jsonwebtoken'
 import env from '@/config/env'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { type IUser, type IUserMethods, type UserModel } from '@/types/userModel.types'
 import ApiError from '@/utils/apiError'
 

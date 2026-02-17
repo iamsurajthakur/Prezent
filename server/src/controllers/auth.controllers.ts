@@ -2,7 +2,7 @@ import { User } from "@/models/user.models";
 import ApiError from "@/utils/apiError";
 import ApiResponse from "@/utils/apiResponse";
 import asyncHandler from "@/utils/asyncHandler";
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 import {type Request, type Response } from "express";
 import jwt from 'jsonwebtoken'
 import env from "@/config/env";
@@ -46,7 +46,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
     const user = await User.create({
         fullName,
         email,
-        passwordHash: hashedPassword,
+        passwordHash: password,
     })
 
     const createdUser = await User.findById(user._id).select('-passwordHash -__v -createdAt -updatedAt')
@@ -61,7 +61,7 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
         throw new ApiError(400,'Failed to login due to invalid email or password')
     }
 
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ email }).select('+passwordHash')
 
     if(!user){
         throw new ApiError(404,'User not found.')
@@ -88,7 +88,7 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
     const options = {
         httpOnly: true,
         secure: env.NODE_ENV === 'production',
-        sameSite: (process.env.NODE_ENV === "production" ? "none" : "lax") as "none" | "lax",
+        sameSite: (env.NODE_ENV === "production" ? "none" : "lax") as "none" | "lax",
         path: '/',
     }
 
@@ -101,7 +101,6 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
                 200,
                 {
                     user: loggedInUser,
-                    accessToken,
                 },
                 'User logged in successfully.'
             )
