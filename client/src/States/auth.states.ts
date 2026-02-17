@@ -11,7 +11,6 @@ export type User = {
 // Define what data live in the auth store
 type AuthState = {
   user: User | null;
-  token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
@@ -19,7 +18,7 @@ type AuthState = {
 
 // Define how the state can be changed also known as actions
 type AuthActions = {
-  setAuth: (user: User, token: string) => void;
+  setAuth: (user: User) => void;
   logout: () => void;
   setLoading: (value: boolean) => void;
   setError: (message: string | null) => void;
@@ -32,22 +31,22 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       user: null,
       token: null,
       isAuthenticated: false,
-      isLoading: false,
+      isLoading: true,
       error: null,
 
-      setAuth: (user, token) =>
+      setAuth: (user) =>
         set({
           user,
-          token,
           isAuthenticated: true,
+          isLoading: false,
           error: null,
         }),
 
       logout: () =>
         set({
           user: null,
-          token: null,
           isAuthenticated: false,
+          isLoading: false,
         }),
 
       setLoading: (value) => set({ isLoading: value }),
@@ -60,8 +59,6 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       name: 'auth-state',
       partialize: (state) => ({
         user: state.user,
-        token: state.token,
-        isAuthenticated: state.isAuthenticated,
       }),
     }
   )
