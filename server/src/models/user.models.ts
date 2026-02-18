@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs'
 import { type IUser, type IUserMethods, type UserModel } from '@/types/userModel.types'
 import ApiError from '@/utils/apiError'
 
-const userSchema = new mongoose.Schema<IUser, IUserMethods, UserModel>({
+const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
     fullName: {
         type: String,
         required: true,
@@ -34,8 +34,13 @@ userSchema.pre('save', async function () {
     this.passwordHash = await bcrypt.hash(this.passwordHash, 10)
 })
 
-userSchema.methods.isPasswordCorrect = async function (password: string) {
-    return await bcrypt.compare(password, this.passwordHash)
+userSchema.methods.isPasswordCorrect = function (password: string): Promise<boolean> {
+
+    if(!this.passwordHash){
+        throw new ApiError(400,'Password hash missing')
+    }
+
+    return bcrypt.compare(password, this.passwordHash)
 }
 
 userSchema.methods.generateAccessToken = function () {
