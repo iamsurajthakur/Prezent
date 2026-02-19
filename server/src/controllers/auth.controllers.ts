@@ -3,8 +3,9 @@ import ApiError from "@/utils/apiError";
 import ApiResponse from "@/utils/apiResponse";
 import asyncHandler from "@/utils/asyncHandler";
 import bcrypt from "bcryptjs"
+import crypto from 'crypto'
 import {type Request, type Response } from "express";
-import jwt from 'jsonwebtoken'
+import jwt, { decode } from 'jsonwebtoken'
 import env from "@/config/env";
 
 type JWTUserPayload = {
@@ -121,8 +122,51 @@ const getMe = asyncHandler(async (req: Request, res: Response) => {
     res.json(new ApiResponse(200,user,'success'))
 })
 
+const refreshAccessToken = asyncHandler(async (req: Request, res: Response) => {
+    const userRefreshToken = req.cookies.refreshToken
+    if(!userRefreshToken){
+        throw new ApiError(400,'Unauthorized request')
+    }
+
+    let decoded: any
+    try {
+        decoded = jwt.verify(userRefreshToken, env.REFRESH_TOKEN_SECRET)
+    } catch (error: any) {
+        throw new ApiError(401,'Invalid or expired refresh token')
+    }
+
+    const user = await User.findById(decoded._id).select('-passwordHash')
+    if(!user){
+        throw new ApiError(400,'User not found')
+    }
+
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user?._id)
+
+    user.refreshToken = refreshToken
+    await user.save()
+
+    const options = {
+        httpOnly: true,
+        secure: env.NODE_ENV === 'production',
+        sameSite: (env.NODE_ENV === "production" ? "none" : "lax") as "none" | "lax",
+        path: '/',
+    }
+
+    res
+        .cookie('accessToken', accessToken, options)
+        .cookie('refreshToken', refreshToken, options)
+        .status(200)
+        .json(new ApiResponse(
+            200,
+            null,
+            'Token refreshed'
+        ))
+
+})
+
 export {
     registerUser,
     loginUser,
-    getMe
+    getMe,
+    refreshAccessToken
 }
