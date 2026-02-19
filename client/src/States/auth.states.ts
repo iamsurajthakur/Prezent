@@ -29,7 +29,6 @@ export const useAuthStore = create<AuthState & AuthActions>()(
   persist(
     (set) => ({
       user: null,
-      token: null,
       isAuthenticated: false,
       isLoading: true,
       error: null,
