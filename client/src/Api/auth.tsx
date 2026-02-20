@@ -22,3 +22,29 @@ export const loginUser = async (data: loginRequest) => {
 export const getMe = async () => {
     return await api.get('/api/v1/auth/getMe')
 }
+
+// To refresh the Access Token after expiry
+api.interceptors.response.use(
+  response => response,
+  async error => {
+    const originalRequest = error.config
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes('/refreshToken')
+    ) {
+      originalRequest._retry = true
+
+      try {
+        // ✅ withCredentials ensures the refreshToken cookie is sent
+        await api.post('/api/v1/auth/refreshToken', {}, { withCredentials: true })
+        return api(originalRequest)
+      } catch (refreshError) {
+        return Promise.reject(refreshError)
+      }
+    }
+
+    return Promise.reject(error)
+  }
+)

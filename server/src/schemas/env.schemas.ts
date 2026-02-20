@@ -1,7 +1,7 @@
 import z from "zod";
 
-const JWTAccessExpiry = z.enum(["15m", "30m", "1h", "1d"])
-const JWTRefreshExpiry = z.enum(["3d", "7d", "10d"])
+const JWTAccessExpiry = z.enum(["10s","15m", "30m", "1h", "1d"])
+const JWTRefreshExpiry = z.enum(["60s","15m","3d", "7d", "10d"])
 
 export const envSchema = z.object({
     MONGODB_URI: z.url(),

@@ -7,28 +7,26 @@ import crypto from 'crypto'
 import {type Request, type Response } from "express";
 import jwt, { decode } from 'jsonwebtoken'
 import env from "@/config/env";
+import { rmSync } from "fs";
 
 type JWTUserPayload = {
     _id: string,
 }
 
-const generateAccessAndRefreshToken = async (userId: any): Promise<{ accessToken: string, refreshToken: string}> => {
-    try {
-        const user = await User.findById(userId)
-        if(!user){
-            throw new ApiError(400,'User not found')
-        }
+const generateAccessAndRefreshToken = async (userId: any) => {
+    const user = await User.findById(userId).select('+refreshToken')
+    if (!user) throw new ApiError(400, 'User not found')
 
-        const accessToken = user.generateAccessToken()
-        const refreshToken = user.generateRefreshToken()
+    const accessToken = user.generateAccessToken()
 
+    let refreshToken = user.refreshToken
+    if (!refreshToken) {
+        refreshToken = user.generateRefreshToken()
         user.refreshToken = refreshToken
-        await user?.save({ validateBeforeSave: false })
-
-        return { accessToken, refreshToken }
-    } catch (error: any) {
-        throw new ApiError(500,'Something went wrong',error)
+        await user.save({ validateBeforeSave: false })
     }
+
+    return { accessToken, refreshToken }
 }
 
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
@@ -45,8 +43,6 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
     if(existingUser){
         throw new ApiError(409,"User already exists.")
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10)
 
     const user = await User.create({
         fullName,
@@ -113,13 +109,25 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
 })
 
 const getMe = asyncHandler(async (req: Request, res: Response) => {
-    const token = req.cookies.accessToken
-    if(!token) return res.status(401).json({message: "Not logged in"})
-
-    const decoded = jwt.verify(token, env.ACCESS_TOKEN_SECRET!) as JWTUserPayload
-    const user = await User.findById(decoded._id).select("-passwordHash")
-
-    res.json(new ApiResponse(200,user,'success'))
+    try {
+        const token = req.cookies.accessToken
+        if(!token) return res.status(401).json({message: "Not logged in"})
+    
+        const decoded = jwt.verify(token, env.ACCESS_TOKEN_SECRET!) as JWTUserPayload
+    
+        const user = await User.findById(decoded._id).select("-passwordHash")
+    
+        if(!user){
+            throw new ApiError(404,'User not found')
+        }
+    
+        res.json(new ApiResponse(200,user,'success'))
+    } catch (err: any) {
+        if(err.name == "TokenExpiredError"){
+            return res.status(401).json({ message: 'Access token expired'})
+        }
+        return res.status(401).json({ message: 'Invalid token'})
+    }
 })
 
 const refreshAccessToken = asyncHandler(async (req: Request, res: Response) => {
@@ -130,20 +138,25 @@ const refreshAccessToken = asyncHandler(async (req: Request, res: Response) => {
 
     let decoded: any
     try {
+        console.log('Secret: ', env.REFRESH_TOKEN_SECRET)
+        console.log('Token received: ', userRefreshToken)
         decoded = jwt.verify(userRefreshToken, env.REFRESH_TOKEN_SECRET)
     } catch (error: any) {
         throw new ApiError(401,'Invalid or expired refresh token')
     }
 
-    const user = await User.findById(decoded._id).select('-passwordHash')
+    const user = await User.findById(decoded._id).select('-passwordHash +refreshToken')
     if(!user){
         throw new ApiError(400,'User not found')
     }
 
-    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user?._id)
+    console.log('User refresh token: ',user.refreshToken)
+    console.log('Incoming refresh token: ', userRefreshToken)
+    if(user.refreshToken !== userRefreshToken){
+        throw new ApiError(401,'Refresh token mismatch or expired')
+    }
 
-    user.refreshToken = refreshToken
-    await user.save()
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user?._id)
 
     const options = {
         httpOnly: true,

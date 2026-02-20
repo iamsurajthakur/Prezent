@@ -6,23 +6,3 @@ export const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });
-
-// To refresh the Access Token after expiry
-api.interceptors.response.use(
-  response => response,
-  async error => {
-    const originalRequest = error.config;
-
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      // Call refresh token endpoint
-      await api.get('/auth/refreshToken');
-
-      // Retry original request
-      return api(originalRequest);
-    }
-
-    return Promise.reject(error);
-  }
-);
