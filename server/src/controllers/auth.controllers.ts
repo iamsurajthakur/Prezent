@@ -177,9 +177,29 @@ const refreshAccessToken = asyncHandler(async (req: Request, res: Response) => {
 
 })
 
+const logout = asyncHandler(async (req: Request, res: Response) => {
+    await User.findByIdAndUpdate(req.user?._id, {
+        $unset: { refreshToken: 1 }
+    })
+
+    const options = {
+        httpOnly: true,
+        secure: env.NODE_ENV === 'production',
+        sameSite: (env.NODE_ENV === "production" ? "none" : "lax") as "none" | "lax",
+        path: '/',
+    }
+
+    res
+        .clearCookie('accessToken', options)
+        .clearCookie('refreshToken', options)
+        .status(200)
+        .json(new ApiResponse(200, null, 'Logged out successfylly'))
+})
+
 export {
     registerUser,
     loginUser,
     getMe,
-    refreshAccessToken
+    refreshAccessToken,
+    logout,
 }

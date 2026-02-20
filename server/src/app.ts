@@ -2,6 +2,7 @@ import express, {type Request,type Response} from 'express'
 import env from './config/env'
 import cors from 'cors'
 import cookiePaser from 'cookie-parser'
+import errorHandler from '@middlewares/globalErrorHandler.middlewares'
 
 
 const app = express()
@@ -38,5 +39,7 @@ import userRouter from '@routes/auth.routes'
 
 // Routes defination
 app.use('/api/v1/auth', userRouter)
+
+app.use(errorHandler)
 
 export default app
