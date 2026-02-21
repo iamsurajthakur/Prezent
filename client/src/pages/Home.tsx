@@ -9,6 +9,7 @@ import CurvedLoop from '@/components/Home/CurvedLoop';
 import StarBorder from '@/components/Home/StarBorder';
 import CountUp from '@/components/Home/CountUp';
 import { Link } from 'react-router-dom';
+import { useAuthStore } from '@/States/auth.states';
 
 const Home = () => {
   const items = [
@@ -80,6 +81,7 @@ const Home = () => {
     },
   ];
   const github = 'https://github.com/iamsurajthakur';
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
 
   return (
     <>
@@ -148,7 +150,7 @@ const Home = () => {
                   color="magenta"
                   speed="5s"
                 >
-                  Get Started
+                  {isAuthenticated ? "Dashboard" : "Get Started"}
                 </StarBorder>
                 <button className="bg-[#e6e6e6] items-center cursor-target text-black hover:bg-amber-50 px-6 rounded-lg transition cursor-pointer">
                   <Link to={github}>About Me</Link>

@@ -37,7 +37,6 @@ api.interceptors.response.use(
       originalRequest._retry = true
 
       try {
-        // ✅ withCredentials ensures the refreshToken cookie is sent
         await api.post('/api/v1/auth/refreshToken', {}, { withCredentials: true })
         return api(originalRequest)
       } catch (refreshError) {
