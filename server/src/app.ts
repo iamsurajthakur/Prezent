@@ -9,11 +9,12 @@ const app = express()
 
 const allowedOrigins = [
     env.CORS_ORIGIN_DEV,
+    env.CORS_ORIGIN_PROD
 ]
 
 app.use(
     cors({
-        origin: (origin, cb) => {
+        origin: (origin: string | undefined, cb: (err: Error | null, allow?: boolean) => void) => {
             if (!origin) return cb(null, true)
 
             if (allowedOrigins.includes(origin)){

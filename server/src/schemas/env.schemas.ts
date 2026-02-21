@@ -11,5 +11,7 @@ export const envSchema = z.object({
     ACCESS_TOKEN_EXPIRY: JWTAccessExpiry,
     REFRESH_TOKEN_SECRET: z.string().min(32),
     REFRESH_TOKEN_EXPIRY: JWTRefreshExpiry,
-    NODE_ENV: z.string()
+    NODE_ENV: z.string(),
+    CORS_ORIGIN_PROD: z.string(),
+
 })
