@@ -2,12 +2,9 @@ import { User } from "@/models/user.models";
 import ApiError from "@/utils/apiError";
 import ApiResponse from "@/utils/apiResponse";
 import asyncHandler from "@/utils/asyncHandler";
-import bcrypt from "bcryptjs"
-import crypto from 'crypto'
 import {type Request, type Response } from "express";
-import jwt, { decode } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import env from "@/config/env";
-import { rmSync } from "fs";
 
 type JWTUserPayload = {
     _id: string,
@@ -138,8 +135,6 @@ const refreshAccessToken = asyncHandler(async (req: Request, res: Response) => {
 
     let decoded: any
     try {
-        console.log('Secret: ', env.REFRESH_TOKEN_SECRET)
-        console.log('Token received: ', userRefreshToken)
         decoded = jwt.verify(userRefreshToken, env.REFRESH_TOKEN_SECRET)
     } catch (error: any) {
         throw new ApiError(401,'Invalid or expired refresh token')
@@ -150,8 +145,6 @@ const refreshAccessToken = asyncHandler(async (req: Request, res: Response) => {
         throw new ApiError(400,'User not found')
     }
 
-    console.log('User refresh token: ',user.refreshToken)
-    console.log('Incoming refresh token: ', userRefreshToken)
     if(user.refreshToken !== userRefreshToken){
         throw new ApiError(401,'Refresh token mismatch or expired')
     }
