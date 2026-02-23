@@ -5,9 +5,9 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
     return (
         <SidebarProvider>
             <AppSidebar />
-            <main>
+            <main className="min-h-screen w-full text-white p-6 bg-[#001A2C]">
                 <SidebarTrigger />
-                {children}
+                    {children}
             </main>
         </SidebarProvider>
     )
