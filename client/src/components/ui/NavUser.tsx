@@ -42,7 +42,7 @@ export function NavUser({
 
   return (
     <SidebarFooter>
-      <SidebarMenu className="p-1 rounded-md">
+      <SidebarMenu className="rounded-md">
         <SidebarMenuItem>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
