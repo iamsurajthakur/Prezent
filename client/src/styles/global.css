@@ -75,8 +75,8 @@
   --sidebar-foreground: #fff;
   --sidebar-primary: rgb(23, 23, 23);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-accent: #001A2C;
+  --sidebar-accent-foreground: #fff;
   --sidebar-border: #00111C;
   --sidebar-ring: oklch(0.708 0 0);
 }

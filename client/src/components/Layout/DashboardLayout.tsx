@@ -6,7 +6,7 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
         <SidebarProvider>
             <AppSidebar />
             <main className="min-h-screen w-full text-white p-6 bg-[#001A2C]">
-                <SidebarTrigger />
+                <SidebarTrigger className="hover:bg-[#002945] hover:text-white" />
                     {children}
             </main>
         </SidebarProvider>

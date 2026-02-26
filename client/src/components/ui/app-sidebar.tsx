@@ -10,8 +10,27 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { LayoutDashboard, Presentation, Folder, Monitor   } from "lucide-react"; // example icons
+import { LayoutDashboard, Presentation, Folder, Monitor } from "lucide-react";
 import { NavUser } from "./NavUser";
+import { NavLink } from "react-router-dom";
+
+const navItems = [
+  {
+    title: "Dashboard",
+    path: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Smart Slide",
+    path: "/dashboard/slide",
+    icon: Presentation,
+  },
+  {
+    title: "Library",
+    path: "/dashboard/library",
+    icon: Folder,
+  }
+]
 
 export function AppSidebar() {
 
@@ -19,14 +38,13 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon">
-     <SidebarHeader className={`transition-all ${
-    state === "collapsed"
-      ? "p-0 m-0 flex items-center justify-center mt-2"
-      : "p-2 m-2 bg-[#001A2C] rounded-md"
-  }`}>
+      <SidebarHeader className={`transition-all ${state === "collapsed"
+          ? "p-0 m-0 flex items-center justify-center mt-2"
+          : "p-2 m-2 bg-[#001A2C] rounded-md"
+        }`}>
         <div className="flex items-center gap-2">
           <div className="size-8 shrink-0 rounded-lg bg-[#00406C] flex items-center justify-center text-white font-medium">
-            <Monitor  className="w-4 h-4" />
+            <Monitor className="w-4 h-4" />
           </div>
           {state === "expanded" && (
             <div className="flex flex-col overflow-hidden">
@@ -36,49 +54,42 @@ export function AppSidebar() {
               <span className="text-xs font-semibold truncate">Enterprise</span>
             </div>
           )}
-          </div>
+        </div>
       </SidebarHeader>
 
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Platform</SidebarGroupLabel>
           <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton className="flex hover:text-white items-center text-sm font-semibold gap-2 p-1.5 rounded-md hover:bg-[#001A2C]" asChild tooltip="Dashboard">
-                <a href="/dashboard">
-                  <LayoutDashboard className="w-4 h-4" />
-                  <span>Dashboard</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton className="flex hover:text-white items-center text-sm font-semibold gap-2 p-1.5 rounded-md hover:bg-[#001A2C]" asChild tooltip="Smart Slide">
-                <a href="/new-presentation">
-                  <Presentation className="w-4 h-4" />
-                  <span>Smart Slide</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton className="flex hover:text-white items-center text-sm font-semibold gap-2 p-1.5 rounded-md hover:bg-[#001A2C]" asChild tooltip="Library">
-                <a href="/library">
-                  <Folder className="w-4 h-4" />
-                  <span>Library</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            {navItems.map((item) => (
+              <SidebarMenuItem key={item.path}>
+                <SidebarMenuButton
+                  asChild
+                  tooltip={item.title}
+                  isActive={location.pathname === item.path}
+                >
+                  <NavLink
+                    to={item.path}
+                    className="flex items-center gap-2 p-1.5 rounded-md text-sm font-semibold transition"
+                  >
+                    <item.icon className="w-4 h-4" />
+                    <span>{item.title}</span>
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
 
       {/* Footer of sidebar */}
-              <NavUser
-                user={{
-                  name: "Suraj Thakur",
-                  email: "suraj@gmail.com",
-                  avatar: "https://github.com/maxleiter.png",
-                }}
-              />
+      <NavUser
+        user={{
+          name: "Suraj Thakur",
+          email: "suraj@gmail.com",
+          avatar: "https://github.com/maxleiter.png",
+        }}
+      />
     </Sidebar>
   );
 }
