@@ -8,7 +8,7 @@ export const DashboardLayout = () => {
       <div className="flex w-full min-h-screen">
         <AppSidebar />
 
-        <main className="flex-1 text-white p-6 bg-[#001A2C]">
+        <main className="flex-1 text-white p-4 bg-[#001A2C]">
           <SidebarTrigger className="hover:bg-[#002945] hover:text-white mb-4" />
           <Outlet />
         </main>
