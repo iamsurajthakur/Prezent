@@ -1,14 +1,18 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Outlet } from "react-router-dom"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/ui/app-sidebar"
 
-export const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <SidebarProvider>
-            <AppSidebar />
-            <main className="min-h-screen w-full text-white p-6 bg-[#001A2C]">
-                <SidebarTrigger className="hover:bg-[#002945] hover:text-white" />
-                    {children}
-            </main>
-        </SidebarProvider>
-    )
+export const DashboardLayout = () => {
+  return (
+    <SidebarProvider>
+      <div className="flex w-full min-h-screen">
+        <AppSidebar />
+
+        <main className="flex-1 text-white p-6 bg-[#001A2C]">
+          <SidebarTrigger className="hover:bg-[#002945] hover:text-white mb-4" />
+          <Outlet />
+        </main>
+      </div>
+    </SidebarProvider>
+  )
 }

@@ -1,11 +1,14 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Register from '@/pages/Register';
-import Dashboard from '@/pages/Dashboard';
+import { DashboardLayout } from '@/components/Layout/DashboardLayout';
 import Home from '@/pages/Home';
 import Login from '@/pages/Login';
 import { useAuthStore } from '@/States/auth.states';
 import { useEffect } from 'react';
 import { getMe } from '@/Api/auth';
+import SmartSlide from '@/pages/SmartSlide';
+import Library from '@/pages/Library';
+import Dashboard from '@/pages/Dashboard';
 
 const App = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -34,8 +37,12 @@ const App = () => {
         {/* Protected Route */}
         <Route
           path="/dashboard"
-          element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
-        />
+          element={isAuthenticated ? <DashboardLayout /> : <Navigate to="/login" />}
+        >
+          <Route index element={<Dashboard />} />
+          <Route path='slide' element={<SmartSlide />} />
+          <Route path='library' element={<Library />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

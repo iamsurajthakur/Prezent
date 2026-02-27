@@ -60,25 +60,29 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Platform</SidebarGroupLabel>
-          <SidebarMenu>
-            {navItems.map((item) => (
-              <SidebarMenuItem key={item.path}>
-                <SidebarMenuButton
-                  asChild
-                  tooltip={item.title}
-                  isActive={location.pathname === item.path}
-                >
+            <SidebarMenu>
+              {navItems.map((item) => (
+                <SidebarMenuItem key={item.path}>
                   <NavLink
                     to={item.path}
-                    className="flex items-center gap-2 p-1.5 rounded-md text-sm font-semibold transition"
+                    end={item.path === "/dashboard"}
                   >
-                    <item.icon className="w-4 h-4" />
-                    <span>{item.title}</span>
+                      {({ isActive }) => (
+                        <SidebarMenuButton
+                          asChild
+                          tooltip={item.title}
+                          isActive={isActive}
+                        >
+                          <span className="flex items-center gap-2 p-1.5 rounded-md text-sm font-semibold transition">
+                            <item.icon className="w-4 h-4" />
+                            <span>{item.title}</span>
+                          </span>
+                        </SidebarMenuButton>
+                      )}
                   </NavLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
 
