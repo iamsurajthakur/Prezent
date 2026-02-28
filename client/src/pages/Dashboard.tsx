@@ -24,7 +24,7 @@ const chartData = [
   { day: "Sun", count: 6 },
 ];
 
-// ── Activity data — replace with API later ───────────────────────────────────
+// Activity data
 const activities = [
   {
     id: 1,
@@ -239,11 +239,11 @@ const PresentationIcon = () => (
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  return (
+  return <>
     <div className="p-4 sm:p-6 lg:p-8 w-full max-w-7xl mx-auto">
 
       {/* ── Header ── */}
-      <div className="relative mb-6 sm:mb-8">
+      <div className="relative mb-6 sm:mb-6">
 
         {/* Subtle top accent line */}
         <div className="absolute -top-4 left-0 right-0 h-px bg-linear-to-r from-transparent via-blue-500/30 to-transparent" />
@@ -478,7 +478,6 @@ const Dashboard = () => {
         </div>
 
         {/* Getting Started Checklist — 1/3 on large, full on small */}
-
         <div className="bg-[#002137] border border-white/8 rounded-2xl overflow-hidden flex flex-col">
 
           {/* ── Header ── */}
@@ -570,7 +569,7 @@ const Dashboard = () => {
 
       </div>
     </div>
-  );
+  </>
 };
 
 export default Dashboard;

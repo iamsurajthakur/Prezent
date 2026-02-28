@@ -34,7 +34,7 @@ const navItems = [
 
 export function AppSidebar() {
 
-  const { state } = useSidebar()
+  const { state, setOpenMobile } = useSidebar()
 
   return (
     <Sidebar collapsible="icon">
@@ -66,6 +66,7 @@ export function AppSidebar() {
                   <NavLink
                     to={item.path}
                     end={item.path === "/dashboard"}
+                    onClick={() => setOpenMobile(false)}
                   >
                       {({ isActive }) => (
                         <SidebarMenuButton
