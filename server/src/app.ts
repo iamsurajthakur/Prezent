@@ -31,14 +31,22 @@ app.use(cookiePaser())
 app.use(express.json({ limit: '20kb' }))
 app.use(express.urlencoded({ extended: true, limit: '16kb' }))
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_: Request, res: Response) => {
     res.send('API is running...')
+})
+
+app.get('/ping', (_: Request, res: Response) => {
+    res.status(200).json({
+        status: "OK",
+        uptime: process.uptime(),
+        timestamp: Date.now()
+    })
 })
 
 // Import routes
 import userRouter from '@routes/auth.routes'
 
-// Routes defination
+// Routes definition
 app.use('/api/v1/auth', userRouter)
 
 app.use(errorHandler)
