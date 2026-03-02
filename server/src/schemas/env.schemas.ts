@@ -13,5 +13,7 @@ export const envSchema = z.object({
     REFRESH_TOKEN_EXPIRY: JWTRefreshExpiry,
     NODE_ENV: z.string(),
     CORS_ORIGIN_PROD: z.string(),
+    SUPABASE_URI: z.string(),
+    SUPABASE_SERVICE_KEY: z.string(),
 
 })
