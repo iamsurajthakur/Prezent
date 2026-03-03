@@ -3,15 +3,10 @@ import {type Request, type Response } from "express";
 import { supabase } from "@/utils/supabase";
 import ApiError from "@/utils/apiError";
 import ApiResponse from "@/utils/apiResponse";
-import { randomUUID } from 'crypto'
+import { ALLOWED_TYPES } from "@/constant";
 
 const BUCKET_NAME = 'uploads'
 const SIGNED_URL_TTL = 10 * 60
-
-const ALLOWED_MIME_TYPES: Record<string, string> = {
-    'application/pdf': '.pdf',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx'
-}
 
 const uploadFile = asyncHandler(async (req: Request, res: Response) => {
     if(!req.file){
@@ -19,8 +14,18 @@ const uploadFile = asyncHandler(async (req: Request, res: Response) => {
     }
 
     const { buffer, mimetype, originalname, size } = req.file
-    const userId = req.user?._id ?? 'anonymous'
-    const extenstion = ALLOWED_MIME_TYPES[mimetype]
+    const userId = req.user?._id
+
+    if(!userId){
+        throw new ApiError(404,'User not found.')
+    }
+
+    const extenstion = ALLOWED_TYPES[mimetype]
+
+    if(!extenstion){
+        throw new ApiError(400,'Unsupported file type')
+    }
+    
     const originalNameWithoutExt = originalname.replace(/\.[^/.]+$/, "")
 
     const storagePath = `${userId}/${originalNameWithoutExt}-${Date.now()}${extenstion}`
