@@ -1,3 +1,4 @@
+import { uploadFile } from "@/Api/upload";
 import ResultCard from "@/components/Smart_Slide/ResultCard";
 import UploadCard from "@/components/Smart_Slide/UploadCard";
 import { useState, useRef, useEffect } from "react";
@@ -73,31 +74,57 @@ const SmartSlide = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isGenerating = state === "UPLOADING" || state === "PROCESSING";
 
-  const handleGenerate = () => {
+  const handleGenerate = async (file: File) => {
     setState("UPLOADING");
     setProgress(0);
     setCurrentStep(0);
 
-    let step = 0;
-    let prog = 0;
+    try {
+      const formData = new FormData()
+      formData.append("userDocs", file)
 
-    progressRef.current = setInterval(() => {
-      prog += Math.random() * 4 + 1;
-      if (prog >= 100) {
-        prog = 100;
-        clearInterval(progressRef.current!);
-        setTimeout(() => setState("READY"), 400);
-      }
-      setProgress(Math.min(prog, 100));
+      const response = await uploadFile(formData)
 
-      const newStep = Math.floor((prog / 100) * STEPS.length);
-      if (newStep !== step && newStep < STEPS.length) {
-        step = newStep;
-        setCurrentStep(step);
+      if (response.data.statusCode !== 200) {
+        throw new Error(response.data.message || "Upload failed")
       }
-      if (step === 0 && prog > 5) setState("PROCESSING");
-    }, 80);
+
+      const signedUrl = response.data.data.signedUrl
+      console.log(signedUrl)
+
+      // Fake processing
+      setState("PROCESSING");
+      setCurrentStep(1);
+      let prog = 20;
+      setProgress(prog);
+
+      let step = 1;
+      progressRef.current = setInterval(() => {
+        prog += Math.random() * 4 + 1;
+
+        if (prog >= 100) {
+          prog = 100;
+          clearInterval(progressRef.current!);
+          setTimeout(() => setState("READY"), 400);
+        }
+
+        setProgress(Math.min(prog, 100));
+
+        const newStep = Math.floor((prog / 100) * STEPS.length);
+        if (newStep !== step && newStep < STEPS.length) {
+          step = newStep;
+          setCurrentStep(step);
+        }
+      }, 80);
+
+
+    } catch (err: any) {
+      console.error(err)
+      setState("ERROR")
+    }
+
   };
 
   useEffect(
@@ -107,7 +134,6 @@ const SmartSlide = () => {
     []
   );
 
-  const isGenerating = state === "UPLOADING" || state === "PROCESSING";
 
   return (
     <div className="p-8 max-w-4xl mx-auto text-slate-100">
