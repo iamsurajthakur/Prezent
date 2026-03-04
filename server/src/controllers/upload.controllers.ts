@@ -4,6 +4,7 @@ import { supabase } from "@/utils/supabase";
 import ApiError from "@/utils/apiError";
 import ApiResponse from "@/utils/apiResponse";
 import { ALLOWED_TYPES } from "@/constant";
+import { Job } from "@/models/job.models";
 
 const BUCKET_NAME = 'uploads'
 const SIGNED_URL_TTL = 10 * 60
@@ -45,8 +46,14 @@ const uploadFile = asyncHandler(async (req: Request, res: Response) => {
     .from(BUCKET_NAME)
     .createSignedUrl(storagePath, SIGNED_URL_TTL)
 
+    const job = await Job.create({ status: 'pending' })
+
     if(signedUrlError || !signedUrlData?.signedUrl){
         throw new ApiError(502, 'File stored but failed to generate access URL.')
+    }
+
+    if(!job){
+        throw new ApiError(404,'job not found')
     }
 
     return res.status(200).json(
@@ -54,6 +61,7 @@ const uploadFile = asyncHandler(async (req: Request, res: Response) => {
             200,
             {
                 signedUrl: signedUrlData.signedUrl,
+                jobId: job._id,
                 expiresInSeconds: SIGNED_URL_TTL,
                 file: {
                 originalName: originalname,
