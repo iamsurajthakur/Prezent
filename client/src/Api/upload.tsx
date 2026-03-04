@@ -5,6 +5,7 @@ interface uploadResponse {
         statusCode: number
         data: {
             signedUrl: string
+            jobId: string
             expiresInSeconds: number
             file: {
                 originalName: string

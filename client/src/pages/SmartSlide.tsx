@@ -94,6 +94,9 @@ const SmartSlide = () => {
       const signedUrl = response.data.data.signedUrl
       console.log(signedUrl)
 
+      const jobId = response.data.data.jobId
+      console.log(jobId)
+
       // Fake processing
       setState("PROCESSING");
       setCurrentStep(1);
