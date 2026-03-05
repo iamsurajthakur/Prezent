@@ -5,6 +5,36 @@ import { type Request, type Response } from "express";
 import { Job } from "@/models/job.models";
 import { PDFParse } from "pdf-parse";
 import mammoth from "mammoth";
+import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs"
+
+function cleanText(text: string): string {
+    return text
+        .replace(/\n+/g, "\n")
+        .replace(/\s+/g, " ")
+        .replace(/--\s*\d+\s*of\s*\d+\s*--/g, "")
+        .trim()
+}
+
+async function extractWithPdfJs(buffer: Buffer): Promise<string>{
+    const data = new Uint8Array(buffer)
+
+    const pdf = await pdfjsLib.getDocument({ data }).promise
+    let text = ''
+
+    for(let i = 1; i<= pdf.numPages; i++){
+        const page = await pdf.getPage(i)
+        const content = await page.getTextContent()
+
+        const pageText = content.items
+            .map((item: any) => item.str)
+            .join(' ')
+
+        text += pageText + '\n'
+    }
+
+    return text
+
+}
 
 async function fetchFileBuffer(signedUrl: string): Promise<Buffer> {
     const res = await fetch(signedUrl)
@@ -19,15 +49,22 @@ async function fetchFileBuffer(signedUrl: string): Promise<Buffer> {
 
 async function extractText(buffer: Buffer, mimeType: string): Promise<string> {
     if(mimeType === 'application/pdf'){
+
+        try {
+            const text = await extractWithPdfJs(buffer)
+
+            if(text && text.trim().length > 50){
+                return cleanText(text)
+            }
+        } catch (err: any) {
+            console.warn('pdfjs extraction failed, falling back', err)
+        }
+
         const uint8Array = new Uint8Array(buffer)
         const parser = new PDFParse(uint8Array)
         const parsed = await parser.getText()
 
-        return parsed.text
-            .replace(/\n+/g, "\n")
-            .replace(/\s+/g, " ")
-            .replace(/--\s*\d+\s*of\s*\d+\s*--/g, "")
-            .trim()
+        return cleanText(parsed.text)
     }
 
     if(mimeType == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
