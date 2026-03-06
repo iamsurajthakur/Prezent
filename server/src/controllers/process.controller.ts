@@ -6,6 +6,7 @@ import { Job } from "@/models/job.models";
 import { PDFParse } from "pdf-parse";
 import mammoth from "mammoth";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs"
+import { chunkText } from "@/utils/chunker";
 
 function cleanText(text: string): string {
     return text
@@ -13,6 +14,26 @@ function cleanText(text: string): string {
         .replace(/\s+/g, " ")
         .replace(/--\s*\d+\s*of\s*\d+\s*--/g, "")
         .trim()
+}
+
+function cleanAcademicNoise(text: string): string {
+  return text
+    // remove emails
+    .replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g, "")
+
+    // remove academic symbols (* † ‡ etc)
+    .replace(/[†‡∗*]/g, "")
+
+    // remove affiliations (very common in papers)
+    .replace(/Department of.*?\n/g, "")
+
+    // remove page numbers
+    .replace(/\n\d+\s*\n/g, "\n")
+
+    // collapse spaces
+    .replace(/\s{2,}/g, " ")
+
+    .trim();
 }
 
 async function extractWithPdfJs(buffer: Buffer): Promise<string>{
@@ -81,9 +102,14 @@ async function runPipeline(signedUrl: string, jobId: string, mimeType: string){
 
         const buffer = await fetchFileBuffer(signedUrl)
 
-        const text = await extractText(buffer, mimeType)
+        let text = await extractText(buffer, mimeType)
         console.log('Text extracted, length: ', text.length)
-        console.log('Extracted text:\n', text)
+
+        text = cleanAcademicNoise(text)
+
+        const chunks = chunkText(text, { maxWords:50, overlap: 30 })
+        console.log(`Chunks created: ${chunks.length}`)
+        console.log(chunks)
 
          // ── Chunking, HuggingFace, PPT generation go here next ──
         // For now just mark done to verify the flow works
