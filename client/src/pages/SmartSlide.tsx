@@ -1,3 +1,4 @@
+import { getJobStatus, processDocs } from "@/Api/process";
 import { uploadFile } from "@/Api/upload";
 import ResultCard from "@/components/Smart_Slide/ResultCard";
 import UploadCard from "@/components/Smart_Slide/UploadCard";
@@ -76,6 +77,34 @@ const SmartSlide = () => {
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isGenerating = state === "UPLOADING" || state === "PROCESSING";
 
+  const pollJobStatus = (jobId: string) => {
+    const interval = setInterval(async () => {
+      try {
+        const response = await getJobStatus(jobId)
+
+        const status = response.data.data.status
+        console.log('Job status:', status)
+
+        if(status === 'done'){
+          clearInterval(interval)
+
+          setProgress(100)
+          setState('READY')
+        }
+
+        if(status === 'error'){
+          clearInterval(interval)
+          setState('ERROR')
+        }
+      } catch (err: any) {
+        console.error(err)
+        clearInterval(interval)
+        setState('ERROR')
+      }
+    }, 2000)
+    progressRef.current = interval;
+  }
+
   const handleGenerate = async (file: File) => {
     setState("UPLOADING");
     setProgress(0);
@@ -93,35 +122,21 @@ const SmartSlide = () => {
 
       const signedUrl = response.data.data.signedUrl
       console.log(signedUrl)
-
       const jobId = response.data.data.jobId
       console.log(jobId)
+      const mimeType = response.data.data.file.mimeType
+      console.log(mimeType)
+
+      await processDocs({
+        signedUrl,
+        jobId,
+        mimeType
+      })
 
       // Fake processing
       setState("PROCESSING");
-      setCurrentStep(1);
-      let prog = 20;
-      setProgress(prog);
 
-      let step = 1;
-      progressRef.current = setInterval(() => {
-        prog += Math.random() * 4 + 1;
-
-        if (prog >= 100) {
-          prog = 100;
-          clearInterval(progressRef.current!);
-          setTimeout(() => setState("READY"), 400);
-        }
-
-        setProgress(Math.min(prog, 100));
-
-        const newStep = Math.floor((prog / 100) * STEPS.length);
-        if (newStep !== step && newStep < STEPS.length) {
-          step = newStep;
-          setCurrentStep(step);
-        }
-      }, 80);
-
+      pollJobStatus(jobId)
 
     } catch (err: any) {
       console.error(err)
