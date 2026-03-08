@@ -1,7 +1,7 @@
 
 type DocType = "list" | "report" | "resume" | "academic" | "general";
 
-// ── Step 1: Clean noise from any document ──
+//  Step 1: Clean noise from any document 
 function cleanText(text: string): string {
   return text
     // ── Step 1: Protect section headings FIRST before any newline collapsing ──
@@ -27,7 +27,7 @@ function cleanText(text: string): string {
     .trim();
 }
 
-// ── Step 2: Detect what kind of document this is ──
+//  Step 2: Detect what kind of document this is 
 function detectDocType(text: string): DocType {
   const lower = text.toLowerCase();
   const lines = text.split("\n").map(l => l.trim()).filter(Boolean);
@@ -83,7 +83,7 @@ function detectDocType(text: string): DocType {
   return detected;
 }
 
-// ── Step 3: Shared helpers ──
+//  Step 3: Shared helpers 
 
 // Your original recursive splitter — kept exactly as-is
 function splitRecursive(
@@ -110,7 +110,7 @@ function splitRecursive(
   return result;
 }
 
-// ── Step 4: Strategy per doc type ──
+// Step 4: Strategy per doc type 
 
 function chunkResume(text: string): string[] {
   // Each resume section = one slide, never split mid-section
