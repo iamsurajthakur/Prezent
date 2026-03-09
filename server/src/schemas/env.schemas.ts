@@ -15,5 +15,6 @@ export const envSchema = z.object({
     CORS_ORIGIN_PROD: z.string(),
     SUPABASE_URI: z.string(),
     SUPABASE_SERVICE_KEY: z.string(),
+    HF_API_TOKEN: z.string(),
 
 })
