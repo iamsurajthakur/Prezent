@@ -47,11 +47,14 @@ app.get('/ping', (_: Request, res: Response) => {
 import userRouter from '@routes/auth.routes'
 import uploadRouter from '@routes/upload.routes'
 import processRouter from '@routes/process.routes'
+import slideRouter from '@routes/slide.routes'
 
 // Routes definition
 app.use('/api/v1/auth', userRouter)
 app.use('/api/v1/upload', uploadRouter)
 app.use('/api/v1/process',processRouter)
+app.use('/api/v1/slide', slideRouter)
+
 
 app.use(errorHandler)
 
