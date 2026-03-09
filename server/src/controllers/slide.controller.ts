@@ -25,22 +25,33 @@ const getSlideJson = asyncHandler(async (req: Request, res: Response) => {
         throw new ApiError(400, 'No texts chunks provided')
     }
 
+    const CHUNKS_PER_SLIDE = 3
+    const mergedChunks: string[] = []
+    for(let i = 0; i < chunks.length; i += CHUNKS_PER_SLIDE) {
+        mergedChunks.push(chunks.slice(i, i + CHUNKS_PER_SLIDE).join(" "))
+    }
+
     const slides: Slide[] = []
 
-    for(let i = 0; i < chunks.length; i++) {
+    for(let i = 0; i < mergedChunks.length; i++) {
         const prompt = i === 0
-            ? firstChunkPrompt(chunks[i])
-            : subsequentChunkPrompt(chunks[i])
+            ? firstChunkPrompt(mergedChunks[i])
+            : subsequentChunkPrompt(mergedChunks[i])
 
         const completion = await hfClient.chat.completions.create({
-            model: "HuggingFaceH4/zephyr-7b-beta:featherless-ai",
-            messages: [{ role: "user", content: prompt }],
+            model: "meta-llama/Llama-3.1-8B-Instruct:novita",
+            messages: [
+                {
+                    role: "system",
+                    content: "You generate clean structured JSON presentation slides."
+                },
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ],
             max_tokens: 500,
-        }).catch((err: any) => {
-            console.log("HF ERROR STATUS:", err.status)
-            console.log("HF ERROR MESSAGE:", err.message)
-            console.log("HF ERROR BODY:", err.error)
-            throw err
+            temperature: 0.2
         })
 
         const rawJson = completion.choices[0].message.content
@@ -61,7 +72,7 @@ const getSlideJson = asyncHandler(async (req: Request, res: Response) => {
             // Fallback slide instead of crashing the entire job
             slides.push({
                 title: `Section ${i + 1}`,
-                bullets: [chunks[i].slice(0, 100) + "..."],
+                bullets: [mergedChunks[i].slice(0, 100) + "..."],
             })
         }
     }
@@ -69,6 +80,7 @@ const getSlideJson = asyncHandler(async (req: Request, res: Response) => {
     if(slides.length === 0) {
         throw new ApiError(502, 'Failed to generate slides from provided chunks')
     }
+
 
     return res.status(200).json(
         new ApiResponse(

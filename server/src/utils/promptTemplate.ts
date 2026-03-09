@@ -21,8 +21,10 @@ ${chunk}
 export const subsequentChunkPrompt = (chunk: string) => `
 You are a presentation slide generator.
 Return ONLY a raw JSON object. No markdown, no backticks, no explanation before or after.
+Do NOT include any prompt instructions in the output.
 
 Rules:
+- Maximum 2 slides per chunk.
 - One slide per main idea.
 - 3-6 bullets per slide, 5-10 words per bullet.
 - Focus only on key terms, facts, and numbers from the text.
