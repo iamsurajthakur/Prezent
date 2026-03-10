@@ -7,6 +7,7 @@ import { PDFParse } from "pdf-parse";
 import mammoth from "mammoth";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs"
 import { chunkText } from "@/utils/chunker";
+import { getSlideJsonInternal } from "@/services/slide.service";
 
 function cleanText(text: string): string {
     return text
@@ -109,11 +110,20 @@ async function runPipeline(signedUrl: string, jobId: string, mimeType: string){
 
         const chunks = chunkText(text, { maxWords:50, overlap: 30 })
         console.log(`Chunks created: ${chunks.length}`)
-        console.log(chunks)
 
-         // ── Chunking, HuggingFace, PPT generation go here next ──
+         // Chunking, HuggingFace, PPT generation go here next
+
+         // LLM Call
+         const slides = await getSlideJsonInternal(chunks)
+         console.log(slides)
+
+         if(!slides || slides.length === 0){
+            throw new Error("LLM failed to generate slides")
+        }
+
+
         // For now just mark done to verify the flow works
-        await Job.findByIdAndUpdate(jobId, { status: "done" });
+        await Job.findByIdAndUpdate(jobId, { status: "done", slides });
 
     } catch (err: any) {
         console.error('Pipeline error: ', err)
