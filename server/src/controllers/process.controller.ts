@@ -8,6 +8,7 @@ import mammoth from "mammoth";
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs"
 import { chunkText } from "@/utils/chunker";
 import { getSlideJsonInternal } from "@/services/slide.service";
+import { generatePPT } from "@/utils/generatePPT";
 
 function cleanText(text: string): string {
     return text
@@ -97,7 +98,7 @@ async function extractText(buffer: Buffer, mimeType: string): Promise<string> {
     throw new ApiError(400,`Unsupported file type: ${mimeType}`)
 }
 
-async function runPipeline(signedUrl: string, jobId: string, mimeType: string){
+async function runPipeline(signedUrl: string, jobId: string, mimeType: string, userId: string){
     try {
         await Job.findByIdAndUpdate(jobId,{ status: 'processing'})
 
@@ -121,9 +122,10 @@ async function runPipeline(signedUrl: string, jobId: string, mimeType: string){
             throw new Error("LLM failed to generate slides")
         }
 
+        const pptUrl = await generatePPT(slides, userId, jobId, mimeType)
 
         // For now just mark done to verify the flow works
-        await Job.findByIdAndUpdate(jobId, { status: "done", slides });
+        await Job.findByIdAndUpdate(jobId, { status: "done", outputUrl: pptUrl });
 
     } catch (err: any) {
         console.error('Pipeline error: ', err)
@@ -132,7 +134,7 @@ async function runPipeline(signedUrl: string, jobId: string, mimeType: string){
 }
 
 const processPpt = asyncHandler(async (req: Request, res: Response) => {
-  const { signedUrl, jobId, mimeType } = req.body;
+  const { signedUrl, jobId, mimeType, userId } = req.body;
 
   if (!signedUrl || !jobId || !mimeType) {
     throw new ApiError(400, "signedUrl, jobId and mimeType are required");
@@ -154,7 +156,7 @@ const processPpt = asyncHandler(async (req: Request, res: Response) => {
   );
 
   // Fire and forget — runs after response is sent
-  runPipeline(signedUrl, jobId, mimeType);
+  runPipeline(signedUrl, jobId, mimeType, userId);
 })
 
 const getJobStatus = asyncHandler(async (req: Request, res: Response) => {

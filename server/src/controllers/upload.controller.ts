@@ -62,6 +62,7 @@ const uploadFile = asyncHandler(async (req: Request, res: Response) => {
             {
                 signedUrl: signedUrlData.signedUrl,
                 jobId: job._id,
+                userId,
                 expiresInSeconds: SIGNED_URL_TTL,
                 file: {
                 originalName: originalname,
