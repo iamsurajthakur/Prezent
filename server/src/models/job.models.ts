@@ -9,6 +9,10 @@ const jobSchema = new Schema({
     outputUrl: {
         type: String,
         default: null,
+    },
+    step: {
+        type: Number,
+        default: 0,
     }
 },{timestamps: true})
 

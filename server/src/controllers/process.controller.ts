@@ -100,32 +100,31 @@ async function extractText(buffer: Buffer, mimeType: string): Promise<string> {
 
 async function runPipeline(signedUrl: string, jobId: string, mimeType: string, userId: string){
     try {
-        await Job.findByIdAndUpdate(jobId,{ status: 'processing'})
+        await Job.findByIdAndUpdate(jobId,{ status: 'processing', step: 1}) // uploading file
 
         const buffer = await fetchFileBuffer(signedUrl)
-
+        await Job.findByIdAndUpdate(jobId, {step: 2})// text extraction
         let text = await extractText(buffer, mimeType)
-        console.log('Text extracted, length: ', text.length)
 
         text = cleanAcademicNoise(text)
 
+        await Job.findByIdAndUpdate(jobId, {step: 3})
         const chunks = chunkText(text, { maxWords:50, overlap: 30 })
-        console.log(`Chunks created: ${chunks.length}`)
 
-         // Chunking, HuggingFace, PPT generation go here next
 
          // LLM Call
+         await Job.findByIdAndUpdate(jobId, {step: 4})
          const slides = await getSlideJsonInternal(chunks)
-         console.log(slides)
 
          if(!slides || slides.length === 0){
             throw new Error("LLM failed to generate slides")
         }
 
+        await Job.findByIdAndUpdate(jobId, {step: 5})
         const pptUrl = await generatePPT(slides, userId, jobId, mimeType)
 
         // For now just mark done to verify the flow works
-        await Job.findByIdAndUpdate(jobId, { status: "done", outputUrl: pptUrl });
+        await Job.findByIdAndUpdate(jobId, { status: "done", step: 6, outputUrl: pptUrl });
 
     } catch (err: any) {
         console.error('Pipeline error: ', err)
@@ -166,7 +165,7 @@ const getJobStatus = asyncHandler(async (req: Request, res: Response) => {
         throw new ApiError(400,'jobId is required')
     }
 
-    const job = await Job.findById(jobId).select('status outputUrl')
+    const job = await Job.findById(jobId).select('status outputUrl step')
 
     if(!job){
         throw new ApiError(404,'Job not found')
@@ -175,6 +174,7 @@ const getJobStatus = asyncHandler(async (req: Request, res: Response) => {
     return res.status(200).json(
         new ApiResponse(200, {
             status: job.status,
+            step: job.step ?? 0,
             outputUrl: job.outputUrl ?? null,
         }, 'Job status fetched')
     )

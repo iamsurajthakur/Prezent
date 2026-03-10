@@ -1,6 +1,5 @@
 import pptxgen from "pptxgenjs"
 import { supabase } from "./supabase"
-import { ALLOWED_TYPES } from "@/constant"
 
 // ── Theme ──
 const THEME = {
@@ -153,10 +152,10 @@ export const generatePPT = async (slides: Slide[], userId: string, jobId: string
     const buffer = await pres.write({ outputType: "nodebuffer" }) as Buffer
 
     // Upload to Supabase
-    const storagePath = `${userId}/uploads/${jobId}.pptx`
+    const storagePath = `${userId}/slides/${jobId}.pptx`
 
     const { error } = await supabase.storage
-        .from("uploads") // your bucket name
+        .from("uploads")
         .upload(storagePath, buffer, {
         contentType: mimetype,
         upsert: false,
