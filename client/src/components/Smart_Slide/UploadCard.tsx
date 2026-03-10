@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 
-type AppState = "IDLE" | "UPLOADING" | "PROCESSING" | "READY" | "ERROR";
+type AppState = "IDLE" | "UPLOADING" | "PROCESSING" | "DONE" | "ERROR";
 
 interface UploadCardProps {
   state: AppState;
@@ -115,7 +115,7 @@ export default function UploadCard({
             <button
               onClick={(e) => { e.stopPropagation(); handleRemove(); }}
               disabled={isGenerating}
-              className="bg-red-500/10 border border-red-500/20 text-red-400 text-xs px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="bg-red-500/10 border cursor-pointer border-red-500/20 text-red-400 text-xs px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               ✕ Remove
             </button>
@@ -133,7 +133,7 @@ export default function UploadCard({
             <p className="text-xs text-slate-600">or</p>
             <button
               onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
-              className="bg-blue-500/10 border border-blue-500/30 text-blue-400 text-sm font-medium px-5 py-2 rounded-lg hover:bg-blue-500/20 transition-colors"
+              className="bg-blue-500/10 border cursor-pointer border-blue-500/30 text-blue-400 text-sm font-medium px-5 py-2 rounded-lg hover:bg-blue-500/20 transition-colors"
             >
               Browse File
             </button>
@@ -184,7 +184,7 @@ export default function UploadCard({
           onClick={() => file && onGenerate(file)}
           disabled={!file || isGenerating}
           className={[
-            "self-end flex items-center gap-2 px-7 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200",
+            "self-end flex cursor-pointer items-center gap-2 px-7 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200",
             !file || isGenerating
               ? "bg-white/6 text-slate-500 cursor-not-allowed"
               : "bg-linear-to-r from-blue-500 to-indigo-500 text-white shadow-[0_4px_16px_rgba(59,130,246,0.35)] hover:shadow-[0_4px_24px_rgba(59,130,246,0.5)] hover:scale-[1.02] active:scale-[0.98]",

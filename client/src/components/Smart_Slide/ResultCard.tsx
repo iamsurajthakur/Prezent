@@ -1,6 +1,4 @@
-import { useState } from "react";
-
-type AppState = "IDLE" | "UPLOADING" | "PROCESSING" | "READY" | "ERROR";
+type AppState = "IDLE" | "UPLOADING" | "PROCESSING" | "DONE" | "ERROR";
 
 interface Slide {
   id: number;
@@ -28,10 +26,6 @@ export default function ResultCard({
   onRegenerate,
   onDownload,
 }: ResultAreaProps) {
-  // Lives here now — only this component cares about it
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const activeSlide = slides[currentSlide]
 
   return (
     <div className="bg-white/3 border border-white/[0.07] rounded-2xl min-h-72 overflow-hidden">
@@ -62,39 +56,31 @@ export default function ResultCard({
             <span className="text-sm font-medium text-slate-200">{steps[currentStep]}</span>
             <span className="text-sm font-semibold text-slate-500">{Math.round(progress)}%</span>
           </div>
-
           <div className="h-1.5 bg-white/[0.07] rounded-full overflow-hidden">
             <div
               className="h-full bg-linear-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-150"
               style={{ width: `${progress}%` }}
             />
           </div>
-
           <div className="flex flex-col gap-3 mt-2">
             {steps.map((step, i) => (
               <div key={step} className="flex items-center gap-3">
-                <div
-                  className={[
-                    "w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 transition-all duration-300",
-                    i < currentStep
-                      ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-400"
-                      : i === currentStep
-                        ? "bg-blue-500/20 border border-blue-500/50 text-blue-400"
-                        : "bg-white/4 border border-white/8 text-slate-600",
-                  ].join(" ")}
-                >
+                <div className={[
+                  "w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 transition-all duration-300",
+                  i < currentStep
+                    ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-400"
+                    : i === currentStep
+                      ? "bg-blue-500/20 border border-blue-500/50 text-blue-400"
+                      : "bg-white/4 border border-white/8 text-slate-600",
+                ].join(" ")}>
                   {i < currentStep ? "✓" : i + 1}
                 </div>
-                <span
-                  className={[
-                    "text-sm transition-colors duration-300",
-                    i === currentStep
-                      ? "text-slate-200 font-medium"
-                      : i < currentStep
-                        ? "text-slate-500"
-                        : "text-slate-600",
-                  ].join(" ")}
-                >
+                <span className={[
+                  "text-sm transition-colors duration-300",
+                  i === currentStep ? "text-slate-200 font-medium"
+                    : i < currentStep ? "text-slate-500"
+                    : "text-slate-600",
+                ].join(" ")}>
                   {step}
                 </span>
               </div>
@@ -103,78 +89,57 @@ export default function ResultCard({
         </div>
       )}
 
-      {/* ── READY ── */}
-      {state === "READY" && (
-        <div className="p-7 flex flex-col gap-6">
+      {/* ── DONE ── */}
+      {state === "DONE" && (
+        <div className="p-10 flex flex-col items-center gap-8">
 
-          {/* Preview: Slide Card + Thumbnail Strip */}
-          <div className="flex gap-5 items-start">
-            <div className="flex-1 relative bg-white/5 border border-white/10 rounded-xl p-8 overflow-hidden">
-              <div className="absolute -right-8 -bottom-8 w-40 h-40 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
-              <p className="text-[11px] font-semibold text-blue-400 tracking-widest uppercase mb-4">
-                {activeSlide?.tag}
-              </p>
-              <h2 className="text-xl font-bold text-white tracking-tight mb-5">
-                {activeSlide?.title}
-              </h2>
-              <ul className="flex flex-col gap-3">
-                {activeSlide?.bullets.map((bullet, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-slate-400 leading-relaxed">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0 mt-1.75" />
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Thumbnail Strip */}
-            <div className="flex flex-col gap-2 w-40 shrink-0">
-              {slides.map((slide, i) => (
-                <button
-                  key={slide.id}
-                  onClick={() => setCurrentSlide(i)}
-                  className={[
-                    "text-left px-3 py-2.5 rounded-lg border transition-all duration-150",
-                    i === currentSlide
-                      ? "bg-blue-500/10 border-blue-500/40"
-                      : "bg-white/3 border-white/[0.07] hover:bg-white/6 hover:border-white/20",
-                  ].join(" ")}
-                >
-                  <p className="text-[10px] font-bold text-slate-500 mb-0.5">
-                    {String(i + 1).padStart(2, "0")}
-                  </p>
-                  <p className="text-xs text-slate-400 truncate">{slide.title}</p>
-                </button>
-              ))}
+          {/* Success icon */}
+          <div className="relative flex items-center justify-center">
+            <div className="absolute w-24 h-24 rounded-full bg-emerald-500/10 blur-xl" />
+            <div className="relative w-16 h-16 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
             </div>
           </div>
 
-          {/* Navigation */}
-          <div className="flex items-center justify-center gap-5">
-            <button
-              onClick={() => setCurrentSlide((p) => Math.max(0, p - 1))}
-              disabled={currentSlide === 0}
-              className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-slate-400 hover:border-white/20 hover:text-slate-300 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              ← Previous
-            </button>
-            <span className="text-sm font-semibold text-slate-500 w-14 text-center">
-              {currentSlide + 1} / {slides.length}
-            </span>
-            <button
-              onClick={() => setCurrentSlide((p) => Math.min(slides.length - 1, p + 1))}
-              disabled={currentSlide === slides.length - 1}
-              className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-slate-400 hover:border-white/20 hover:text-slate-300 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              Next →
-            </button>
+          {/* Text */}
+          <div className="flex flex-col items-center gap-2 text-center">
+            <h3 className="text-lg font-semibold text-white tracking-tight">
+              Your presentation is ready
+            </h3>
+            <p className="text-sm text-slate-500">
+              {slides.length > 0 ? `${slides.length} slides generated` : "Slides generated"} · Ready to download
+            </p>
           </div>
 
-          {/* Actions */}
-          <div className="flex items-center justify-center gap-3 pb-1">
+          {/* Stats row */}
+          {slides.length > 0 && (
+            <div className="flex items-center gap-6 px-6 py-3 rounded-xl bg-white/4 border border-white/[0.07]">
+              <div className="flex flex-col items-center gap-0.5">
+                <span className="text-xl font-bold text-white">{slides.length}</span>
+                <span className="text-[11px] text-slate-500 uppercase tracking-wider">Slides</span>
+              </div>
+              <div className="w-px h-8 bg-white/10" />
+              <div className="flex flex-col items-center gap-0.5">
+                <span className="text-xl font-bold text-white">
+                  {slides.reduce((acc, s) => acc + s.bullets.length, 0)}
+                </span>
+                <span className="text-[11px] text-slate-500 uppercase tracking-wider">Bullets</span>
+              </div>
+              <div className="w-px h-8 bg-white/10" />
+              <div className="flex flex-col items-center gap-0.5">
+                <span className="text-xl font-bold text-emerald-400">✓</span>
+                <span className="text-[11px] text-slate-500 uppercase tracking-wider">AI Ready</span>
+              </div>
+            </div>
+          )}
+
+          {/* Buttons */}
+          <div className="flex items-center gap-3 w-full max-w-sm">
             <button
               onClick={onDownload}
-              className="flex items-center gap-2 bg-linear-to-r from-blue-500 to-indigo-500 text-white text-sm font-semibold px-8 py-3 rounded-xl shadow-[0_4px_16px_rgba(59,130,246,0.3)] hover:shadow-[0_6px_22px_rgba(59,130,246,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+              className="flex-1 flex items-center justify-center gap-2 cursor-pointer bg-linear-to-r from-blue-500 to-indigo-500 text-white text-sm font-semibold px-6 py-3 rounded-xl shadow-[0_4px_16px_rgba(59,130,246,0.3)] hover:shadow-[0_6px_22px_rgba(59,130,246,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -185,11 +150,16 @@ export default function ResultCard({
             </button>
             <button
               onClick={onRegenerate}
-              className="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-sm font-medium text-slate-400 hover:bg-white/8 hover:border-white/20 hover:text-slate-300 transition-all duration-200"
+              className="flex items-center justify-center gap-2 cursor-pointer px-5 py-3 rounded-xl bg-white/5 border border-white/10 text-sm font-medium text-slate-400 hover:bg-white/8 hover:border-white/20 hover:text-slate-300 transition-all duration-200"
             >
-              ↺ Regenerate
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+              </svg>
+              Redo
             </button>
           </div>
+
         </div>
       )}
     </div>
