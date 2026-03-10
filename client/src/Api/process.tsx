@@ -4,6 +4,7 @@ interface IProcessData {
     signedUrl: string
     jobId: string
     mimeType: string
+    userId: string
 }
 
 export const processDocs = async (data: IProcessData) => {

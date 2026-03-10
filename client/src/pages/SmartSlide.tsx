@@ -126,11 +126,13 @@ const SmartSlide = () => {
       console.log(jobId)
       const mimeType = response.data.data.file.mimeType
       console.log(mimeType)
+      const userId = response.data.data.userId
 
       await processDocs({
         signedUrl,
         jobId,
-        mimeType
+        mimeType,
+        userId
       })
 
       // Fake processing

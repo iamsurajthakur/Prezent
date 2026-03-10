@@ -6,6 +6,7 @@ interface uploadResponse {
         data: {
             signedUrl: string
             jobId: string
+            userId: string
             expiresInSeconds: number
             file: {
                 originalName: string
