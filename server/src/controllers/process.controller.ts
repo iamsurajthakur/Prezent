@@ -9,6 +9,7 @@ import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs"
 import { chunkText } from "@/utils/chunker";
 import { getSlideJsonInternal } from "@/services/slide.service";
 import { generatePPT } from "@/utils/generatePPT";
+import { updateStats } from "@/utils/updateStats";
 
 function cleanText(text: string): string {
     return text
@@ -114,7 +115,7 @@ async function runPipeline(signedUrl: string, jobId: string, mimeType: string, u
 
          // LLM Call
          await Job.findByIdAndUpdate(jobId, {step: 4})
-         const slides = await getSlideJsonInternal(chunks)
+         const slides = await getSlideJsonInternal(chunks, userId.toString())
 
          if(!slides || slides.length === 0){
             throw new Error("LLM failed to generate slides")
@@ -123,7 +124,11 @@ async function runPipeline(signedUrl: string, jobId: string, mimeType: string, u
         await Job.findByIdAndUpdate(jobId, {step: 5})
         const pptUrl = await generatePPT(slides, userId, jobId, mimeType)
 
-        // For now just mark done to verify the flow works
+        // For now just mark done to verify the flow worksF
+        await updateStats(userId, {
+            presentationGenerated: 1,
+            slidesGenerated: slides.length,
+        })
         await Job.findByIdAndUpdate(jobId, { status: "done", step: 6, outputUrl: pptUrl });
 
     } catch (err: any) {

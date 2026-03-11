@@ -1,12 +1,13 @@
 import { firstChunkPrompt, subsequentChunkPrompt } from "@/utils/promptTemplate"
 import { hfClient } from "@/utils/hfClient"
+import { updateStats } from "@/utils/updateStats"
 
 interface Slide {
     title: string
     bullets: string[]
 }
 
-export const getSlideJsonInternal = async (chunks: string[]): Promise<Slide[]> => {
+export const getSlideJsonInternal = async (chunks: string[], userId: string): Promise<Slide[]> => {
     const CHUNKS_PER_SLIDE = 3
     const mergedChunks: string[] = []
     for(let i = 0; i < chunks.length; i += CHUNKS_PER_SLIDE) {
@@ -50,6 +51,8 @@ export const getSlideJsonInternal = async (chunks: string[]): Promise<Slide[]> =
             })
         }
     }
+
+    await updateStats(userId, { aiGenerations: 1 })
 
     return slides
 }

@@ -19,7 +19,7 @@ const getSlideJson = asyncHandler(async (req: Request, res: Response) => {
         throw new ApiError(400, 'No texts chunks provided')
     }
 
-    const slides = await getSlideJsonInternal(chunks)
+    const slides = await getSlideJsonInternal(chunks, userId.toString())
 
     if(slides.length === 0) {
         throw new ApiError(502, 'Failed to generate slides from provided chunks')

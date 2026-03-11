@@ -1,4 +1,5 @@
 import { getJobStatus, processDocs } from "@/Api/process";
+import { trackExport } from "@/Api/stat";
 import { uploadFile } from "@/Api/upload";
 import ResultCard from "@/components/Smart_Slide/ResultCard";
 import UploadCard from "@/components/Smart_Slide/UploadCard";
@@ -207,6 +208,8 @@ const SmartSlide = () => {
         slides={slides}
         onDownload={async () => {
           if (downloadUrl) {
+            await trackExport()
+
             const response = await fetch(downloadUrl)
             const blob = await response.blob()
             const blobUrl = URL.createObjectURL(blob)

@@ -14,7 +14,7 @@ interface ResultAreaProps {
   steps: string[];
   slides: Slide[];
   onRegenerate: () => void;
-  onDownload: () => void;
+  onDownload: () => Promise<void> | void;
 }
 
 export default function ResultCard({
@@ -109,7 +109,7 @@ export default function ResultCard({
               Your presentation is ready
             </h3>
             <p className="text-sm text-slate-500">
-              {slides.length > 0 ? `${slides.length} slides generated` : "Slides generated"} · Ready to download
+              {slides.length > 0 ? `${slides.length} slides generated` : "Slides generated"} · Ready to export
             </p>
           </div>
 
@@ -146,7 +146,7 @@ export default function ResultCard({
                 <polyline points="7 10 12 15 17 10" />
                 <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
-              Download PPT
+              Export PPT
             </button>
             <button
               onClick={onRegenerate}

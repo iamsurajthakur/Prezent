@@ -5,6 +5,7 @@ import ApiError from "@/utils/apiError";
 import ApiResponse from "@/utils/apiResponse";
 import { ALLOWED_TYPES } from "@/constant";
 import { Job } from "@/models/job.models";
+import { updateStats } from "@/utils/updateStats";
 
 const BUCKET_NAME = 'uploads'
 const SIGNED_URL_TTL = 10 * 60
@@ -55,6 +56,8 @@ const uploadFile = asyncHandler(async (req: Request, res: Response) => {
     if(!job){
         throw new ApiError(404,'job not found')
     }
+
+    await updateStats(userId.toString(), { docsUploaded: 1})
 
     return res.status(200).json(
         new ApiResponse(
