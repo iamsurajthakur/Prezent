@@ -1,6 +1,6 @@
 import { api } from "./api";
 
-interface Response {
+interface exportApiResponse {
     data: {
         statusCode: number
         data: {}
@@ -8,6 +8,25 @@ interface Response {
     }
 }
 
-export const trackExport = async (): Promise<Response> => {
+interface statApiResponse {
+    data: {
+        statusCode: number
+        data: {
+            presentationGenerated: number
+            slidesGenerated: number
+            docsUploaded: number
+            totalExports: number
+            aiGenerations: number
+            lastActivity: string | null
+        }
+        message: string
+    }
+}
+
+export const trackExport = async (): Promise<exportApiResponse> => {
     return api.post('/api/v1/stat/export')
+}
+
+export const getStats = async (): Promise<statApiResponse> => {
+    return api.get('/api/v1/stat/getStats')
 }

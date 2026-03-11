@@ -1,4 +1,6 @@
+import { getStats } from "@/Api/stat";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const USER_NAME = "Suraj";
@@ -11,6 +13,15 @@ export interface StatItem {
   icon: React.ReactNode;
   accent: string;
   accentBg: string;
+}
+
+interface Stats {
+  presentationGenerated: number
+  slidesGenerated: number
+  docsUploaded: number
+  totalExports: number
+  aiGenerations: number
+  lastActivity: string | null
 }
 
 // Mock data for the mini chart
@@ -142,85 +153,16 @@ const MiniBarChart = ({ data }: { data: typeof chartData }) => {
   );
 };
 
-const MOCK_STATS: StatItem[] = [
-  {
-    label: "Presentations",
-    value: 3,
-    accent: "#6366f1",
-    accentBg: "rgba(99,102,241,0.15)",
-    icon: (
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="3" width="20" height="14" rx="2" />
-        <path d="M8 21h8M12 17v4" />
-      </svg>
-    ),
-  },
-  {
-    label: "Slides Generated",
-    value: 35,
-    badge: "+12%",
-    badgePositive: true,
-    accent: "#0ea5e9",
-    accentBg: "rgba(14,165,233,0.15)",
-    icon: (
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" />
-      </svg>
-    ),
-  },
-  {
-    label: "Docs Uploaded",
-    value: 5,
-    accent: "#10b981",
-    accentBg: "rgba(16,185,129,0.15)",
-    icon: (
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="12" y1="18" x2="12" y2="12" />
-        <line x1="9" y1="15" x2="15" y2="15" />
-      </svg>
-    ),
-  },
-  {
-    label: "Total Exports",
-    value: 4,
-    accent: "#f59e0b",
-    accentBg: "rgba(245,158,11,0.15)",
-    icon: (
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-        <polyline points="7 10 12 15 17 10" />
-        <line x1="12" y1="15" x2="12" y2="3" />
-      </svg>
-    ),
-  },
-  {
-    label: "Last Activity",
-    value: "2h ago",
-    accent: "#a78bfa",
-    accentBg: "rgba(167,139,250,0.15)",
-    icon: (
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" />
-        <polyline points="12 6 12 12 16 14" />
-      </svg>
-    ),
-  },
-  {
-    label: "AI Generations",
-    value: 10,
-    accent: "#f472b6",
-    accentBg: "rgba(244,114,182,0.15)",
-    icon: (
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2L2 7l10 5 10-5-10-5z" />
-        <path d="M2 17l10 5 10-5" />
-        <path d="M2 12l10 5 10-5" />
-      </svg>
-    ),
-  },
-]
+const formatRelativeTime = (date: string | null) => {
+  if (!date) return "No activity"
+  const diff = Date.now() - new Date(date).getTime()
+  const mins = Math.floor(diff / 60000)
+  if (mins < 1) return "Just now"
+  if (mins < 60) return `${mins}m ago`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24) return `${hrs}h ago`
+  return `${Math.floor(hrs / 24)}d ago`
+}
 
 const recentPresentations = [
   { id: 1, name: "Machine Learning Basics", slides: 12, date: "Feb 25" },
@@ -237,7 +179,73 @@ const PresentationIcon = () => (
 );
 
 const Dashboard = () => {
+  const [stats, setStats] = useState<Stats>({
+    presentationGenerated: 0,
+    slidesGenerated: 0,
+    docsUploaded: 0,
+    totalExports: 0,
+    aiGenerations: 0,
+    lastActivity: null,
+  })
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await getStats()
+        setStats(res.data.data)
+      } catch (err: any) {
+        console.error('Failed to fetch stats: ', err)
+      }
+    }
+    fetchStats()
+  }, [])
+
+  const STATS: StatItem[] = [
+    {
+      label: "Presentations",
+      value: stats.presentationGenerated,
+      accent: "#6366f1",
+      accentBg: "rgba(99,102,241,0.15)",
+      icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" /></svg>
+    },
+    {
+      label: "Slides Generated",
+      value: stats.slidesGenerated,
+      accent: "#0ea5e9",
+      accentBg: "rgba(14,165,233,0.15)",
+      icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" /></svg>
+    },
+    {
+      label: "Docs Uploaded",
+      value: stats.docsUploaded,
+      accent: "#10b981",
+      accentBg: "rgba(16,185,129,0.15)",
+      icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
+    },
+    {
+      label: "Total Exports",
+      value: stats.totalExports,
+      accent: "#f59e0b",
+      accentBg: "rgba(245,158,11,0.15)",
+      icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+    },
+    {
+      label: "Last Activity",
+      value: formatRelativeTime(stats.lastActivity),
+      accent: "#a78bfa",
+      accentBg: "rgba(167,139,250,0.15)",
+      icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+    },
+    {
+      label: "AI Generations",
+      value: stats.aiGenerations,
+      accent: "#f472b6",
+      accentBg: "rgba(244,114,182,0.15)",
+      icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>
+    },
+  ]
 
   return <>
     <div className="p-4 sm:p-6 lg:p-8 w-full max-w-7xl mx-auto">
@@ -316,32 +324,32 @@ const Dashboard = () => {
       </div>
 
       {/* ── Stats Row ── */}
-      <div className="grid grid-cols-2 sm:grid-cols-6 gap-3 sm:gap-4 mb-5 sm:mb-6">
-        {MOCK_STATS.map((stat) => (
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 mb-5 sm:mb-5">
+        {STATS.map((stat) => (
           <div
             key={stat.label}
-            className="bg-[#002945] hover:bg-[#002E4E] border border-white/8 hover:border-white/[0.14] rounded-2xl p-3 sm:p-2.5 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 transition-all duration-200 cursor-default"
+            className="bg-[#002945] hover:bg-[#002E4E] border border-white/8 hover:border-white/[0.14] rounded-2xl p-4 flex flex-row items-center gap-2.5 transition-all duration-200 cursor-default"
           >
             {/* Icon */}
             <div
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0"
+              className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
               style={{ background: stat.accentBg, color: stat.accent }}
             >
               {stat.icon}
             </div>
 
-            {/* Title + Value */}
-            <div className="flex flex-col gap-0.5">
-              <span className="text-[10.5px] sm:text-[11.5px] font-medium text-white/50 tracking-wide leading-tight">
+            {/* Text — right of icon */}
+            <div className="flex flex-col gap-0.5 min-w-0">
+              <span className="text-[10px] font-medium text-white/50 tracking-wide leading-tight truncate">
                 {stat.label}
               </span>
               <div className="flex items-baseline gap-1.5 flex-wrap">
-                <span className="text-lg sm:text-xl font-bold text-white leading-none tracking-tight">
+                <span className="text-base font-bold text-white leading-none tracking-tight">
                   {stat.value}
                 </span>
                 {stat.badge && (
                   <span
-                    className="text-[8px] sm:text-[9px] font-semibold rounded-md px-1.5 py-0.5"
+                    className="text-[8px] font-semibold rounded-md px-1.5 py-0.5"
                     style={{
                       color: stat.badgePositive ? "#34d399" : "#f87171",
                       background: stat.badgePositive ? "rgba(52,211,153,0.15)" : "rgba(248,113,113,0.15)",
