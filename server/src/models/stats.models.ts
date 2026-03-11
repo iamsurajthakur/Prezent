@@ -1,6 +1,16 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
-const statsSchema = new Schema({
+interface IStat {
+    userId: Types.ObjectId
+    presentationGenerated: number
+    slidesGenerated: number
+    docsUploaded: number
+    totalExports: number
+    aiGenerations: number
+    lastActivity: Date
+}
+
+const statsSchema = new Schema<IStat>({
     userId: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -33,4 +43,4 @@ const statsSchema = new Schema({
     }
 }, {timestamps: true})
 
-export const Stat = mongoose.model('stat', statsSchema)
+export const Stat = mongoose.model<IStat>('stat', statsSchema)
