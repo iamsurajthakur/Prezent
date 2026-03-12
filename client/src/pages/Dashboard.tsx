@@ -1,4 +1,4 @@
-import { getStats } from "@/Api/stat";
+import { getRecentPresentation, getStats } from "@/Api/stat";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,14 @@ export interface StatItem {
   icon: React.ReactNode;
   accent: string;
   accentBg: string;
+}
+
+interface RecentPresentation {
+  id: string
+  name: string
+  slides: number
+  date: string
+  outputUrl: string
 }
 
 interface Stats {
@@ -173,12 +181,7 @@ const formatRelativeTime = (date: string | null) => {
   return `${Math.floor(hrs / 24)}d ago`
 }
 
-const recentPresentations = [
-  { id: 1, name: "Machine Learning Basics", slides: 12, date: "Feb 25" },
-  { id: 2, name: "Climate Change Report", slides: 8, date: "Feb 23" },
-  { id: 3, name: "Business Proposal Q1", slides: 15, date: "Feb 20" },
-  { id: 4, name: "Business Proposal Q2", slides: 20, date: "Feb 21" },
-];
+
 
 const PresentationIcon = () => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -197,6 +200,7 @@ const Dashboard = () => {
     lastActivity: null,
     weeklyActivity: [],
   })
+  const [recentPresentations, setRecentPresentations] = useState<RecentPresentation[]>([])
 
   const navigate = useNavigate();
 
@@ -211,6 +215,18 @@ const Dashboard = () => {
     }
     fetchStats()
   }, [])
+
+  useEffect(() => {
+    const fetchPresentations = async () => {
+        try {
+            const res = await getRecentPresentation()
+            setRecentPresentations(res.data.data.presentations)
+        } catch (err) {
+            console.error('Failed to fetch presentations:', err)
+        }
+    }
+    fetchPresentations()
+}, [])
 
   const STATS: StatItem[] = [
     {

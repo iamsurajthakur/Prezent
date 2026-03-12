@@ -27,10 +27,30 @@ interface statApiResponse {
     }
 }
 
+interface presentationResponse {
+    data: {
+        statusCode: number
+        data: {
+            presentations: {
+                id: string
+                name: string
+                slides: number
+                outputUrl: string
+                date: string
+            }[]
+        }
+        message: string
+    }
+}
+
 export const trackExport = async (): Promise<exportApiResponse> => {
     return api.post('/api/v1/stat/export')
 }
 
 export const getStats = async (): Promise<statApiResponse> => {
     return api.get('/api/v1/stat/getStats')
+}
+
+export const getRecentPresentation = async (): Promise<presentationResponse> => {
+    return api.get('/api/v1/stat/getRecentPresentations')
 }

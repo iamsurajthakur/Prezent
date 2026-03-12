@@ -107,8 +107,9 @@ const SmartSlide = () => {
       const jobId = response.data.data.jobId
       const mimeType = response.data.data.file.mimeType
       const userId = response.data.data.userId
+      const originalName = response.data.data.file.originalName
 
-      await processDocs({ signedUrl, jobId, mimeType, userId })
+      await processDocs({ signedUrl, jobId, mimeType, userId, originalName })
 
       setState("PROCESSING");
       updateProgress(5)
