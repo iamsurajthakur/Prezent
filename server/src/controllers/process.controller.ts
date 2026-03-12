@@ -10,6 +10,7 @@ import { chunkText } from "@/utils/chunker";
 import { getSlideJsonInternal } from "@/services/slide.service";
 import { generatePPT } from "@/utils/generatePPT";
 import { updateStats } from "@/utils/updateStats";
+import { Presentation } from "@/models/presentation.models";
 
 function cleanText(text: string): string {
     return text
@@ -99,7 +100,7 @@ async function extractText(buffer: Buffer, mimeType: string): Promise<string> {
     throw new ApiError(400,`Unsupported file type: ${mimeType}`)
 }
 
-async function runPipeline(signedUrl: string, jobId: string, mimeType: string, userId: string){
+async function runPipeline(signedUrl: string, jobId: string, mimeType: string, userId: string, originalName: string){
     try {
         await Job.findByIdAndUpdate(jobId,{ status: 'processing', step: 1}) // uploading file
 
@@ -124,7 +125,14 @@ async function runPipeline(signedUrl: string, jobId: string, mimeType: string, u
         await Job.findByIdAndUpdate(jobId, {step: 5})
         const pptUrl = await generatePPT(slides, userId, jobId, mimeType)
 
-        // For now just mark done to verify the flow worksF
+        // For now just mark done to verify the flow works
+        await Presentation.create({
+            userId,
+            name: originalName ?? `Presentation ${Date.now()}`,
+            slides: slides.length,
+            outputUrl: pptUrl
+        })
+
         await updateStats(userId, {
             presentationGenerated: 1,
             slidesGenerated: slides.length,
@@ -139,7 +147,7 @@ async function runPipeline(signedUrl: string, jobId: string, mimeType: string, u
 }
 
 const processPpt = asyncHandler(async (req: Request, res: Response) => {
-  const { signedUrl, jobId, mimeType, userId } = req.body;
+  const { signedUrl, jobId, mimeType, userId, originalName } = req.body;
 
   if (!signedUrl || !jobId || !mimeType) {
     throw new ApiError(400, "signedUrl, jobId and mimeType are required");
@@ -161,7 +169,7 @@ const processPpt = asyncHandler(async (req: Request, res: Response) => {
   );
 
   // Fire and forget — runs after response is sent
-  runPipeline(signedUrl, jobId, mimeType, userId);
+  runPipeline(signedUrl, jobId, mimeType, userId, originalName);
 })
 
 const getJobStatus = asyncHandler(async (req: Request, res: Response) => {

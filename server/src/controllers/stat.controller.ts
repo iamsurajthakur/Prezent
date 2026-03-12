@@ -4,6 +4,7 @@ import ApiResponse from "@/utils/apiResponse";
 import {type Request, type Response } from "express";
 import { updateStats } from "@/utils/updateStats";
 import { Stat } from "@/models/stats.models";
+import { Presentation } from "@/models/presentation.models";
 
 const trackExport = asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user?._id
@@ -46,7 +47,37 @@ const getStats = asyncHandler(async (req: Request, res: Response) => {
     ))
 })
 
+const getRecentPresentation = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?._id
+
+    if(!userId){
+        throw new ApiError(404,'User not found')
+    }
+
+    const presentations = await Presentation.find({ userId })
+        .sort({ createdAt: -1 })
+        .limit(5)
+        .select('name slides createdAt outputUrl')
+
+    const formatted = presentations.map(p => ({
+        id: p._id,
+        name: p.name,
+        slides: p.slides,
+        outputUrl: p.outputUrl,
+        date: new Date(p.createdAt).toLocaleDateString('en-US', {
+            month: 'short', day: 'numeric'
+        })
+    }))
+
+    return res.status(200).json(new ApiResponse(
+        200,
+        {presentations: formatted},
+        'Presentations fetched'
+    ))
+})
+
 export {
     trackExport,
-    getStats
+    getStats,
+    getRecentPresentation
 }
