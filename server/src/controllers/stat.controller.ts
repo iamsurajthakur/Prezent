@@ -5,15 +5,35 @@ import {type Request, type Response } from "express";
 import { updateStats } from "@/utils/updateStats";
 import { Stat } from "@/models/stats.models";
 import { Presentation } from "@/models/presentation.models";
+import { Activity } from "@/models/activity.models";
+
+const formatRelativeTime = (date: string) => {
+    const diff = Date.now() - new Date(date).getTime()
+    const mins = Math.floor(diff / 60000)
+    if (mins < 1) return "Just now"
+    if (mins < 60) return `${mins}m ago`
+    const hrs = Math.floor(mins / 60)
+    if (hrs < 24) return `${hrs}h ago`
+    return "Yesterday"
+}
 
 const trackExport = asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user?._id
+    const { presentationName } = req.body
 
     if(!userId) {
         throw new ApiError(404,'user not found')
     }
 
     await updateStats(userId.toString(), { totalExports: 1 })
+
+    await Activity.create({
+        userId,
+        type: 'export',
+        label: 'exported',
+        subject: presentationName ?? 'Presentation',
+        context: '.pptx'
+    })
 
     return res.status(200).json(new ApiResponse(
         200,
@@ -76,8 +96,42 @@ const getRecentPresentation = asyncHandler(async (req: Request, res: Response) =
     ))
 })
 
+const getRecentActivity = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?._id
+
+    if(!userId){
+        throw new ApiError(404,'User not found')
+    }
+
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000)
+
+    const activities = await Activity.find({
+        userId,
+        createdAt: { $gte: since}
+    })
+    .sort({ createdAt: -1})
+    .limit(10)
+
+    const formatted = activities.map(a => ({
+        id: a._id,
+        type: a.type,
+        label: a.label,
+        subject: a.subject,
+        context: a.context ?? null,
+        time: formatRelativeTime(a.createdAt.toISOString()),
+    }))
+
+    return res.status(200).json(new ApiResponse(
+        200,
+        { activities: formatted},
+        'Activity fetched'
+    ))
+
+})
+
 export {
     trackExport,
     getStats,
-    getRecentPresentation
+    getRecentPresentation,
+    getRecentActivity
 }

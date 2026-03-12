@@ -11,6 +11,7 @@ import { getSlideJsonInternal } from "@/services/slide.service";
 import { generatePPT } from "@/utils/generatePPT";
 import { updateStats } from "@/utils/updateStats";
 import { Presentation } from "@/models/presentation.models";
+import { Activity } from "@/models/activity.models";
 
 function cleanText(text: string): string {
     return text
@@ -138,6 +139,15 @@ async function runPipeline(signedUrl: string, jobId: string, mimeType: string, u
             slidesGenerated: slides.length,
             addSlidesToChart: slides.length,
         })
+
+        await Activity.create({
+            userId,
+            type: 'generate',
+            label: 'Generated',
+            subject: `${slides.length} slides`,
+            context: originalName,
+        })
+
         await Job.findByIdAndUpdate(jobId, { status: "done", step: 6, outputUrl: pptUrl });
 
     } catch (err: any) {

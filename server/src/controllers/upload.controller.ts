@@ -6,6 +6,7 @@ import ApiResponse from "@/utils/apiResponse";
 import { ALLOWED_TYPES } from "@/constant";
 import { Job } from "@/models/job.models";
 import { updateStats } from "@/utils/updateStats";
+import { Activity } from "@/models/activity.models";
 
 const BUCKET_NAME = 'uploads'
 const SIGNED_URL_TTL = 10 * 60
@@ -58,6 +59,13 @@ const uploadFile = asyncHandler(async (req: Request, res: Response) => {
     }
 
     await updateStats(userId.toString(), { docsUploaded: 1})
+
+    await Activity.create({
+        userId,
+        type: 'upload',
+        label: 'Uploaded',
+        subject: originalname
+    })
 
     return res.status(200).json(
         new ApiResponse(
