@@ -18,6 +18,10 @@ interface statApiResponse {
             totalExports: number
             aiGenerations: number
             lastActivity: string | null
+            weeklyActivity: {
+                day: string
+                count: number
+            }[]
         }
         message: string
     }

@@ -22,18 +22,8 @@ interface Stats {
   totalExports: number
   aiGenerations: number
   lastActivity: string | null
+  weeklyActivity: { day: string, count: number}[]
 }
-
-// Mock data for the mini chart
-const chartData = [
-  { day: "Mon", count: 1 },
-  { day: "Tue", count: 3 },
-  { day: "Wed", count: 2 },
-  { day: "Thu", count: 5 },
-  { day: "Fri", count: 4 },
-  { day: "Sat", count: 2 },
-  { day: "Sun", count: 6 },
-];
 
 // Activity data
 const activities = [
@@ -90,11 +80,30 @@ const activities = [
   },
 ];
 
+const getChartData = (weeklyActivity: { day: string; count: number }[]) => {
+    const ALL_DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    
+    // Get today's index and reorder so today is last
+    const todayIndex = new Date().getDay() // 0=Sun, 1=Mon ... 6=Sat
+    const todayAdjusted = todayIndex === 0 ? 6 : todayIndex - 1 // convert to Mon=0 ... Sun=6
+
+    // Slice and reorder: days after today go first, today goes last
+    const orderedDays = [
+        ...ALL_DAYS.slice(todayAdjusted + 1),  // days after today
+        ...ALL_DAYS.slice(0, todayAdjusted + 1) // today and days before
+    ]
+
+    return orderedDays.map(day => {
+        const found = weeklyActivity.find(d => d.day === day)
+        return { day, count: found?.count ?? 0 }
+    })
+} 
+
 // Mini Bar Chart Component
-const MiniBarChart = ({ data }: { data: typeof chartData }) => {
-  const max = Math.max(...data.map((d) => d.count));
-  const totalGenerated = data.reduce((sum, d) => sum + d.count, 0);
-  const peak = data.reduce((a, b) => (a.count > b.count ? a : b));
+const MiniBarChart = ({ data }: any) => {
+  const max = Math.max(...data.map((d: any) => d.count));
+  const totalGenerated = data.reduce((sum: any, d: any) => sum + d.count, 0);
+  const peak = data.reduce((a: any, b: any) => (a.count > b.count ? a : b));
 
   return (
     <div className="px-5 py-4 border-b border-white/6">
@@ -115,7 +124,7 @@ const MiniBarChart = ({ data }: { data: typeof chartData }) => {
 
       {/* Bars */}
       <div className="flex items-end gap-1.5 h-14">
-        {data.map((d, i) => {
+        {data.map((d: any, i: any) => {
           const heightPct = max > 0 ? (d.count / max) * 100 : 0;
           const isToday = i === data.length - 1;
           const isPeak = d.count === max;
@@ -186,6 +195,7 @@ const Dashboard = () => {
     totalExports: 0,
     aiGenerations: 0,
     lastActivity: null,
+    weeklyActivity: [],
   })
 
   const navigate = useNavigate();
@@ -397,7 +407,7 @@ const Dashboard = () => {
           </div>
 
           {/* ── Mini Chart ── */}
-          <MiniBarChart data={chartData} />
+          <MiniBarChart data={getChartData(stats.weeklyActivity)} />
 
           {/* ── Empty State ── */}
           {recentPresentations.length === 0 ? (
