@@ -40,6 +40,7 @@ const getStats = asyncHandler(async (req: Request, res: Response) => {
             totalExports: stats?.totalExports ?? 0,
             aiGenerations: stats?.aiGenerations ?? 0,
             lastActivity: stats?.lastActivity ?? null,
+            weeklyActivity: stats?.weeklyActivity ?? [],
         },
         'Stats fetched'
     ))

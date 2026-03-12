@@ -8,6 +8,10 @@ interface IStat {
     totalExports: number
     aiGenerations: number
     lastActivity: Date
+    weeklyActivity: {
+        day: string
+        count: number
+    }[]
 }
 
 const statsSchema = new Schema<IStat>({
@@ -40,6 +44,13 @@ const statsSchema = new Schema<IStat>({
     lastActivity: {
         type: Date,
         default: null,
+    },
+    weeklyActivity: {
+        type: [{
+            day: { type: String },
+            count: { type: Number, default: 0 }
+        }],
+        default: [],
     }
 }, {timestamps: true})
 

@@ -128,6 +128,7 @@ async function runPipeline(signedUrl: string, jobId: string, mimeType: string, u
         await updateStats(userId, {
             presentationGenerated: 1,
             slidesGenerated: slides.length,
+            addSlidesToChart: slides.length,
         })
         await Job.findByIdAndUpdate(jobId, { status: "done", step: 6, outputUrl: pptUrl });
 
