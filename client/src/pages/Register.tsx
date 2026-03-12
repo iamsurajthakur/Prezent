@@ -16,13 +16,12 @@ const Register = () => {
   const overlayRef = useRef(null);
 
   // States for registration
-  const [fullName, setFullName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -37,7 +36,7 @@ const Register = () => {
 
       // Create timeline
       const tl = gsap.timeline({
-        defaults: { ease: 'power3.out' }
+        defaults: { ease: 'power3.out' },
       });
 
       // Overlay exit
@@ -47,51 +46,80 @@ const Register = () => {
         duration: 0.8,
         ease: 'power3.inOut',
       })
-      // Logo entrance
-      .to(logoRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-      }, '-=0.3')
-      // Title and subtitle
-      .to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-      }, '-=0.3')
-      .to(subtitleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-      }, '-=0.4')
-      // Input rows stagger
-      .to(inputRowsRef.current, {
-        opacity: 1,
-        x: 0,
-        duration: 0.5,
-        stagger: 0.15,
-      }, '-=0.3')
-      // Button and footer
-      .to(buttonRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-      }, '-=0.3')
-      .to(footerRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-      }, '-=0.4');
+        // Logo entrance
+        .to(
+          logoRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+          },
+          '-=0.3'
+        )
+        // Title and subtitle
+        .to(
+          titleRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+          },
+          '-=0.3'
+        )
+        .to(
+          subtitleRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+          },
+          '-=0.4'
+        )
+        // Input rows stagger
+        .to(
+          inputRowsRef.current,
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.5,
+            stagger: 0.15,
+          },
+          '-=0.3'
+        )
+        // Button and footer
+        .to(
+          buttonRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+          },
+          '-=0.3'
+        )
+        .to(
+          footerRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+          },
+          '-=0.4'
+        );
     }, formRef);
 
     return () => ctx.revert();
   }, []);
 
-  const handleNavigate = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+  const handleNavigate = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    path: string
+  ) => {
     e.preventDefault();
-    
+
     const tl = gsap.timeline({
-      onComplete: () => {navigate(path)}
+      onComplete: () => {
+        navigate(path);
+      },
     });
 
     tl.to(overlayRef.current, {
@@ -99,35 +127,43 @@ const Register = () => {
       transformOrigin: 'bottom',
       duration: 0.6,
       ease: 'power3.inOut',
-    })
-    .to(formRef.current, {
-      opacity: 0,
-      y: -30,
-      duration: 0.4,
-      ease: 'power3.in',
-    }, '-=0.4');
+    }).to(
+      formRef.current,
+      {
+        opacity: 0,
+        y: -30,
+        duration: 0.4,
+        ease: 'power3.in',
+      },
+      '-=0.4'
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setError(null)
+    e.preventDefault();
+    setError(null);
 
-    if(password != confirmPassword){
-      setError('Password does not match.')
-      return
+    if (password != confirmPassword) {
+      setError('Password does not match.');
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     try {
-      const response = await registerUser({ fullName, email, password, confirmPassword})
-      console.log(response)
+      const response = await registerUser({
+        fullName,
+        email,
+        password,
+        confirmPassword,
+      });
+      console.log(response);
     } catch (error: any) {
-      setError(error.response?.data?.message || "Something went wrong")
+      setError(error.response?.data?.message || 'Something went wrong');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <main
@@ -166,18 +202,13 @@ const Register = () => {
           zoom={0.9}
         />
       </div>
-      
-      <form 
+
+      <form
         ref={formRef}
         className="flex w-full p-5 bg-[#0d0f0e] rounded-sm flex-col max-w-120"
         onSubmit={handleSubmit}
       >
-        <a 
-          ref={logoRef}
-          href="" 
-          className="mb-8" 
-          title="Go to PrebuiltUI"
-        >
+        <a ref={logoRef} href="" className="mb-8" title="Go to PrebuiltUI">
           <svg
             className="size-10"
             width="30"
@@ -205,8 +236,10 @@ const Register = () => {
         </p>
 
         {/* Full Name + Email */}
-        <div 
-          ref={(el) => {inputRowsRef.current[0] = el}}
+        <div
+          ref={(el) => {
+            inputRowsRef.current[0] = el;
+          }}
           className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6"
         >
           <div>
@@ -237,8 +270,10 @@ const Register = () => {
         </div>
 
         {/* Password + Confirm Password */}
-        <div 
-          ref={(el) => {inputRowsRef.current[1] = el}}
+        <div
+          ref={(el) => {
+            inputRowsRef.current[1] = el;
+          }}
           className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6"
         >
           <div>
@@ -269,7 +304,7 @@ const Register = () => {
             />
           </div>
         </div>
-        {error && <p className='text-red-400 mt-2'>{error}</p>}
+        {error && <p className="text-red-400 mt-2">{error}</p>}
         <button
           ref={buttonRef}
           type="submit"
@@ -281,8 +316,8 @@ const Register = () => {
 
         <p ref={footerRef} className="text-center text-[#F5F3F5] py-8">
           Already have an account?{' '}
-          <Link 
-            to="/login" 
+          <Link
+            to="/login"
             onClick={(e) => handleNavigate(e, '/login')}
             className="text-indigo-600 hover:underline"
           >

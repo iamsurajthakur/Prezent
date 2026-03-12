@@ -17,13 +17,13 @@ const Login = () => {
   const overlayRef = useRef(null);
 
   //state for login
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   //state for authentication using zustand
-  const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated)
+  const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -38,7 +38,7 @@ const Login = () => {
 
       // Create timeline
       const tl = gsap.timeline({
-        defaults: { ease: 'power3.out' }
+        defaults: { ease: 'power3.out' },
       });
 
       // Overlay exit
@@ -48,51 +48,80 @@ const Login = () => {
         duration: 0.8,
         ease: 'power3.inOut',
       })
-      // Logo entrance
-      .to(logoRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-      }, '-=0.3')
-      // Title and subtitle
-      .to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-      }, '-=0.3')
-      .to(subtitleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-      }, '-=0.4')
-      // Inputs stagger
-      .to(inputsRef.current, {
-        opacity: 1,
-        x: 0,
-        duration: 0.5,
-        stagger: 0.1,
-      }, '-=0.3')
-      // Button and footer
-      .to(buttonRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-      }, '-=0.3')
-      .to(footerRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-      }, '-=0.4');
+        // Logo entrance
+        .to(
+          logoRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+          },
+          '-=0.3'
+        )
+        // Title and subtitle
+        .to(
+          titleRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+          },
+          '-=0.3'
+        )
+        .to(
+          subtitleRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+          },
+          '-=0.4'
+        )
+        // Inputs stagger
+        .to(
+          inputsRef.current,
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.5,
+            stagger: 0.1,
+          },
+          '-=0.3'
+        )
+        // Button and footer
+        .to(
+          buttonRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+          },
+          '-=0.3'
+        )
+        .to(
+          footerRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+          },
+          '-=0.4'
+        );
     }, formRef);
 
     return () => ctx.revert();
   }, []);
 
-  const handleNavigate = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+  const handleNavigate = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    path: string
+  ) => {
     e.preventDefault();
-    
+
     const tl = gsap.timeline({
-      onComplete: () => {navigate(path)}
+      onComplete: () => {
+        navigate(path);
+      },
     });
 
     tl.to(overlayRef.current, {
@@ -100,34 +129,35 @@ const Login = () => {
       transformOrigin: 'bottom',
       duration: 0.6,
       ease: 'power3.inOut',
-    })
-    .to(formRef.current, {
-      opacity: 0,
-      y: -30,
-      duration: 0.4,
-      ease: 'power3.in',
-    }, '-=0.4');
+    }).to(
+      formRef.current,
+      {
+        opacity: 0,
+        y: -30,
+        duration: 0.4,
+        ease: 'power3.in',
+      },
+      '-=0.4'
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setError(null)
+    e.preventDefault();
+    setError(null);
 
-    setLoading(true)
+    setLoading(true);
 
     try {
-      await loginUser({ email, password})
-      
-      setIsAuthenticated(true)
-      navigate('/dashboard')
+      await loginUser({ email, password });
+
+      setIsAuthenticated(true);
+      navigate('/dashboard');
     } catch (error: any) {
-      setError(error.response?.data?.message || 'Something went wrong')
-    } finally{
-      setLoading(false)
+      setError(error.response?.data?.message || 'Something went wrong');
+    } finally {
+      setLoading(false);
     }
-
-
-  }
+  };
 
   return (
     <main
@@ -166,18 +196,13 @@ const Login = () => {
           zoom={0.9}
         />
       </div>
-      
-      <form 
+
+      <form
         ref={formRef}
         className="flex w-full p-5 bg-[#0d0f0e] rounded-sm flex-col max-w-100"
         onSubmit={handleSubmit}
       >
-        <a 
-          ref={logoRef}
-          href="" 
-          className="mb-8" 
-          title="Go to PrebuiltUI"
-        >
+        <a ref={logoRef} href="" className="mb-8" title="Go to PrebuiltUI">
           <svg
             className="size-10"
             width="30"
@@ -204,7 +229,12 @@ const Login = () => {
           Please enter email and password to access.
         </p>
 
-        <div ref={(el) => {inputsRef.current[0] = el}} className="mt-10">
+        <div
+          ref={(el) => {
+            inputsRef.current[0] = el;
+          }}
+          className="mt-10"
+        >
           <label className="font-medium text-white">Email</label>
           <input
             placeholder="Please enter your email"
@@ -217,7 +247,12 @@ const Login = () => {
           />
         </div>
 
-        <div ref={(el) => {inputsRef.current[1] = el}} className="mt-6">
+        <div
+          ref={(el) => {
+            inputsRef.current[1] = el;
+          }}
+          className="mt-6"
+        >
           <label className="font-medium text-white">Password</label>
           <input
             placeholder="Please enter your password"
@@ -230,7 +265,7 @@ const Login = () => {
           />
         </div>
 
-        {error && <p className='text-red-400'>{error}</p>}
+        {error && <p className="text-red-400">{error}</p>}
         <button
           ref={buttonRef}
           type="submit"
@@ -239,11 +274,11 @@ const Login = () => {
         >
           Login
         </button>
-        
+
         <p ref={footerRef} className="text-center text-white py-8">
           Don't have an account?{' '}
-          <Link 
-            to="/register" 
+          <Link
+            to="/register"
             onClick={(e) => handleNavigate(e, '/register')}
             className="text-indigo-600 hover:underline"
           >

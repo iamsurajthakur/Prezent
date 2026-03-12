@@ -2,7 +2,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import { gsap } from 'gsap';
 
 interface PageTransitionProps {
-    children: ReactNode
+  children: ReactNode;
 }
 
 const PageTransition = ({ children }: PageTransitionProps) => {
@@ -17,19 +17,22 @@ const PageTransition = ({ children }: PageTransitionProps) => {
 
       // Animation timeline
       const tl = gsap.timeline({
-        defaults: { ease: 'power3.inOut' }
+        defaults: { ease: 'power3.inOut' },
       });
 
       tl.to(overlayRef.current, {
         scaleY: 0,
         transformOrigin: 'top',
         duration: 0.8,
-      })
-      .to(containerRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-      }, '-=0.4');
+      }).to(
+        containerRef.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+        },
+        '-=0.4'
+      );
     }, containerRef);
 
     return () => ctx.revert();
@@ -43,11 +46,9 @@ const PageTransition = ({ children }: PageTransitionProps) => {
         className="fixed inset-0 z-50 bg-indigo-600 pointer-events-none"
         style={{ transformOrigin: 'top' }}
       />
-      
+
       {/* Page Content */}
-      <div ref={containerRef}>
-        {children}
-      </div>
+      <div ref={containerRef}>{children}</div>
     </>
   );
 };

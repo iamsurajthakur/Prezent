@@ -22,7 +22,7 @@ const StarBorder = <T extends React.ElementType = 'button'>({
   ...rest
 }: StarBorderProps<T>) => {
   const Component = as || 'button';
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   return (
     <>
@@ -77,7 +77,7 @@ const StarBorder = <T extends React.ElementType = 'button'>({
           }}
         />
 
-        <Link to={isAuthenticated ? "/dashboard" : "/register"}>
+        <Link to={isAuthenticated ? '/dashboard' : '/register'}>
           <div className="relative z-1 bg-linear-to-b from-black to-gray-900 border border-gray-800 text-white text-center py-4 px-6 text-[16px] leading-none">
             {children}
           </div>

@@ -52,7 +52,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 
       setError: (message) => set({ error: message }),
 
-      setIsAuthenticated: (value) => set({ isAuthenticated: value}),
+      setIsAuthenticated: (value) => set({ isAuthenticated: value }),
     }),
     {
       name: 'auth-state',

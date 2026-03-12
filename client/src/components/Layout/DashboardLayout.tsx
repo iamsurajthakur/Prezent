@@ -1,6 +1,6 @@
-import { Outlet, Link, useLocation } from "react-router-dom"
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/ui/app-sidebar"
+import { Outlet, Link, useLocation } from 'react-router-dom';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/ui/app-sidebar';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,21 +8,19 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import React from "react"
+} from '@/components/ui/breadcrumb';
+import React from 'react';
 
 const ROUTE_LABELS: Record<string, string> = {
-  dashboard: "Dashboard",
-  slide: "Slide",
-  library: "Library",
-}
+  dashboard: 'Dashboard',
+  slide: 'Slide',
+  library: 'Library',
+};
 
 export const DashboardLayout = () => {
-  const location = useLocation()
+  const location = useLocation();
 
-  const segments = location.pathname
-    .split("/")
-    .filter(Boolean)
+  const segments = location.pathname.split('/').filter(Boolean);
 
   return (
     <SidebarProvider>
@@ -32,10 +30,8 @@ export const DashboardLayout = () => {
 
         {/* Main Content */}
         <main className="flex-1 p-4 sm:p-6">
-
           {/* Header Row */}
           <div className="flex items-center justify-between mb-6">
-
             {/* Left: Trigger + Breadcrumb */}
             <div className="flex items-center gap-3 pt-1">
               <SidebarTrigger className="hover:bg-[#002945] hover:text-white rounded-md p-2" />
@@ -43,7 +39,7 @@ export const DashboardLayout = () => {
               <Breadcrumb className="text-gray-400 [&_a:hover]:text-white">
                 <BreadcrumbList>
                   {segments.map((segment, index) => {
-                    const to = "/" + segments.slice(0, index + 1).join("/");
+                    const to = '/' + segments.slice(0, index + 1).join('/');
                     const label = ROUTE_LABELS[segment] || segment;
                     const isLast = index === segments.length - 1;
 
@@ -74,5 +70,5 @@ export const DashboardLayout = () => {
         </main>
       </div>
     </SidebarProvider>
-  )
-}
+  );
+};

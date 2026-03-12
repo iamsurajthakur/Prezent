@@ -10,7 +10,7 @@ if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
       <TooltipProvider>
-          <App />
+        <App />
       </TooltipProvider>
     </React.StrictMode>
   );

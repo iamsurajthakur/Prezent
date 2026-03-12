@@ -12,22 +12,22 @@ import Dashboard from '@/pages/Dashboard';
 
 const App = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const setAuth = useAuthStore((state) => state.setAuth)
-  const isLoading = useAuthStore((state) => state.isLoading)
-  const logout = useAuthStore((state) => state.logout)
+  const setAuth = useAuthStore((state) => state.setAuth);
+  const isLoading = useAuthStore((state) => state.isLoading);
+  const logout = useAuthStore((state) => state.logout);
 
   useEffect(() => {
     getMe()
       .then((res) => {
-        setAuth(res.data.data)
+        setAuth(res.data.data);
       })
       .catch(() => {
-        logout()
-      })
-  }, [])
+        logout();
+      });
+  }, []);
 
-  if (isLoading) return <div>Loading...</div>
-  
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <BrowserRouter>
       <Routes>
@@ -37,11 +37,13 @@ const App = () => {
         {/* Protected Route */}
         <Route
           path="/dashboard"
-          element={isAuthenticated ? <DashboardLayout /> : <Navigate to="/login" />}
+          element={
+            isAuthenticated ? <DashboardLayout /> : <Navigate to="/login" />
+          }
         >
           <Route index element={<Dashboard />} />
-          <Route path='slide' element={<SmartSlide />} />
-          <Route path='library' element={<Library />} />
+          <Route path="slide" element={<SmartSlide />} />
+          <Route path="library" element={<Library />} />
         </Route>
       </Routes>
     </BrowserRouter>

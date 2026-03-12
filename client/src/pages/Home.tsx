@@ -81,7 +81,7 @@ const Home = () => {
     },
   ];
   const github = 'https://github.com/iamsurajthakur';
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   return (
     <>
@@ -150,7 +150,7 @@ const Home = () => {
                   color="magenta"
                   speed="5s"
                 >
-                  {isAuthenticated ? "Dashboard" : "Get Started"}
+                  {isAuthenticated ? 'Dashboard' : 'Get Started'}
                 </StarBorder>
                 <button className="bg-[#e6e6e6] items-center cursor-target text-black hover:bg-amber-50 px-6 rounded-lg transition cursor-pointer">
                   <Link to={github}>About Me</Link>
