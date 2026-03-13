@@ -6,6 +6,7 @@ import { updateStats } from "@/utils/updateStats";
 import { Stat } from "@/models/stats.models";
 import { Presentation } from "@/models/presentation.models";
 import { Activity } from "@/models/activity.models";
+import { User } from "@/models/user.models";
 
 const formatRelativeTime = (date: string) => {
     const diff = Date.now() - new Date(date).getTime()
@@ -129,9 +130,26 @@ const getRecentActivity = asyncHandler(async (req: Request, res: Response) => {
 
 })
 
+const getUserInfo = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?._id
+
+    if(!userId){
+        throw new ApiError(404,'User not found')
+    }
+
+    const userData = await User.findById(userId).select('fullName email')
+
+    res.status(200).json(new ApiResponse(
+        200,
+        userData,
+        'User info fetched'
+    ))
+})
+
 export {
     trackExport,
     getStats,
     getRecentPresentation,
-    getRecentActivity
+    getRecentActivity,
+    getUserInfo,
 }
