@@ -16,6 +16,7 @@ const App = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
   const isLoading = useAuthStore((state) => state.isLoading);
   const logout = useAuthStore((state) => state.logout);
+  const setLoading = useAuthStore((state) => state.setLoading)
 
   useEffect(() => {
     getMe()
@@ -24,7 +25,10 @@ const App = () => {
       })
       .catch(() => {
         logout();
-      });
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }, []);
 
   if (isLoading) return <LoadingScreen />;
