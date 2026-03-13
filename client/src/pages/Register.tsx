@@ -315,6 +315,7 @@ const Register = () => {
           {loading ? (
             <React.Fragment>
               <Spinner />
+              <span className='gap-2 w-1'></span>
               Registering...
             </React.Fragment>
           ) : (

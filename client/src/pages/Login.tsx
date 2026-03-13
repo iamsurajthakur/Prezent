@@ -276,6 +276,7 @@ const Login = () => {
           {loading ? (
             <React.Fragment>
               <Spinner />
+              <span className='gap-2 w-1'></span>
               Logging in...
             </React.Fragment>
           ) : (
