@@ -9,9 +9,12 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { LayoutDashboard, Presentation, Folder, Monitor } from 'lucide-react';
+import { LayoutDashboard, Presentation, Folder } from 'lucide-react';
 import { NavUser } from './NavUser';
 import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { getUserInfo } from '@/Api/stat';
+import Logo from '@/Assets/logo.png'
 
 const navItems = [
   {
@@ -31,8 +34,24 @@ const navItems = [
   },
 ];
 
+interface UserInfo {
+  _id: string
+  fullName: string
+  email: string
+}
+
 export function AppSidebar() {
   const { state, setOpenMobile } = useSidebar();
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
+
+    useEffect(() => {
+      const fetchUserInfo = async () => {
+        const response = await getUserInfo()
+        const userData = response.data.data
+        setUserInfo(userData)
+      }
+      fetchUserInfo()
+    }, [])
 
   return (
     <Sidebar collapsible="icon">
@@ -44,8 +63,9 @@ export function AppSidebar() {
         }`}
       >
         <div className="flex items-center gap-2">
-          <div className="size-8 shrink-0 rounded-lg bg-[#00406C] flex items-center justify-center text-white font-medium">
-            <Monitor className="w-4 h-4" />
+          <div className="size-8 shrink-0 rounded-lg flex items-center justify-center text-white font-medium">
+            <img src={Logo} className='h-6 w-auto' alt="Logo" />
+
           </div>
           {state === 'expanded' && (
             <div className="flex flex-col overflow-hidden">
@@ -91,9 +111,9 @@ export function AppSidebar() {
       {/* Footer of sidebar */}
       <NavUser
         user={{
-          name: 'Suraj Thakur',
-          email: 'suraj@gmail.com',
-          avatar: 'https://github.com/maxleiter.png',
+          name: `${userInfo?.fullName}`,
+          email: `${userInfo?.email}`,
+          avatar: 'https://github.com/pranathip.png',
         }}
       />
     </Sidebar>

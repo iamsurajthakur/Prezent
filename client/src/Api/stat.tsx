@@ -60,6 +60,19 @@ interface activityResponse {
   };
 }
 
+interface userInfoResponse {
+  data: {
+    statusCode: number
+    data: {
+      _id: string
+      fullName: string
+      email: string
+    }
+    message: string
+    success: boolean
+  }
+}
+
 export const trackExport = async (
   presentationName: string
 ): Promise<exportApiResponse> => {
@@ -70,11 +83,14 @@ export const getStats = async (): Promise<statApiResponse> => {
   return api.get('/api/v1/stat/getStats');
 };
 
-export const getRecentPresentation =
-  async (): Promise<presentationResponse> => {
+export const getRecentPresentation = async (): Promise<presentationResponse> => {
     return api.get('/api/v1/stat/getRecentPresentations');
-  };
+};
 
 export const getRecentActivity = async (): Promise<activityResponse> => {
   return api.get('/api/v1/stat/getRecentActivity');
 };
+
+export const getUserInfo = async (): Promise<userInfoResponse> => {
+  return api.get('/api/v1/stat/getUserInfo')
+}

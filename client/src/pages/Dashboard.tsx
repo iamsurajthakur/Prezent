@@ -1,9 +1,8 @@
-import { getRecentActivity, getRecentPresentation, getStats } from '@/Api/stat';
+import { getRecentActivity, getRecentPresentation, getStats, getUserInfo } from '@/Api/stat';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const USER_NAME = 'Suraj';
 
 export interface StatItem {
   label: string;
@@ -40,6 +39,12 @@ interface Stats {
   aiGenerations: number;
   lastActivity: string | null;
   weeklyActivity: { day: string; count: number }[];
+}
+
+interface UserInfo {
+  _id: string
+  fullName: string
+  email: string
 }
 
 const getChartData = (weeklyActivity: { day: string; count: number }[]) => {
@@ -231,6 +236,14 @@ const formatRelativeTime = (date: string | null) => {
   return `${Math.floor(hrs / 24)}d ago`;
 };
 
+const getGreeting = () => {
+  const hour = new Date().getHours()
+
+  if (hour < 12) return 'Good morning'
+  if (hour < 17) return 'Good afternoon'
+  return 'Good evening'
+};
+
 const PresentationIcon = () => (
   <svg
     width="13"
@@ -261,9 +274,11 @@ const Dashboard = () => {
     RecentPresentation[]
   >([]);
   const [activities, setActivities] = useState<Activity[]>([]);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
 
   const navigate = useNavigate();
 
+  // fetch stats
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -276,6 +291,7 @@ const Dashboard = () => {
     fetchStats();
   }, []);
 
+  // fetch presentation
   useEffect(() => {
     const fetchPresentations = async () => {
       try {
@@ -288,6 +304,7 @@ const Dashboard = () => {
     fetchPresentations();
   }, []);
 
+  // fetch activity
   useEffect(() => {
     const fetchActivity = async () => {
       try {
@@ -299,6 +316,16 @@ const Dashboard = () => {
     };
     fetchActivity();
   }, []);
+
+  // fetch user data
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const response = await getUserInfo()
+      const userData = response.data.data
+      setUserInfo(userData)
+    }
+    fetchUserInfo()
+  }, [])
 
   const STATS: StatItem[] = [
     {
@@ -446,7 +473,7 @@ const Dashboard = () => {
                 <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-lg flex items-center justify-center text-white font-bold text-sm sm:text-base">
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage
-                      src="https://github.com/maxleiter.png"
+                      src="https://github.com/pranathip.png"
                       alt="logo"
                     />
                     <AvatarFallback className="rounded-lg">CN</AvatarFallback>
@@ -461,7 +488,7 @@ const Dashboard = () => {
                 {/* Name row */}
                 <div className="flex items-center gap-2 flex-wrap">
                   <h1 className="text-sm sm:text-xl font-semibold text-white tracking-tight truncate">
-                    Good morning, {USER_NAME}
+                    {getGreeting()}, {userInfo?.fullName.replace(/ .+$/, "")}
                   </h1>
                   {/* Date pill — hidden on xs, visible sm+ */}
                   <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-medium text-white/40 bg-white/6 border border-white/8 px-2 py-0.5 rounded-full shrink-0">

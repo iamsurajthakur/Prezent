@@ -10,6 +10,7 @@ import StarBorder from '@/components/Home/StarBorder';
 import CountUp from '@/components/Home/CountUp';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '@/States/auth.states';
+import Logo from '@/Assets/logo.png'
 
 const Home = () => {
   const items = [
@@ -604,6 +605,7 @@ const Home = () => {
         <footer className="w-full py-20 text-sm bg-[#0d0a2e] border-t border-white/5">
           <div className="flex flex-col items-center justify-center max-w-6xl mx-auto px-6">
             {/* Logo */}
+            <img src={Logo} className='h-10 w-auto' alt="Logo" />
 
             {/* Copyright Text */}
             <p className="mt-5 text-white/70 text-center text-base tracking-wide">

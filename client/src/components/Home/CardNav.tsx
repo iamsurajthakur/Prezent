@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { GoArrowUpRight } from 'react-icons/go';
 import { Link } from 'react-router-dom';
+import Logo from '@/Assets/logo.png'
 
 type CardNavLink = {
   label: string;
@@ -29,8 +30,6 @@ export interface CardNavProps {
 }
 
 const CardNav: React.FC<CardNavProps> = ({
-  logo,
-  logoAlt = 'Logo',
   items,
   className = '',
   ease = 'power3.out',
@@ -193,7 +192,7 @@ const CardNav: React.FC<CardNavProps> = ({
           </div>
 
           <div className="logo-container flex items-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 order-1 md:order-0">
-            <img src={logo} alt={logoAlt} className="logo h-7" />
+            <img src={Logo} className='h-6 w-auto' alt="Logo" />
           </div>
 
           <Link
