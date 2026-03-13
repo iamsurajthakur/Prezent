@@ -142,23 +142,25 @@ const SmartSlide = () => {
       <div className="flex items-center justify-between mb-7">
         <div className="flex items-center gap-4">
           <div className="relative shrink-0">
-            <div className="w-11 h-11 rounded-xl bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-[0_4px_14px_rgba(99,102,241,0.4)]">
+            <div className="w-11 h-11 rounded-[10px] bg-linear-to-br from-[#00253E] via-[#003356] to-[#00406C] flex items-center justify-center">
               <svg
-                width="20"
-                height="20"
+                width="22"
+                height="22"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <rect x="2" y="3" width="20" height="14" rx="2" />
-                <path d="M8 21h8M12 17v4" />
-                <path d="M7 8h2M7 11h5" />
+                {/* Back slide — offset to imply a deck */}
+                <rect x="8" y="3" width="13" height="9" rx="1.8" fill="white" fillOpacity="0.12" stroke="white" strokeOpacity="0.18" strokeWidth="0.8" />
+                {/* Front slide */}
+                <rect x="3" y="7" width="13" height="9" rx="1.8" fill="white" fillOpacity="0.07" stroke="white" strokeOpacity="0.55" strokeWidth="1.1" />
+                {/* Content lines */}
+                <rect x="5.2" y="10.2" width="7.2" height="1.3" rx="0.65" fill="white" fillOpacity="0.7" />
+                <rect x="5.2" y="12.8" width="5" height="1.3" rx="0.65" fill="white" fillOpacity="0.35" />
+                {/* AI sparkle — 4-pointed star */}
+                <path d="M19.5 1.2 L20.2 3 L22 3.5 L20.2 4 L19.5 5.8 L18.8 4 L17 3.5 L18.8 3 Z" fill="#c4b5fd" />
               </svg>
             </div>
-            <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-[#0f172a] shadow-[0_0_6px_#34d399]" />
           </div>
           <div>
             <h1 className="text-xl font-bold text-white tracking-tight leading-none">

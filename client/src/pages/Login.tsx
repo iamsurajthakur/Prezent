@@ -4,6 +4,7 @@ import Grainient from '@/components/Home/Grainient';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '@/Api/auth';
 import { useAuthStore } from '@/States/auth.states';
+import { Spinner } from '@/components/ui/spinner';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -270,9 +271,18 @@ const Login = () => {
           ref={buttonRef}
           type="submit"
           disabled={loading}
-          className="mt-8 py-3 w-full cursor-pointer rounded-md bg-indigo-600 text-white transition hover:bg-indigo-700 hover:scale-[1.02] active:scale-[0.98]"
+          className="mt-8 py-3 w-full flex items-center justify-center cursor-pointer rounded-md bg-indigo-600 text-white transition hover:bg-indigo-700 hover:scale-[1.02] active:scale-[0.98]"
         >
-          Login
+          {loading ? (
+            <React.Fragment>
+              <Spinner />
+              Logging in...
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              Login
+            </React.Fragment>
+          )}
         </button>
 
         <p ref={footerRef} className="text-center text-white py-8">

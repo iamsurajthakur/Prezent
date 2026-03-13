@@ -605,7 +605,7 @@ const Dashboard = () => {
               </div>
               <button
                 onClick={() => navigate('/dashboard/library')}
-                className="group flex items-center gap-1 text-[11px] font-medium text-blue-400/70 hover:text-blue-400 transition-colors"
+                className="group cursor-pointer flex items-center gap-1 text-[11px] font-medium text-blue-400/70 hover:text-blue-400 transition-colors"
               >
                 View all
                 <svg
@@ -789,23 +789,6 @@ const Dashboard = () => {
                   Live
                 </span>
               </div>
-              <button className="group cursor-pointer flex items-center gap-1 text-[11px] font-medium text-blue-400/70 hover:text-blue-400 transition-colors">
-                View all
-                <svg
-                  width="11"
-                  height="11"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="group-hover:translate-x-0.5 transition-transform duration-150"
-                >
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </button>
             </div>
 
             {/* ── Activity List — only this scrolls ── */}

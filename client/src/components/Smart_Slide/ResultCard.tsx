@@ -99,7 +99,7 @@ export default function ResultCard({
             Upload a document to generate slides.
           </p>
           <p className="text-xs text-slate-600">
-            Supports PDF and DOCX · Powered by AI
+            Supports PDF and DOCX · Powered by Prezent
           </p>
         </div>
       )}

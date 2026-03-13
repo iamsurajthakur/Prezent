@@ -24,6 +24,16 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { logOut } from '@/Api/auth';
+
+const handleLogout = async () => {
+  try {
+    await logOut()
+    window.location.href = '/login'
+  } catch (err: any) {
+    console.error('Logout failed', err)
+  }
+}
 
 export function NavUser({
   user,
@@ -103,7 +113,7 @@ export function NavUser({
               <DropdownMenuSeparator />
 
               {/* Log out */}
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 size-4 text-red-500" />
                 <span className="text-red-500 font-medium">Log out</span>
               </DropdownMenuItem>

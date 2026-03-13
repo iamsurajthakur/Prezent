@@ -19,6 +19,10 @@ export const loginUser = async (data: loginRequest) => {
   return await api.post('/api/v1/auth/login', data);
 };
 
+export const logOut = async () => {
+  return api.post('/api/v1/auth/logout')
+}
+
 export const getMe = async () => {
   return await api.get('/api/v1/auth/getMe');
 };

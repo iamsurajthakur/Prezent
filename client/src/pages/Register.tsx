@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import Grainient from '@/components/Home/Grainient';
 import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '@/Api/auth';
+import { Spinner } from '@/components/ui/spinner';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -309,9 +310,18 @@ const Register = () => {
           ref={buttonRef}
           type="submit"
           disabled={loading}
-          className="mt-8 py-3 w-full cursor-pointer rounded-md bg-indigo-600 text-[#F5F3F5] transition hover:bg-indigo-700 hover:scale-[1.02] active:scale-[0.98]"
+          className="mt-8 py-3 w-full flex items-center justify-center cursor-pointer rounded-md bg-indigo-600 text-[#F5F3F5] transition hover:bg-indigo-700 hover:scale-[1.02] active:scale-[0.98]"
         >
-          Register
+          {loading ? (
+            <React.Fragment>
+              <Spinner />
+              Registering...
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              Register
+            </React.Fragment>
+          )}
         </button>
 
         <p ref={footerRef} className="text-center text-[#F5F3F5] py-8">
