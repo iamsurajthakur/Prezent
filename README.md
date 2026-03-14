@@ -91,7 +91,7 @@ Raw PDF
  
 ---
 
-## 🏗️ Architecture
+## 🏗️ Architecture - Asynchronous document-processing pipeline using chunked map-reduce inference with LLMs.
 
 ![Architecture](./images/prezent_architecture.png)
 
