@@ -127,7 +127,7 @@ Raw PDF
 - Node.js `v18+`
 - npm or yarn or bun
 - Supabase account
-- OpenAI API key
+- LLM API key
 
 ### Installation
 
@@ -254,3 +254,6 @@ prezent/
 
 Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
 
+---
+
+> ⚠️ Note: If you like my project i will be grateful if you could give the repo a star⭐
