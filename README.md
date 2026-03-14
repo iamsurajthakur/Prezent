@@ -2,7 +2,7 @@
 
 **Prezent** is a full-stack web application that transforms raw documents into structured, professional PowerPoint presentations using AI. Users upload their files through a clean React interface, and the system automatically extracts key content, structures it intelligently, and generates a downloadable `.pptx` file all without any manual slide work.
 
-Built to demonstrate end-to-end system design: real-time auth, async background job processing, map-reduce style processing, LLM integration, and cloud storage all working together seamlessly.
+Built to demonstrate end-to-end system design: real-time auth, async background job processing, map-reduce style chunking, LLM integration, and cloud storage all working together seamlessly.
 
 
 ## ✨ Features
