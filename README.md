@@ -83,12 +83,6 @@ Raw PDF
 | 5–20 pages | ~500 tokens/chunk | Balanced extraction per section |
 | 20+ pages | ~300 tokens/chunk | Finer granularity, avoids info loss |
  
-### Key Design Decisions
- 
-- **Fixed-size over semantic chunking** — Simpler to implement and deterministic; no dependency on NLP parsers or heading detection, which can be unreliable across varied PDF formats.
-- **Map before Reduce** — Each chunk is summarized *independently* before combining. This prevents earlier content from dominating the final output — a common failure mode when long documents are summarized in a single pass.
-- **Structured JSON output from Reduce step** — The final LLM call is prompted to return a strict JSON schema (title, bullet points per slide), making the handoff to `pptxgenjs` clean and predictable.
- 
 ---
 
 ## 🏗️ Architecture - Asynchronous document-processing pipeline using chunked map-reduce inference with LLMs.
@@ -106,6 +100,15 @@ Raw PDF
 
 ---
 
+## 🔑 Key Design Decisions
+
+- **Async processing via job queue**: Slide generation is offloaded to a background worker so the API stays non-blocking and responsive under load.
+- **Chunking Strategy**: Chunking splits large documents into manageable pieces so the LLM can process all content accurately and generate structured slides.
+- **Supabase signed URLs**: Files are never exposed publicly; time-limited signed URLs ensure secure, controlled access per user.
+- **Auth at the API layer**: All job creation is gated behind authentication, preventing unauthorized resource usage.
+
+---
+
 ## 🛠️ Tech Stack
 
 | Layer | Technology |
@@ -117,6 +120,14 @@ Raw PDF
 | AI / LLM | Meta-LLaMA `Llama-3.1-8B-Instruct:novita` (via Hugging Face API, OpenAI-compatible client) |
 | Slide Generation | pptxgenjs |
 | Storage | Supabase Storage |
+
+---
+
+## 📸 Screenshots
+
+![Architecture](./images/home_prezent.png)
+![Architecture](./images/dashboard_prezent.png)
+![Architecture](./images/smart_slide.png)
 
 ---
 
@@ -229,24 +240,6 @@ prezent/
 │   └── package.json               # Bun-managed dependencies
 
 ```
-
----
-
-## 🔑 Key Design Decisions
-
-- **Async processing via job queue**: Slide generation is offloaded to a background worker so the API stays non-blocking and responsive under load.
-- **Chunking Strategy**: Chunking splits large documents into manageable pieces so the LLM can process all content accurately and generate structured slides.
-- **Supabase signed URLs**: Files are never exposed publicly; time-limited signed URLs ensure secure, controlled access per user.
-- **Auth at the API layer**: All job creation is gated behind authentication, preventing unauthorized resource usage.
-
----
-
-## 📸 Screenshots
-
-![Architecture](./images/home_prezent.png)
-![Architecture](./images/dashboard_prezent.png)
-![Architecture](./images/smart_slide.png)
-
 
 ---
 
