@@ -105,35 +105,35 @@ export default function UploadCard({
         />
 
         {file ? (
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-12 rounded-md bg-linear-to-br from-blue-100 to-blue-200 border border-blue-300/60 flex flex-col items-center justify-center shrink-0">
-              <span className="text-lg leading-none mb-0.5">
-                {file.name.endsWith('.pdf') ? '📄' : '📝'}
-              </span>
-              <span className="text-[9px] font-bold text-blue-700 tracking-wide">
-                {file.name.split('.').pop()?.toUpperCase()}
-              </span>
-            </div>
-            <div className="flex-1 min-w-0 text-left">
-              <p className="text-sm font-medium text-slate-200 truncate">
-                {file.name}
-              </p>
-              <p className="text-xs text-slate-500 mt-0.5">
-                {(file.size / 1024).toFixed(1)} KB
-              </p>
-            </div>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRemove();
-              }}
-              disabled={isGenerating}
-              className="bg-red-500/10 border cursor-pointer border-red-500/20 text-red-400 text-xs px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              ✕ Remove
-            </button>
-          </div>
-        ) : (
+  <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
+    <div className="w-10 h-12 rounded-md bg-linear-to-br from-blue-100 to-blue-200 border border-blue-300/60 flex flex-col items-center justify-center shrink-0">
+      <span className="text-lg leading-none mb-0.5">
+        {file.name.endsWith('.pdf') ? '📄' : '📝'}
+      </span>
+      <span className="text-[9px] font-bold text-blue-700 tracking-wide">
+        {file.name.split('.').pop()?.toUpperCase()}
+      </span>
+    </div>
+    <div className="flex-1 min-w-0 text-left">
+      <p className="text-sm font-medium text-slate-200 truncate max-w-[200px] sm:max-w-full">
+        {file.name}
+      </p>
+      <p className="text-xs text-slate-500 mt-0.5">
+        {(file.size / 1024).toFixed(1)} KB
+      </p>
+    </div>
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        handleRemove();
+      }}
+      disabled={isGenerating}
+      className="bg-red-500/10 border cursor-pointer border-red-500/20 text-red-400 text-xs px-3 py-1.5 rounded-lg hover:bg-red-500/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0 ml-auto sm:ml-0"
+    >
+      ✕ Remove
+    </button>
+  </div>
+) : ( 
           <div className="flex flex-col items-center gap-2">
             <div className="text-slate-500 mb-1">
               <svg
