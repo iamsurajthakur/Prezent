@@ -145,18 +145,29 @@ npm install
 Create a `.env` file in the root (and each service directory if applicable):
 
 ```env
-# OpenAI
-OPENAI_API_KEY=your_openai_api_key
+# Database
+MONGODB_URI=your_mongodb_uri
 
-# Supabase
-SUPABASE_URL=your_supabase_project_url
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+# CORS
+CORS_ORIGIN_DEV=dev_uri
 
-# Auth
-JWT_SECRET=your_jwt_secret
+# JWT Tokens
+ACCESS_TOKEN_SECRET=your_secret
+ACCESS_TOKEN_EXPIRY=time(check zod env.schema.ts)
+REFRESH_TOKEN_SECRET=your_secret
+REFRESH_TOKEN_EXPIRY=time(check zod env.schema.ts)
 
-# App
-PORT=5000
+# SUPABASE
+SUPABASE_URI=your_supabase_uri
+SUPABASE_SERVICE_KEY=supabase_key
+
+# HUGGING FACE
+HF_API_TOKEN=your_hf_token
+HF_API=your_hf_api
+
+NODE_ENV=development
+PORT=port_number
+
 ```
 
 ### Run Locally
