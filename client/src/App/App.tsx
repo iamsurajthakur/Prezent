@@ -9,7 +9,7 @@ import { getMe } from '@/Api/auth';
 import SmartSlide from '@/pages/SmartSlide';
 import Library from '@/pages/Library';
 import Dashboard from '@/pages/Dashboard';
-import LoadingScreen from '@/components/ui/loading';
+import Loading from '@/components/ui/Loading'
 
 const App = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -31,7 +31,7 @@ const App = () => {
       })
   }, []);
 
-  if (isLoading) return <LoadingScreen />;
+  if (isLoading) return <Loading />;
 
   return (
     <BrowserRouter>
