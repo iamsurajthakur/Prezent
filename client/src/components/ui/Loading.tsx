@@ -1,65 +1,61 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 
-// ── SqueezeLoader ──────────────────────────────────────────────
-interface SqueezeLoaderProps {
-  size?: number;
-  color1?: string;
-  color2?: string;
-  spinDuration?: number;
-  squeezeDuration?: number;
-}
-
+// ─── SqueezeLoader ──────────────────────────────────────────────────────────
 function SqueezeLoader({
   size = 64,
   color1 = "#6644ff",
   color2 = "#a855f7",
   spinDuration = 10,
   squeezeDuration = 3,
-}: SqueezeLoaderProps) {
+}: {
+  size?: number;
+  color1?: string;
+  color2?: string;
+  spinDuration?: number;
+  squeezeDuration?: number;
+}) {
   return (
     <>
       <style>{`
-        @keyframes squeeze {
+        @keyframes sq-squeeze {
           0%    { inset: 0 2em 2em 0; }
-          12.5% { inset: 0 2em 0 0; }
-          25%   { inset: 2em 2em 0 0; }
-          37.5% { inset: 2em 0 0 0; }
-          50%   { inset: 2em 0 0 2em; }
-          62.5% { inset: 0 0 0 2em; }
-          75%   { inset: 0 0 2em 2em; }
-          87.5% { inset: 0 0 2em 0; }
-          100%  { inset: 0 2em 2em 0; }
+          12.5% { inset: 0 2em 0    0; }
+          25%   { inset: 2em 2em 0  0; }
+          37.5% { inset: 2em 0   0  0; }
+          50%   { inset: 2em 0   0  2em; }
+          62.5% { inset: 0   0   0  2em; }
+          75%   { inset: 0   0  2em 2em; }
+          87.5% { inset: 0   0  2em 0; }
+          100%  { inset: 0  2em 2em 0; }
         }
-        @keyframes squeeze-spin {
+        @keyframes sq-spin {
           to { transform: rotate(-360deg); }
         }
       `}</style>
-
       <div
-        className="relative"
         style={{
           width: `${size}px`,
           height: `${size}px`,
-          animation: `squeeze-spin ${spinDuration}s infinite linear`,
+          position: "relative",
+          animation: `sq-spin ${spinDuration}s infinite linear`,
         }}
       >
-        {/* Square piece */}
         <div
-          className="absolute"
           style={{
+            position: "absolute",
             background: color1,
-            animation: `squeeze ${squeezeDuration}s infinite`,
+            animation: `sq-squeeze ${squeezeDuration}s infinite`,
           }}
         />
-        {/* Rounded piece */}
         <div
-          className="absolute rounded-full"
           style={{
+            position: "absolute",
+            borderRadius: "50%",
             background: color2,
-            animation: `squeeze ${squeezeDuration}s infinite`,
+            animation: `sq-squeeze ${squeezeDuration}s infinite`,
             animationDelay: "-1.25s",
           }}
         />
@@ -68,99 +64,121 @@ function SqueezeLoader({
   );
 }
 
-// ── Loading screen ─────────────────────────────────────────────
-export default function Loading() {
-  const [visible, setVisible] = useState(true);
+// ─── Loading screen ─────────────────────────────────────────────────────────
+/**
+ * Props:
+ *  done — when this flips to `true` the curtain exit plays and the
+ *          component unmounts itself. Wire it to `!isLoading` from your
+ *          auth store (see App.tsx usage below).
+ *
+ *  minMs — minimum milliseconds to keep the loader visible so the
+ *           entry animation always has time to play (default 1800ms).
+ *
+ * Usage in App.tsx:
+ *   const isLoading = useAuthStore(s => s.isLoading);
+ *   return <Loading done={!isLoading} />;
+ *   // Remove the `if (isLoading) return <Loading />` guard —
+ *   // render Loading unconditionally alongside the app instead.
+ */
+interface LoadingProps {
+  done?: boolean;
+  minMs?: number;
+}
 
-  const wrapperRef     = useRef<HTMLDivElement>(null);
-  const topPanelRef    = useRef<HTMLDivElement>(null);
-  const bottomPanelRef = useRef<HTMLDivElement>(null);
-  const contentRef     = useRef<HTMLDivElement>(null);
-  const glowRef        = useRef<HTMLDivElement>(null);
-  const logoRef        = useRef<HTMLDivElement>(null);
-  const labelRef       = useRef<HTMLParagraphElement>(null);
+type Phase = "enter" | "exit" | "done";
 
+export default function Loading({ done = false, minMs = 1800 }: LoadingProps) {
+  const [phase, setPhase] = useState<Phase>("enter");
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const topRef     = useRef<HTMLDivElement>(null);
+  const bottomRef  = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const glowRef    = useRef<HTMLDivElement>(null);
+  const logoRef    = useRef<HTMLDivElement>(null);
+  const labelRef   = useRef<HTMLParagraphElement>(null);
+
+  const glowTweenRef  = useRef<gsap.core.Tween | null>(null);
+  const mountTimeRef  = useRef<number>(Date.now());
+  const exitCalledRef = useRef(false);
+
+  // ── ENTRY ──────────────────────────────────────────────────────────────────
+  useLayoutEffect(() => {
+    if (phase !== "enter") return;
+
+    const tl = gsap.timeline();
+
+    tl.fromTo(
+      wrapperRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.45, ease: "power2.out" }
+    );
+
+    tl.fromTo(
+      logoRef.current,
+      { scale: 0.4, opacity: 0, filter: "blur(14px)" },
+      { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.75, ease: "back.out(1.8)" },
+      "-=0.05"
+    );
+
+    tl.fromTo(
+      labelRef.current,
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+      "-=0.35"
+    );
+
+    glowTweenRef.current = gsap.to(glowRef.current, {
+      scale: 1.55,
+      opacity: 0.32,
+      duration: 2.2,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
+
+    return () => { tl.kill(); };
+  }, [phase]);
+
+  // ── EXIT ───────────────────────────────────────────────────────────────────
+  useLayoutEffect(() => {
+    if (phase !== "exit") return;
+
+    glowTweenRef.current?.kill();
+
+    const tl = gsap.timeline({ onComplete: () => setPhase("done") });
+
+    // Fade + shrink content
+    tl.to(contentRef.current, {
+      opacity: 0,
+      scale: 0.94,
+      duration: 0.35,
+      ease: "power2.in",
+    });
+
+    // Curtain split
+    tl.to(topRef.current,    { yPercent: -100, duration: 1.0, ease: "expo.inOut" }, "-=0.1");
+    tl.to(bottomRef.current, { yPercent: 100,  duration: 1.0, ease: "expo.inOut" }, "<");
+
+    return () => { tl.kill(); };
+  }, [phase]);
+
+  // ── Trigger exit when `done` flips true ───────────────────────────────────
   useEffect(() => {
-    if (!visible) return;
+    if (!done || exitCalledRef.current || phase === "done") return;
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline();
+    const elapsed   = Date.now() - mountTimeRef.current;
+    const remaining = Math.max(0, minMs - elapsed);
 
-      // Fade in
-      tl.fromTo(wrapperRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" });
+    const timer = setTimeout(() => {
+      exitCalledRef.current = true;
+      setPhase("exit");
+    }, remaining);
 
-      // Logo pop-in
-      tl.fromTo(
-        logoRef.current,
-        { scale: 0.5, opacity: 0, filter: "blur(10px)" },
-        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.65, ease: "back.out(1.8)" },
-        "-=0.05"
-      );
+    return () => clearTimeout(timer);
+  }, [done, phase, minMs]);
 
-      // Label fade-in
-      tl.fromTo(
-        labelRef.current,
-        { opacity: 0, y: 8 },
-        { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" },
-        "-=0.3"
-      );
-
-      // Glow breathe (looping)
-      gsap.to(glowRef.current, {
-        scale: 1.5,
-        opacity: 0.3,
-        duration: 2.2,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-    }, wrapperRef);
-
-    // ── Exit: curtain split on window load ──
-    const exitLoader = () => {
-      ctx.revert();
-
-      const exit = gsap.timeline({ onComplete: () => setVisible(false) });
-
-      // Flash
-      exit.to(wrapperRef.current, {
-        backgroundColor: "#ffffff0a",
-        duration: 0.07,
-        yoyo: true,
-        repeat: 1,
-        ease: "none",
-      });
-
-      // Fade out inner content
-      exit.to(contentRef.current, { opacity: 0, duration: 0.25, ease: "power1.in" }, "<");
-
-      // Curtain split
-      exit.to(topPanelRef.current,    { yPercent: -100, duration: 0.9, ease: "expo.inOut" }, "-=0.1");
-      exit.to(bottomPanelRef.current, { yPercent: 100,  duration: 0.9, ease: "expo.inOut" }, "<");
-    };
-
-    const MIN_MS = 3000; // always show at least 3 s
-    const start  = Date.now();
-
-    const scheduleExit = () => {
-      const elapsed = Date.now() - start;
-      const delay   = Math.max(0, MIN_MS - elapsed);
-      setTimeout(exitLoader, delay);
-    };
-
-    if (document.readyState === "complete") {
-      scheduleExit();
-    } else {
-      window.addEventListener("load", scheduleExit, { once: true });
-    }
-
-    return () => {
-      window.removeEventListener("load", scheduleExit);
-      ctx.revert();
-    };
-  }, [visible]);
-
-  if (!visible) return null;
+  if (phase === "done") return null;
 
   return (
     <>
@@ -176,34 +194,34 @@ export default function Loading() {
       >
         {/* Noise grain */}
         <div
-          className="absolute inset-0 opacity-[0.035] pointer-events-none"
+          className="absolute inset-0 pointer-events-none opacity-[0.035]"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
           }}
         />
 
-        {/* ── Top curtain panel ── */}
+        {/* Top curtain */}
         <div
-          ref={topPanelRef}
+          ref={topRef}
           className="absolute inset-x-0 top-0 h-1/2 z-10"
           style={{ background: "linear-gradient(180deg, #0a0330 0%, #140a45 100%)" }}
         />
 
-        {/* ── Bottom curtain panel ── */}
+        {/* Bottom curtain */}
         <div
-          ref={bottomPanelRef}
+          ref={bottomRef}
           className="absolute inset-x-0 bottom-0 h-1/2 z-10"
           style={{ background: "linear-gradient(0deg, #0a0330 0%, #140a45 100%)" }}
         />
 
-        {/* ── Ambient glow ── */}
+        {/* Ambient glow */}
         <div
           ref={glowRef}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] rounded-full pointer-events-none opacity-20 blur-[90px]"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none opacity-20 blur-[90px]"
           style={{ background: "radial-gradient(circle, #6644ff 0%, #3311cc 45%, transparent 70%)" }}
         />
 
-        {/* ── Center content ── */}
+        {/* Center content */}
         <div
           ref={contentRef}
           className="absolute inset-0 z-0 flex flex-col items-center justify-center gap-8"
@@ -214,7 +232,7 @@ export default function Loading() {
             className="relative flex items-center justify-center w-16 h-16 rounded-2xl"
             style={{
               background: "linear-gradient(135deg, #3311cc22, #6644ff33)",
-              border: "1px solid #6644ff44",
+              border: "1px solid #6644ff55",
             }}
           >
             <div
@@ -229,7 +247,7 @@ export default function Loading() {
             </span>
           </div>
 
-          {/* SqueezeLoader */}
+          {/* Squeeze loader */}
           <SqueezeLoader
             size={64}
             color1="#6644ff"
