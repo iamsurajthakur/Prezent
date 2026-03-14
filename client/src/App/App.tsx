@@ -45,6 +45,7 @@ const App = () => {
         style={{
           opacity: appReady ? 1 : 0,
           transition: appReady ? "opacity 0.4s ease" : "none",
+          
         }}
       >
         <BrowserRouter>
