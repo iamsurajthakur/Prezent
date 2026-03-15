@@ -91,7 +91,7 @@ Raw PDF
  
 ---
 
-## 🏗️ Architecture
+## 🏗️ Architecture - Asynchronous document-processing pipeline using chunked map-reduce inference with LLMs.
 
 ![Architecture](./images/prezent_architecture.png)
 
@@ -145,18 +145,26 @@ npm install
 Create a `.env` file in the root (and each service directory if applicable):
 
 ```env
-# OpenAI
-OPENAI_API_KEY=your_openai_api_key
+MONGODB_URI=mongodb_uri
+PORT=port_number
 
-# Supabase
-SUPABASE_URL=your_supabase_project_url
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+CORS_ORIGIN_DEV=cors_dev_origin
 
-# Auth
-JWT_SECRET=your_jwt_secret
+# JWT Tokens
+ACCESS_TOKEN_SECRET=your_secret
+ACCESS_TOKEN_EXPIRY=1d
+REFRESH_TOKEN_SECRET=your_secret
+REFRESH_TOKEN_EXPIRY=7d
 
-# App
-PORT=5000
+# SUPABASE
+SUPABASE_URI=supabase_uri
+SUPABASE_SERVICE_KEY=supabase_key
+
+# HUGGING FACE
+HF_API_TOKEN=hugging_face_api_key
+HF_API=hugging_face_api
+
+NODE_ENV=development
 ```
 
 ### Run Locally
@@ -244,3 +252,6 @@ prezent/
 
 Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
 
+---
+
+> ⚠️ Note: If you like my project you can star the repo which i will be grateful for.
