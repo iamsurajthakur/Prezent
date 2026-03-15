@@ -15,3 +15,7 @@ export const processDocs = async (data: IProcessData) => {
 export const getJobStatus = async (jobId: string) => {
   return await api.get(`/api/v1/process/getJobStatus/${jobId}`);
 };
+
+export const deletePpt = async (id: string) => {
+  return await api.delete(`/api/v1/process/deletePpt/${id}`)
+}

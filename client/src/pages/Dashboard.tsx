@@ -743,7 +743,7 @@ const Dashboard = () => {
                               a.click();
                               URL.revokeObjectURL(blobUrl);
                             }}
-                            className="px-2.5 py-1 text-[10px] font-semibold border border-white/10 rounded-lg text-white/40 hover:text-white/70 hover:border-white/20 hover:bg-white/5 transition-all"
+                            className="px-2.5 cursor-pointer py-1 text-[10px] font-semibold border border-white/10 rounded-lg text-white/40 hover:text-white/70 hover:border-white/20 hover:bg-white/5 transition-all"
                           >
                             .pptx
                           </button>

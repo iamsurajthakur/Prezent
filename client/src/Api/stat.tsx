@@ -73,6 +73,20 @@ interface userInfoResponse {
   }
 }
 
+interface PresentationApi {
+  statusCode: number;
+  data: {
+        _id: string;
+        userId: string
+        name: string;
+        slides: number;
+        outputUrl: string;
+        createdAt: string
+        updatedAt: string
+    }[]
+  message: string
+}
+
 export const trackExport = async (
   presentationName: string
 ): Promise<exportApiResponse> => {
@@ -93,4 +107,9 @@ export const getRecentActivity = async (): Promise<activityResponse> => {
 
 export const getUserInfo = async (): Promise<userInfoResponse> => {
   return api.get('/api/v1/stat/getUserInfo')
+}
+
+export const getPresentation = async (): Promise<PresentationApi> => {
+  const res = await api.get('/api/v1/stat/getPresentation')
+  return res.data
 }
