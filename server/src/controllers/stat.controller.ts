@@ -146,10 +146,28 @@ const getUserInfo = asyncHandler(async (req: Request, res: Response) => {
     ))
 })
 
+const getPresentation = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user?._id
+
+    const presentation = await Presentation.find({ userId }).sort({ updatedAt: -1 })
+
+    if(!userId){
+        throw new ApiError(404,'User not found.')
+    }
+
+    res.status(200).json(new ApiResponse(
+        200,
+        presentation,
+        'Presentation fetched successfully.'
+    ))
+
+})
+
 export {
     trackExport,
     getStats,
     getRecentPresentation,
     getRecentActivity,
     getUserInfo,
+    getPresentation
 }

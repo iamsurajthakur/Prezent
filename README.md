@@ -2,7 +2,7 @@
 
 **Prezent** is a full-stack web application that transforms raw documents into structured, professional PowerPoint presentations using AI. Users upload their files through a clean React interface, and the system automatically extracts key content, structures it intelligently, and generates a downloadable `.pptx` file all without any manual slide work.
 
-Built to demonstrate end-to-end system design: real-time auth, async background job processing, map-reduce style chunking, LLM integration, and cloud storage all working together seamlessly.
+Built to demonstrate end-to-end system design: real-time auth, async background job processing, map-reduce style processing, LLM integration, and cloud storage all working together seamlessly.
 
 
 ## ✨ Features
@@ -83,9 +83,15 @@ Raw PDF
 | 5–20 pages | ~500 tokens/chunk | Balanced extraction per section |
 | 20+ pages | ~300 tokens/chunk | Finer granularity, avoids info loss |
  
+### Key Design Decisions
+ 
+- **Fixed-size over semantic chunking** — Simpler to implement and deterministic; no dependency on NLP parsers or heading detection, which can be unreliable across varied PDF formats.
+- **Map before Reduce** — Each chunk is summarized *independently* before combining. This prevents earlier content from dominating the final output — a common failure mode when long documents are summarized in a single pass.
+- **Structured JSON output from Reduce step** — The final LLM call is prompted to return a strict JSON schema (title, bullet points per slide), making the handoff to `pptxgenjs` clean and predictable.
+ 
 ---
 
-## 🏗️ Architecture - Asynchronous document-processing pipeline using chunked map-reduce inference with LLMs.
+## 🏗️ Architecture
 
 ![Architecture](./images/prezent_architecture.png)
 
@@ -97,15 +103,6 @@ Raw PDF
 4. The structured content is passed to **pptxgenjs** for slide generation
 5. The generated `.pptx` is **stored in Supabase Storage**
 6. The frontend receives a **signed URL** to download the presentation
-
----
-
-## 🔑 Key Design Decisions
-
-- **Async processing via job queue**: Slide generation is offloaded to a background worker so the API stays non-blocking and responsive under load.
-- **Chunking Strategy**: Chunking splits large documents into manageable pieces so the LLM can process all content accurately and generate structured slides.
-- **Supabase signed URLs**: Files are never exposed publicly; time-limited signed URLs ensure secure, controlled access per user.
-- **Auth at the API layer**: All job creation is gated behind authentication, preventing unauthorized resource usage.
 
 ---
 
@@ -123,14 +120,6 @@ Raw PDF
 
 ---
 
-## 📸 Screenshots
-
-![Architecture](./images/home_prezent.png)
-![Architecture](./images/dashboard_prezent.png)
-![Architecture](./images/smart_slide.png)
-
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -138,7 +127,7 @@ Raw PDF
 - Node.js `v18+`
 - npm or yarn or bun
 - Supabase account
-- LLM API key
+- OpenAI API key
 
 ### Installation
 
@@ -156,29 +145,18 @@ npm install
 Create a `.env` file in the root (and each service directory if applicable):
 
 ```env
-# Database
-MONGODB_URI=your_mongodb_uri
+# OpenAI
+OPENAI_API_KEY=your_openai_api_key
 
-# CORS
-CORS_ORIGIN_DEV=dev_uri
+# Supabase
+SUPABASE_URL=your_supabase_project_url
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
-# JWT Tokens
-ACCESS_TOKEN_SECRET=your_secret
-ACCESS_TOKEN_EXPIRY=time(check zod env.schema.ts)
-REFRESH_TOKEN_SECRET=your_secret
-REFRESH_TOKEN_EXPIRY=time(check zod env.schema.ts)
+# Auth
+JWT_SECRET=your_jwt_secret
 
-# SUPABASE
-SUPABASE_URI=your_supabase_uri
-SUPABASE_SERVICE_KEY=supabase_key
-
-# HUGGING FACE
-HF_API_TOKEN=your_hf_token
-HF_API=your_hf_api
-
-NODE_ENV=development
-PORT=port_number
-
+# App
+PORT=5000
 ```
 
 ### Run Locally
@@ -243,10 +221,26 @@ prezent/
 
 ---
 
+## 🔑 Key Design Decisions
+
+- **Async processing via job queue**: Slide generation is offloaded to a background worker so the API stays non-blocking and responsive under load.
+- **Chunking Strategy**: Chunking splits large documents into manageable pieces so the LLM can process all content accurately and generate structured slides.
+- **Supabase signed URLs**: Files are never exposed publicly; time-limited signed URLs ensure secure, controlled access per user.
+- **Auth at the API layer**: All job creation is gated behind authentication, preventing unauthorized resource usage.
+
+---
+
+## 📸 Screenshots
+
+![Architecture](./images/home_prezent.png)
+![Architecture](./images/dashboard_prezent.png)
+![Architecture](./images/smart_slide.png)
+![Architecture](./images/library.png)
+
+
+---
+
 ## 🤝 Contributing
 
 Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
 
----
-
-> ⚠️ Note: If you like my project i will be grateful if you could give the repo a star⭐

@@ -12,6 +12,7 @@ import { generatePPT } from "@/utils/generatePPT";
 import { updateStats } from "@/utils/updateStats";
 import { Presentation } from "@/models/presentation.models";
 import { Activity } from "@/models/activity.models";
+import { startSession } from "mongoose";
 
 function cleanText(text: string): string {
     return text
@@ -204,7 +205,27 @@ const getJobStatus = asyncHandler(async (req: Request, res: Response) => {
     )
 })
 
+const deletePpt = asyncHandler (async (req: Request, res: Response) => {
+    const userId = req.user?._id
+
+    if(!userId){
+        throw new ApiError(404,'User not found')
+    }
+
+    await Presentation.findOneAndDelete({
+        _id: req.params.id,
+        userId,
+    })
+
+    res.status(200).json(new ApiResponse(
+        200,
+        {},
+        'Presentation deleted.'
+    ))
+})
+
 export {
     processPpt,
-    getJobStatus
+    getJobStatus,
+    deletePpt
 }

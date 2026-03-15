@@ -165,7 +165,7 @@ export const generatePPT = async (slides: Slide[], userId: string, jobId: string
 
     const { data: signedUrlData, error: signedUrlError } = await supabase.storage
         .from("uploads")
-        .createSignedUrl(storagePath, 60 * 60 * 24) // 24 hours
+        .createSignedUrl(storagePath, 60 * 60 * 24 * 365) // 1 year
 
     if (signedUrlError || !signedUrlData?.signedUrl) {
         throw new Error("PPT stored but failed to generate download URL")
